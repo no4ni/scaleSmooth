@@ -15,3 +15,22 @@ Enlarge images and get more quality without losing accuracy and hallucinations. 
 - Download <a href="https://github.com/no4ni/scaleSmooth/raw/main/run/scaleSmooth-windows10-x64.zip">release</a>
 - Unpack into any folder
 - Run .exe
+
+# 🛠 Using in your projects
+- Just copy necessary function (scaleSmoothGray/scaleSmoothColor/scaleRoughGray/scaleRoughColor)
+- Call it with parameters (image as type Image, int scaleX, int accuracy - where 0 is fast, 100 is accurate)
+- It returns new image as type Image 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
