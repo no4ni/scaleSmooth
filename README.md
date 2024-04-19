@@ -11,4 +11,7 @@ Enlarge images and get more quality without losing accuracy and hallucinations. 
 **scaleSmooth** is algorithms by sequential calculations, so it's might be very slow (use fast/accurate if it will be needed) and it can't parallelize by many CPU's or GPU, but you can run as many copies as many logical CPU's you have without losing speed.
 
 # 🏃 Run
-(Windows x64)
+(Windows 10+ x64) 
+- Download <a href="https://github.com/no4ni/scaleSmooth/raw/main/run/scaleSmooth-windows10-x64.zip">release</a>
+- Unpack into any folder
+- Run .exe
