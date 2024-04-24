@@ -174,7 +174,7 @@
             trackBar1.Size = new Size(174, 45);
             trackBar1.TabIndex = 11;
             trackBar1.TickFrequency = 25;
-            trackBar1.Value = 50;
+            trackBar1.Value = 42;
             // 
             // label2
             // 
@@ -190,6 +190,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(963, 768);
+            Controls.Add(button6);
             Controls.Add(label2);
             Controls.Add(trackBar1);
             Controls.Add(button5);
@@ -231,5 +232,6 @@
         private Button button5;
         private TrackBar trackBar1;
         private Label label2;
+        private Button button6;
     }
 }

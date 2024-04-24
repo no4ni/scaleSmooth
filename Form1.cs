@@ -57,7 +57,7 @@ namespace ScaleSmooth
             button5.Enabled = false;
             if (radioButton1.Checked)
             {
-                pictureBox1.Image = ScaleSmoothGray(pictureBox1.Image, (int)(numericUpDown1.Value),(int)(trackBar1.Value));
+                pictureBox1.Image = ScaleSmoothGray(pictureBox1.Image, (int)(numericUpDown1.Value), (int)(trackBar1.Value));
             }
             else
             {
@@ -72,7 +72,7 @@ namespace ScaleSmooth
             button5.Enabled = true;
         }
 
-        private Image ScaleSmoothGray(Image img, int x,int ac)
+        private Image ScaleSmoothGray(Image img, int x, int ac)
         {
             int ni, ns, oi, os, oim, osm, xm, xmm, xoim, nim, nsm;
             xm = x - 1;
@@ -88,7 +88,7 @@ namespace ScaleSmooth
             xoim = oim * x;
 
             ac = ac * (oim - 1) / 100;
-            ac = x * (ac+1);
+            ac = x * (ac + 1);
             osm = os - 1;
 
             byte[,] d = new byte[ni, ns];
@@ -671,7 +671,7 @@ namespace ScaleSmooth
                                                     }
                                                 }
                                             }
-                                            
+
                                         }
                                     }
                                 }
@@ -715,7 +715,7 @@ namespace ScaleSmooth
                                                 }
                                             }
                                         }
-                                        
+
                                     }
                                 }
                             }
@@ -732,7 +732,7 @@ namespace ScaleSmooth
                                     {
                                         if (s != 0 && s != nsm)
                                         {
-                                            
+
                                             ld = g[i, s];
                                             g[i, s] = (byte)((g[i - 1, s] + g[i + 1, s] + g[i, s - 1] + g[i, s + 1]) / 4 + 0.5);
                                             rn = g[i, s] - ld;
@@ -776,7 +776,7 @@ namespace ScaleSmooth
 
                                     if (s != 0 && s != nsm)
                                     {
-                                        
+
                                         ld = g[i, s];
                                         g[i, s] = (byte)((g[i, s - 1] + g[i, s + 1]) / 2 + 0.5);
                                         rn = g[i, s] - ld;
@@ -823,7 +823,7 @@ namespace ScaleSmooth
                                     {
                                         if (s != 0 && s != nsm)
                                         {
-                                            
+
                                             ld = b[i, s];
                                             b[i, s] = (byte)((b[i - 1, s] + b[i + 1, s] + b[i, s - 1] + b[i, s + 1]) / 4 + 0.5);
                                             rn = b[i, s] - ld;
@@ -854,7 +854,7 @@ namespace ScaleSmooth
                                                     }
                                                 }
                                             }
-                                            
+
                                         }
                                     }
                                 }
@@ -868,7 +868,7 @@ namespace ScaleSmooth
 
                                     if (s != 0 && s != nsm)
                                     {
-                                        
+
                                         ld = b[i, s];
                                         b[i, s] = (byte)((b[i, s - 1] + b[i, s + 1]) / 2 + 0.5);
                                         rn = b[i, s] - ld;
@@ -899,7 +899,7 @@ namespace ScaleSmooth
 
                                             }
                                         }
-                                        
+
                                     }
                                 }
                             }
@@ -941,9 +941,9 @@ namespace ScaleSmooth
             button5.Enabled = true;
         }
 
-        private Image ScaleRoughGray(Image img, int x,int ac)
+        private Image ScaleRoughGray(Image img, int x, int ac)
         {
-            int ni, ns, oi, os, oim, osm, xm, xmm, xoim, nim, nsm,ac2;
+            int ni, ns, oi, os, oim, osm, xm, xmm, xoim, nim, nsm, ac2;
             xm = x - 1;
             xmm = xm - 1;
             ni = img.Width * x;
@@ -999,14 +999,16 @@ namespace ScaleSmooth
                                 {
                                     for (int s = sx * x + xm; s > sx * x - 1; s--)
                                     {
-                                        if (s >0 && s < nsm)
+                                        if (s > 0 && s < nsm)
                                         {
                                             ld = d[i, s];
-                                            if (rnd.Next(0, ac2* rnd.Next(0, 2)) < c)
+                                            if (rnd.Next(0, ac2 * rnd.Next(0, 2)) < c)
                                             {
-                                                d[i, s] = (byte)(s255((d[i + rnd.Next(-1,2), s + rnd.Next(-1, 2)]+ d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) /9));
-                                            }else {
-                                                d[i, s] =(byte)(rnd.Next(0, 2)*255);
+                                                d[i, s] = (byte)(s255((d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
+                                            }
+                                            else
+                                            {
+                                                d[i, s] = (byte)(rnd.Next(0, 2) * 255);
                                             }
                                             r = d[i, s] - ld;
                                             if (r > 0)
@@ -1041,12 +1043,12 @@ namespace ScaleSmooth
                             }
                             for (int i = ix * x + xm; i > ix * x - 1; i--)
                             {
-                                if (i >0 && i < nim)
+                                if (i > 0 && i < nim)
                                 {
                                     for (int s = sx * x + xm; s > sx * x - 1; s--)
                                     {
                                         ld = d[i, s];
-                                        d[i, s] = (byte)(s255((d[i+ rnd.Next(-1, 2), s ] + d[i+ rnd.Next(-1, 2), s ]) / 2 ));
+                                        d[i, s] = (byte)(s255((d[i + rnd.Next(-1, 2), s] + d[i + rnd.Next(-1, 2), s]) / 2));
                                         r = d[i, s] - ld;
                                         if (r > 0)
                                         {
@@ -1100,7 +1102,7 @@ namespace ScaleSmooth
                                         {
                                             ld = d[i, s];
 
-                                            d[i, s] = (byte)(s255((d[i + rnd.Next(-1, 2), s ] + d[i + rnd.Next(-1, 2), s ]+ d[i, s + rnd.Next(-1, 2)] + d[i, s + rnd.Next(-1, 2)]) / 4)); 
+                                            d[i, s] = (byte)(s255((d[i + rnd.Next(-1, 2), s] + d[i + rnd.Next(-1, 2), s] + d[i, s + rnd.Next(-1, 2)] + d[i, s + rnd.Next(-1, 2)]) / 4));
 
 
                                             r = d[i, s] - ld;
@@ -1190,7 +1192,7 @@ namespace ScaleSmooth
             return img;
         }
 
-        private Image ScaleRoughColor(Image img, int x,int ac)
+        private Image ScaleRoughColor(Image img, int x, int ac)
         {
             int ni, ns, oi, os, oim, osm, xm, xmm, xoim, nim, nsm, ac2;
             xm = x - 1;
@@ -1811,7 +1813,7 @@ namespace ScaleSmooth
 
         private byte s255(double v)
         {
-            return (byte)(0.000000002833333 * Math.Pow(v,5) - 0.00000181137 * Math.Pow(v, 4) + 0.0003605953 * Math.Pow(v, 3) - 0.01970911609 * Math.Pow(v, 2) + 0.63373610992 * v + 0.17238095178);
+            return (byte)(0.000000002833333 * Math.Pow(v, 5) - 0.00000181137 * Math.Pow(v, 4) + 0.0003605953 * Math.Pow(v, 3) - 0.01970911609 * Math.Pow(v, 2) + 0.63373610992 * v + 0.17238095178);
         }
     }
 }
