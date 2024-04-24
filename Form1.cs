@@ -1212,7 +1212,7 @@ namespace ScaleSmooth
 
             xoim = oim * x;
             ac = ac * (oim - 1) / 100;
-            ac = x * (ac + 1);
+            ac = x * (ac + 1)*2;
             ac2 = ac / 2;
             osm = os - 1;
 
@@ -2095,7 +2095,7 @@ namespace ScaleSmooth
 
             xoim = oim * x;
             ac = ac * (oim - 1) / 100;
-            ac = x * (ac + 1);
+            ac = x * (ac + 1) * 2;
             ac2 = ac / 2;
             osm = os - 1;
 
