@@ -86,8 +86,8 @@ namespace ScaleSmooth
             nsm = ns - 1;
 
             xoim = oim * x;
-            
-            ac = ac / 100 * (oim-1);
+
+            ac = ac * (oim - 1) / 100;
             ac = x * (ac+1);
             osm = os - 1;
 
@@ -328,7 +328,7 @@ namespace ScaleSmooth
             nsm = ns - 1;
 
             xoim = oim * x;
-            ac = ac / 100 * (oim - 1);
+            ac = ac * (oim - 1) / 100;
             ac = x * (ac + 1);
             osm = os - 1;
 
@@ -955,7 +955,7 @@ namespace ScaleSmooth
             nsm = ns - 1;
 
             xoim = oim * x;
-            ac = ac / 100 * (oim - 1);
+            ac = ac * (oim - 1) / 100;
             ac = x * (ac + 1);
             ac2 = ac / 2;
             osm = os - 1;
@@ -1204,7 +1204,7 @@ namespace ScaleSmooth
             nsm = ns - 1;
 
             xoim = oim * x;
-            ac = ac / 100 * (oim - 1);
+            ac = ac * (oim - 1) / 100;
             ac = x * (ac + 1);
             ac2 = ac / 2;
             osm = os - 1;
