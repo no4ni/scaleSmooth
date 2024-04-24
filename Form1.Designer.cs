@@ -43,6 +43,7 @@
             button5 = new Button();
             trackBar1 = new TrackBar();
             label2 = new Label();
+            button6 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
@@ -72,7 +73,7 @@
             // button2
             // 
             button2.Enabled = false;
-            button2.Location = new Point(11, 455);
+            button2.Location = new Point(12, 485);
             button2.Name = "button2";
             button2.Size = new Size(176, 54);
             button2.TabIndex = 2;
@@ -124,7 +125,7 @@
             // 
             // button4
             // 
-            button4.Location = new Point(11, 560);
+            button4.Location = new Point(11, 587);
             button4.Name = "button4";
             button4.Size = new Size(176, 54);
             button4.TabIndex = 7;
@@ -158,7 +159,7 @@
             // 
             // button5
             // 
-            button5.Location = new Point(12, 309);
+            button5.Location = new Point(11, 369);
             button5.Name = "button5";
             button5.Size = new Size(176, 54);
             button5.TabIndex = 10;
@@ -184,6 +185,16 @@
             label2.TabIndex = 12;
             label2.Text = "Fast                       Accurate";
             label2.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // button6
+            // 
+            button6.Location = new Point(12, 309);
+            button6.Name = "button6";
+            button6.Size = new Size(176, 54);
+            button6.TabIndex = 13;
+            button6.Text = "scaleFurry";
+            button6.UseVisualStyleBackColor = true;
+            button6.Click += button6_Click;
             // 
             // Form1
             // 
