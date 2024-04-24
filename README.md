@@ -15,14 +15,14 @@ Threshold, autoThreshold, Mean Cuvatute Blur, Median Blur and other tools, which
 
 
 # 🏃 Run
-(Windows 10+ x64) 
+(required Windows 10+ x64, .NET 8.0+) 
 - Download <a href="https://github.com/no4ni/scaleSmooth/raw/main/run/scaleSmooth-windows10-x64.zip">release</a>
 - Unpack into any folder
 - Run .exe
 
 # 🛠 Using in your projects
-- Just copy necessary function (scaleSmoothGray/scaleSmoothColor/scaleRoughGray/scaleRoughColor)
-- Call it with parameters (image as type Image, int scaleX, int accuracy - where 0 is fast, 100 is accurate)
+- Just copy necessary function (scaleSmoothGray/scaleSmoothColor/scaleRoughGray/scaleRoughColor/scaleFurryGray/scaleFurryColor)
+- Call it with parameters (**image** as type Image, int **scale**, int **accuracy** - where 0 is fast, 100 is accurate)
 - It returns new image as type Image 
 
 
