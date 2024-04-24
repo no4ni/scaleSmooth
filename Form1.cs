@@ -1438,7 +1438,7 @@ namespace ScaleSmooth
                     }
                 }
                 progressBar1.Value = c * 100 / ac;
-                if (c > ac2)
+                if (c >= ac2)
                 {
                     for (int i = 0; i < ni; i++)
                     {
@@ -2691,7 +2691,7 @@ namespace ScaleSmooth
                     }
                 }
                 progressBar1.Value = c * 100 / ac;
-                if (c > ac2)
+                if (c >= ac2)
                 {
                     for (int i = 0; i < ni; i++)
                     {
