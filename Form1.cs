@@ -1266,7 +1266,7 @@ namespace ScaleSmooth
                                         if (s > 0 && s < nsm)
                                         {
                                             ld = d[i, s];
-                                            if (ac2 <= c)
+                                            if (ac2 >= c)
                                             {
                                                 if (rnd.Next(0, 2)*rnd.Next(0, ac2) < c)
                                                 {
@@ -1467,6 +1467,9 @@ namespace ScaleSmooth
                     }
                 }
                 progressBar1.Value = c * 100 / ac;
+                
+                pictureBox1.Image = img;
+                pictureBox1.Refresh();
             }
 
             for (int i = 0; i < ni; i++)
@@ -2192,7 +2195,7 @@ namespace ScaleSmooth
                                         if (s > 0 && s < nsm)
                                         {
                                             ld = dr[i, s];
-                                            if (ac2 <= c)
+                                            if (ac2 >= c)
                                             {
                                                 if (rnd.Next(0, 2) * rnd.Next(0, ac2) < c)
                                                 {
@@ -2297,7 +2300,7 @@ namespace ScaleSmooth
                                         if (s > 0 && s < nsm)
                                         {
                                             ld = dg[i, s];
-                                            if (ac2 <= c)
+                                            if (ac2 >= c)
                                             {
                                                 if (rnd.Next(0, 2) * rnd.Next(0, ac2) < c)
                                                 {
@@ -2401,7 +2404,7 @@ namespace ScaleSmooth
                                         if (s > 0 && s < nsm)
                                         {
                                             ld = db[i, s];
-                                            if (ac2 <= c)
+                                            if (ac2 >= c)
                                             {
                                                 if (rnd.Next(0, 2)*rnd.Next(0, ac2) < c)
                                                 {
