@@ -25,7 +25,7 @@ Threshold, autoThreshold, Mean Cuvatute Blur, Median Blur and other tools, which
 - Call it with parameters (**image** as type Image, int **scale**, int **accuracy** - where 0 is fast, 100 is accurate)
 - It returns new image as type Image 
 
-
+<img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/img/demo5.png"/>
 
 
 
