@@ -1006,13 +1006,19 @@ namespace ScaleSmooth
                                         if (s > 0 && s < nsm)
                                         {
                                             ld = d[i, s];
-                                            if (rnd.Next(0, ac2) * rnd.Next(0, 2) < c)
+                                            if (ac2 <= c)
+                                            {
+                                                if (rnd.Next(0, 2) * rnd.Next(0, ac2) < c)
+                                                {
+                                                    d[i, s] = (byte)(s255((d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
+                                                }
+                                                else
+                                                {
+                                                    d[i, s] = (byte)(rnd.Next(0, 2) * 255);
+                                                }
+                                            } else
                                             {
                                                 d[i, s] = (byte)(s255((d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
-                                            }
-                                            else
-                                            {
-                                                d[i, s] = (byte)(rnd.Next(0, 2) * 255);
                                             }
                                             r = d[i, s] - ld;
                                             if (r > 0)
@@ -1212,7 +1218,7 @@ namespace ScaleSmooth
 
             xoim = oim * x;
             ac = ac * (oim - 1) / 100;
-            ac = x * (ac + 1)*2;
+            ac = x * (ac + 1);
             ac2 = ac / 2;
             osm = os - 1;
 
@@ -1236,6 +1242,7 @@ namespace ScaleSmooth
                 for (int s = 0; s < ns; s++)
                 {
                     d[i, s] = sr[i / x, s / x];
+                    ds[i, s] = d[i, s];
                 }
             }
 
@@ -1259,14 +1266,21 @@ namespace ScaleSmooth
                                         if (s > 0 && s < nsm)
                                         {
                                             ld = d[i, s];
-                                            if (rnd.Next(0, ac2) * rnd.Next(0, 2) < c)
+                                            if (ac2 <= c)
+                                            {
+                                                if (rnd.Next(0, 2)*rnd.Next(0, ac2) < c)
+                                                {
+                                                    d[i, s] = (byte)(s255((d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
+                                                }
+                                                else
+                                                {
+                                                    d[i, s] = (byte)(rnd.Next(0, 2) * 255);
+                                                }
+                                            } else
                                             {
                                                 d[i, s] = (byte)(s255((d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + d[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
                                             }
-                                            else
-                                            {
-                                                d[i, s] = (byte)(rnd.Next(0, 2) * 255);
-                                            }
+                                            
                                             r = d[i, s] - ld;
                                             if (r > 0)
                                             {
@@ -1294,6 +1308,10 @@ namespace ScaleSmooth
                                                     }
                                                 }
                                             }
+                                        }
+                                        if (c >= ac2)
+                                        {
+                                            ds[i, s] = (ds[i, s] * (c - ac2) + d[i, s]) / (c - ac2 + 1);
                                         }
                                     }
                                 }
@@ -1333,9 +1351,12 @@ namespace ScaleSmooth
                                                 }
                                             }
                                         }
+                                        if (c >= ac2)
+                                        {
+                                            ds[i, s] = (ds[i, s] * (c - ac2) + d[i, s]) / (c - ac2 + 1);
+                                        }
                                     }
                                 }
-
                             }
                         }
                     }
@@ -1390,6 +1411,10 @@ namespace ScaleSmooth
                                                 }
                                             }
                                         }
+                                        if (c >= ac2)
+                                        {
+                                            ds[i, s] = (ds[i, s] * (c - ac2) + d[i, s]) / (c - ac2 + 1);
+                                        }
                                     }
                                 }
 
@@ -1432,22 +1457,16 @@ namespace ScaleSmooth
                                             }
                                         }
                                     }
+                                    if (c >= ac2)
+                                    {
+                                        ds[i, s] = (ds[i, s] * (c - ac2) + d[i, s]) / (c - ac2 + 1);
+                                    }
                                 }
                             }
                         }
                     }
                 }
                 progressBar1.Value = c * 100 / ac;
-                if (c >= ac2)
-                {
-                    for (int i = 0; i < ni; i++)
-                    {
-                        for (int s = 0; s < ns; s++)
-                        {
-                            ds[i, s] = (ds[i, s] * (c - ac2) + d[i, s]) / (c - ac2 + 1);
-                        }
-                    }
-                }
             }
 
             for (int i = 0; i < ni; i++)
@@ -1530,13 +1549,19 @@ namespace ScaleSmooth
                                         if (s > 0 && s < nsm)
                                         {
                                             ld = dr[i, s];
-                                            if (rnd.Next(0, ac2 * rnd.Next(0, 2)) < c)
+                                            if (ac2 <= c)
+                                            {
+                                                if (rnd.Next(0, 2) * rnd.Next(0, ac2) < c)
+                                                {
+                                                    dr[i, s] = (byte)(s255((dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
+                                                }
+                                                else
+                                                {
+                                                    dr[i, s] = (byte)(rnd.Next(0, 2) * 255);
+                                                }
+                                            } else
                                             {
                                                 dr[i, s] = (byte)(s255((dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
-                                            }
-                                            else
-                                            {
-                                                dr[i, s] = (byte)(rnd.Next(0, 2) * 255);
                                             }
                                             r = dr[i, s] - ld;
                                             if (r > 0)
@@ -1620,13 +1645,19 @@ namespace ScaleSmooth
                                         if (s > 0 && s < nsm)
                                         {
                                             ld = dg[i, s];
-                                            if (rnd.Next(0, ac2 * rnd.Next(0, 2)) < c)
+                                            if (ac2 <= c)
+                                            {
+                                                if (rnd.Next(0, 2) * rnd.Next(0, ac2) < c)
+                                                {
+                                                    dg[i, s] = (byte)(s255((dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
+                                                }
+                                                else
+                                                {
+                                                    dg[i, s] = (byte)(rnd.Next(0, 2) * 255);
+                                                }
+                                            } else
                                             {
                                                 dg[i, s] = (byte)(s255((dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
-                                            }
-                                            else
-                                            {
-                                                dg[i, s] = (byte)(rnd.Next(0, 2) * 255);
                                             }
                                             r = dg[i, s] - ld;
                                             if (r > 0)
@@ -1710,13 +1741,19 @@ namespace ScaleSmooth
                                         if (s > 0 && s < nsm)
                                         {
                                             ld = db[i, s];
-                                            if (rnd.Next(0, ac2 * rnd.Next(0, 2)) < c)
+                                            if (ac2 <= c)
+                                            {
+                                                if (rnd.Next(0, 2) * rnd.Next(0, ac2) < c)
+                                                {
+                                                    db[i, s] = (byte)(s255((db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
+                                                }
+                                                else
+                                                {
+                                                    db[i, s] = (byte)(rnd.Next(0, 2) * 255);
+                                                }
+                                            } else
                                             {
                                                 db[i, s] = (byte)(s255((db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
-                                            }
-                                            else
-                                            {
-                                                db[i, s] = (byte)(rnd.Next(0, 2) * 255);
                                             }
                                             r = db[i, s] - ld;
                                             if (r > 0)
@@ -2095,7 +2132,7 @@ namespace ScaleSmooth
 
             xoim = oim * x;
             ac = ac * (oim - 1) / 100;
-            ac = x * (ac + 1) * 2;
+            ac = x * (ac + 1);
             ac2 = ac / 2;
             osm = os - 1;
 
@@ -2129,6 +2166,9 @@ namespace ScaleSmooth
                     dr[i, s] = sr[i / x, s / x];
                     dg[i, s] = sg[i / x, s / x];
                     db[i, s] = sb[i / x, s / x];
+                    fr[i, s] = dr[i, s];
+                    fg[i, s] = dg[i, s];
+                    fb[i, s] = db[i, s];
                 }
             }
 
@@ -2152,14 +2192,21 @@ namespace ScaleSmooth
                                         if (s > 0 && s < nsm)
                                         {
                                             ld = dr[i, s];
-                                            if (rnd.Next(0, ac2 * rnd.Next(0, 2)) < c)
+                                            if (ac2 <= c)
                                             {
-                                                dr[i, s] = (byte)(s255((dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
-                                            }
-                                            else
+                                                if (rnd.Next(0, 2) * rnd.Next(0, ac2) < c)
+                                                {
+                                                    dr[i, s] = (byte)(s255((dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
+                                                }
+                                                else
+                                                {
+                                                    dr[i, s] = (byte)(rnd.Next(0, 2) * 255);
+                                                }
+                                            } else
                                             {
-                                                dr[i, s] = (byte)(rnd.Next(0, 2) * 255);
+                                                dr[i, s] = (byte)(s255((dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
                                             }
+                                            
                                             r = dr[i, s] - ld;
                                             if (r > 0)
                                             {
@@ -2187,6 +2234,10 @@ namespace ScaleSmooth
                                                     }
                                                 }
                                             }
+                                        }
+                                        if (c >= ac2)
+                                        {
+                                            fr[i, s] = (fr[i, s] * (c - ac2) + dr[i, s]) / (c - ac2 + 1);
                                         }
                                     }
                                 }
@@ -2226,6 +2277,10 @@ namespace ScaleSmooth
                                                 }
                                             }
                                         }
+                                        if (c >= ac2)
+                                        {
+                                            fr[i, s] = (fr[i, s] * (c - ac2) + dr[i, s]) / (c - ac2 + 1);
+                                        }
                                     }
                                 }
 
@@ -2242,13 +2297,19 @@ namespace ScaleSmooth
                                         if (s > 0 && s < nsm)
                                         {
                                             ld = dg[i, s];
-                                            if (rnd.Next(0, ac2 * rnd.Next(0, 2)) < c)
+                                            if (ac2 <= c)
                                             {
-                                                dg[i, s] = (byte)(s255((dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
-                                            }
-                                            else
+                                                if (rnd.Next(0, 2) * rnd.Next(0, ac2) < c)
+                                                {
+                                                    dg[i, s] = (byte)(s255((dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
+                                                }
+                                                else
+                                                {
+                                                    dg[i, s] = (byte)(rnd.Next(0, 2) * 255);
+                                                }
+                                            } else
                                             {
-                                                dg[i, s] = (byte)(rnd.Next(0, 2) * 255);
+                                                dg[i, s] = (byte)(s255((dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
                                             }
                                             r = dg[i, s] - ld;
                                             if (r > 0)
@@ -2277,6 +2338,10 @@ namespace ScaleSmooth
                                                     }
                                                 }
                                             }
+                                        }
+                                        if (c >= ac2)
+                                        {
+                                            fg[i, s] = (fg[i, s] * (c - ac2) + dg[i, s]) / (c - ac2 + 1);
                                         }
                                     }
                                 }
@@ -2316,6 +2381,10 @@ namespace ScaleSmooth
                                                 }
                                             }
                                         }
+                                        if (c >= ac2)
+                                        {
+                                            fg[i, s] = (fg[i, s] * (c - ac2) + dg[i, s]) / (c - ac2 + 1);
+                                        }
                                     }
                                 }
 
@@ -2332,13 +2401,19 @@ namespace ScaleSmooth
                                         if (s > 0 && s < nsm)
                                         {
                                             ld = db[i, s];
-                                            if (rnd.Next(0, ac2 * rnd.Next(0, 2)) < c)
+                                            if (ac2 <= c)
                                             {
-                                                db[i, s] = (byte)(s255((db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
-                                            }
-                                            else
+                                                if (rnd.Next(0, 2)*rnd.Next(0, ac2) < c)
+                                                {
+                                                    db[i, s] = (byte)(s255((dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
+                                                }
+                                                else
+                                                {
+                                                    db[i, s] = (byte)(rnd.Next(0, 2) * 255);
+                                                }
+                                            } else
                                             {
-                                                db[i, s] = (byte)(rnd.Next(0, 2) * 255);
+                                                db[i, s] = (byte)(s255((dr[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + dg[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + db[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
                                             }
                                             r = db[i, s] - ld;
                                             if (r > 0)
@@ -2367,6 +2442,10 @@ namespace ScaleSmooth
                                                     }
                                                 }
                                             }
+                                        }
+                                        if (c >= ac2)
+                                        {
+                                            fb[i, s] = (fb[i, s] * (c - ac2) + db[i, s]) / (c - ac2 + 1);
                                         }
                                     }
                                 }
@@ -2406,14 +2485,18 @@ namespace ScaleSmooth
                                                 }
                                             }
                                         }
+
+                                        if (c >= ac2)
+                                        {
+                                            fb[i, s] = (fb[i, s] * (c - ac2) + db[i, s]) / (c - ac2 + 1);
+                                        }
                                     }
                                 }
-
                             }
                         }
                     }
                 }
-
+                
                 for (int ix = 0; ix < oi; ix++)
                 {
                     for (int sx = 0; sx < os; sx++)
@@ -2463,6 +2546,10 @@ namespace ScaleSmooth
                                                 }
                                             }
                                         }
+                                        if (c >= ac2)
+                                        {
+                                            fr[i, s] = (fr[i, s] * (c - ac2) + dr[i, s]) / (c - ac2 + 1);
+                                        }
                                     }
                                 }
 
@@ -2505,15 +2592,17 @@ namespace ScaleSmooth
                                             }
                                         }
                                     }
+                                    if (c >= ac2)
+                                    {
+                                        fr[i, s] = (fr[i, s] * (c - ac2) + dr[i, s]) / (c - ac2 + 1);
+                                    }
                                 }
                             }
                         }
                         if (sg[ix, sx] > 0 && sg[ix, sx] < 255)
                         {
-
                             for (int i = ix * x; i < ix * x + x; i++)
                             {
-
                                 if (i != 0 && i != nim)
                                 {
                                     for (int s = sx * x; s < sx * x + x; s++)
@@ -2552,6 +2641,10 @@ namespace ScaleSmooth
                                                     }
                                                 }
                                             }
+                                        }
+                                        if (c >= ac2)
+                                        {
+                                            fg[i, s] = (fg[i, s] * (c - ac2) + dg[i, s]) / (c - ac2 + 1);
                                         }
                                     }
                                 }
@@ -2595,12 +2688,15 @@ namespace ScaleSmooth
                                             }
                                         }
                                     }
+                                    if (c >= ac2)
+                                    {
+                                        fg[i, s] = (fg[i, s] * (c - ac2) + dg[i, s]) / (c - ac2 + 1);
+                                    }
                                 }
                             }
                         }
                         if (sb[ix, sx] > 0 && sb[ix, sx] < 255)
                         {
-
                             for (int i = ix * x; i < ix * x + x; i++)
                             {
 
@@ -2642,6 +2738,10 @@ namespace ScaleSmooth
                                                     }
                                                 }
                                             }
+                                        }
+                                        if (c >= ac2)
+                                        {
+                                            fb[i, s] = (fb[i, s] * (c - ac2) + db[i, s]) / (c - ac2 + 1);
                                         }
                                     }
                                 }
@@ -2685,24 +2785,16 @@ namespace ScaleSmooth
                                             }
                                         }
                                     }
+                                    if (c >= ac2)
+                                    {
+                                        fb[i, s] = (fb[i, s] * (c - ac2) + db[i, s]) / (c - ac2 + 1);
+                                    }
                                 }
                             }
                         }
                     }
                 }
                 progressBar1.Value = c * 100 / ac;
-                if (c >= ac2)
-                {
-                    for (int i = 0; i < ni; i++)
-                    {
-                        for (int s = 0; s < ns; s++)
-                        {
-                            fr[i, s] = (fr[i, s] * (c - ac2) + dr[i, s]) / (c - ac2 + 1);
-                            fg[i, s] = (fg[i, s] * (c - ac2) + dg[i, s]) / (c - ac2 + 1);
-                            fb[i, s] = (fb[i, s] * (c - ac2) + db[i, s]) / (c - ac2 + 1);
-                        }
-                    }
-                }
             }
             for (int i = 0; i < ni; i++)
             {
