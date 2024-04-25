@@ -6,7 +6,7 @@ Algorithm for most-accurate upscaling image **without AI and neural network** (g
 <b>scaleSmooth</b> lets you enlarge and enhance low-resolution images using only math.<br>
 Enlarge images and get more quality without losing accuracy and hallucinations. It's just math!<br><br>
 
-**scaleSmooth** is a windows application on .NET 8.0 on Visual Studio C#, but we'll be glad, if you create your repository of scaleSmooth/scaleRough for other platforms and languages (write me and I'll attach link to your repository) or commit here updates for optimization, batch, interface or more accuracy.<br>
+**scaleSmooth** is a windows application on .NET 8.0 on Visual Studio C#, but we'll be glad, if you create your repository of scaleSmooth/scaleRough/scaleFurry for other platforms and languages (write me and I'll attach link to your repository) or commit here updates for optimization, batch, interface or more accuracy.<br>
 
 **scaleSmooth** is algorithms by sequential calculations, so it's might be very slow (use fast/accurate if it will be needed) and it can't parallelize by many CPU's or GPU, but you can run as many copies as many logical CPU's you have without losing speed.<br>
 
@@ -21,11 +21,11 @@ Threshold, autoThreshold, Mean Cuvatute Blur, Median Blur and other tools, which
 - Run .exe
 
 # 🛠 Using in your projects
-- Just copy necessary function (scaleSmoothGray/scaleSmoothColor/scaleRoughGray/scaleRoughColor/scaleFurryGray/scaleFurryColor)
+- Just copy necessary function (scaleSmoothGray/scaleSmoothColor/scaleRoughGray/scaleRoughColor/scaleFurryGray/scaleFurryColor) (you can harmless remove ProgressBar)
 - Call it with parameters (**image** as type Image, int **scale**, int **accuracy** - where 0 is fast, 100 is accurate)
 - It returns new image as type Image 
 
-
+<img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/img/demo5.png"/>
 
 
 
