@@ -44,6 +44,7 @@
             trackBar1 = new TrackBar();
             label2 = new Label();
             button6 = new Button();
+            button7 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
@@ -73,7 +74,7 @@
             // button2
             // 
             button2.Enabled = false;
-            button2.Location = new Point(12, 485);
+            button2.Location = new Point(11, 527);
             button2.Name = "button2";
             button2.Size = new Size(176, 54);
             button2.TabIndex = 2;
@@ -196,11 +197,22 @@
             button6.UseVisualStyleBackColor = true;
             button6.Click += button6_Click;
             // 
+            // button7
+            // 
+            button7.Location = new Point(11, 429);
+            button7.Name = "button7";
+            button7.Size = new Size(176, 54);
+            button7.TabIndex = 14;
+            button7.Text = "contrastBoldScale";
+            button7.UseVisualStyleBackColor = true;
+            button7.Click += button7_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(963, 768);
+            Controls.Add(button7);
             Controls.Add(button6);
             Controls.Add(label2);
             Controls.Add(trackBar1);
@@ -218,7 +230,7 @@
             FormBorderStyle = FormBorderStyle.None;
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Form1";
+            Text = "scaleSmooth";
             Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
@@ -244,5 +256,6 @@
         private TrackBar trackBar1;
         private Label label2;
         private Button button6;
+        private Button button7;
     }
 }
