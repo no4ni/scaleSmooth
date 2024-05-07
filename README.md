@@ -13,7 +13,7 @@ Enlarge images and get more quality without losing accuracy (except contrastBold
 **scaleSmooth** is algorithms by sequential calculations, so it's might be very slow (use fast/accurate regulator if it will be needed) and it can't parallelize by many CPU's or GPU, but you can run as many copies as many logical CPU's you have without losing speed.<br>
 
 Threshold, autoThreshold, Mean Cuvatute Blur, Median Blur and other tools, which can help you get more usefull results for your specific needs are NOT included!
-<table><tr><td>
+<table align="center"><tr><td>
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/img/demo2.png"/></td><td>
 
 # 🏃 Run
