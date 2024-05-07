@@ -13,12 +13,14 @@ Enlarge images and get more quality without losing accuracy (except contrastBold
 **scaleSmooth** is algorithms by sequential calculations, so it's might be very slow (use fast/accurate regulator if it will be needed) and it can't parallelize by many CPU's or GPU, but you can run as many copies as many logical CPU's you have without losing speed.<br>
 
 Threshold, autoThreshold, Mean Cuvatute Blur, Median Blur and other tools, which can help you get more usefull results for your specific needs are NOT included!
+<table><tr><td>
+<img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/img/demo2.png"/></td><td>
 
 # 🏃 Run
 (required Windows 10+ x64, .NET 8.0+) 
 - Download <a href="https://github.com/no4ni/scaleSmooth/raw/main/run/scaleSmooth-windows10-x64.zip">release</a>
 - Unpack into any folder
-- Run .exe<br>
+- Run .exe<br></td></tr></table>
 
   <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/img/demo5.png"/>
 
