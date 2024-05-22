@@ -28,12 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             pictureBox1 = new PictureBox();
             button1 = new Button();
             button2 = new Button();
-            timer1 = new System.Windows.Forms.Timer(components);
-            progressBar1 = new ProgressBar();
             numericUpDown1 = new NumericUpDown();
             label1 = new Label();
             button3 = new Button();
@@ -45,6 +42,10 @@
             label2 = new Label();
             button6 = new Button();
             button7 = new Button();
+            button8 = new Button();
+            button9 = new Button();
+            ProgressText = new Label();
+            label4 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
@@ -74,25 +75,13 @@
             // button2
             // 
             button2.Enabled = false;
-            button2.Location = new Point(11, 527);
+            button2.Location = new Point(11, 596);
             button2.Name = "button2";
             button2.Size = new Size(176, 54);
             button2.TabIndex = 2;
             button2.Text = "Save";
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
-            // 
-            // timer1
-            // 
-            timer1.Interval = 10;
-            timer1.Tick += timer1_Tick;
-            // 
-            // progressBar1
-            // 
-            progressBar1.Location = new Point(12, 191);
-            progressBar1.Name = "progressBar1";
-            progressBar1.Size = new Size(175, 23);
-            progressBar1.TabIndex = 3;
             // 
             // numericUpDown1
             // 
@@ -116,7 +105,7 @@
             // 
             // button3
             // 
-            button3.Location = new Point(12, 249);
+            button3.Location = new Point(12, 196);
             button3.Name = "button3";
             button3.Size = new Size(176, 54);
             button3.TabIndex = 6;
@@ -126,7 +115,7 @@
             // 
             // button4
             // 
-            button4.Location = new Point(11, 587);
+            button4.Location = new Point(11, 656);
             button4.Name = "button4";
             button4.Size = new Size(176, 54);
             button4.TabIndex = 7;
@@ -160,7 +149,7 @@
             // 
             // button5
             // 
-            button5.Location = new Point(11, 369);
+            button5.Location = new Point(13, 316);
             button5.Name = "button5";
             button5.Size = new Size(176, 54);
             button5.TabIndex = 10;
@@ -189,7 +178,7 @@
             // 
             // button6
             // 
-            button6.Location = new Point(12, 309);
+            button6.Location = new Point(12, 256);
             button6.Name = "button6";
             button6.Size = new Size(176, 54);
             button6.TabIndex = 13;
@@ -199,7 +188,7 @@
             // 
             // button7
             // 
-            button7.Location = new Point(11, 429);
+            button7.Location = new Point(13, 376);
             button7.Name = "button7";
             button7.Size = new Size(176, 54);
             button7.TabIndex = 14;
@@ -207,11 +196,55 @@
             button7.UseVisualStyleBackColor = true;
             button7.Click += button7_Click;
             // 
+            // button8
+            // 
+            button8.Location = new Point(13, 436);
+            button8.Name = "button8";
+            button8.Size = new Size(176, 54);
+            button8.TabIndex = 15;
+            button8.Text = "scaleSeparate";
+            button8.UseVisualStyleBackColor = true;
+            button8.Click += button8_Click;
+            // 
+            // button9
+            // 
+            button9.Location = new Point(13, 496);
+            button9.Name = "button9";
+            button9.Size = new Size(176, 54);
+            button9.TabIndex = 16;
+            button9.Text = "scaleBilinearInterExtra";
+            button9.UseVisualStyleBackColor = true;
+            button9.Click += button9_Click;
+            // 
+            // ProgressText
+            // 
+            ProgressText.Location = new Point(143, 178);
+            ProgressText.Name = "ProgressText";
+            ProgressText.Size = new Size(25, 15);
+            ProgressText.TabIndex = 17;
+            ProgressText.Text = "100";
+            ProgressText.TextAlign = ContentAlignment.MiddleRight;
+            ProgressText.Visible = false;
+            ProgressText.TextChanged += Progress;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(20, 178);
+            label4.Name = "label4";
+            label4.Size = new Size(161, 15);
+            label4.TabIndex = 18;
+            label4.Text = "Calculating...                         %";
+            label4.Visible = false;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(963, 768);
+            Controls.Add(ProgressText);
+            Controls.Add(button9);
+            Controls.Add(button8);
             Controls.Add(button7);
             Controls.Add(button6);
             Controls.Add(label2);
@@ -222,11 +255,11 @@
             Controls.Add(button4);
             Controls.Add(button3);
             Controls.Add(numericUpDown1);
-            Controls.Add(progressBar1);
             Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(pictureBox1);
             Controls.Add(label1);
+            Controls.Add(label4);
             FormBorderStyle = FormBorderStyle.None;
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
@@ -244,8 +277,6 @@
         private PictureBox pictureBox1;
         private Button button1;
         private Button button2;
-        private System.Windows.Forms.Timer timer1;
-        private ProgressBar progressBar1;
         private NumericUpDown numericUpDown1;
         private Label label1;
         private Button button3;
@@ -257,5 +288,9 @@
         private Label label2;
         private Button button6;
         private Button button7;
+        private Button button8;
+        private Button button9;
+        private Label ProgressText;
+        private Label label4;
     }
 }
