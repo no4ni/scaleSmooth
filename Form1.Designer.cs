@@ -212,7 +212,7 @@
             button9.Name = "button9";
             button9.Size = new Size(176, 54);
             button9.TabIndex = 16;
-            button9.Text = "scaleBilinearInterExtra";
+            button9.Text = "scaleBilinearApproximation";
             button9.UseVisualStyleBackColor = true;
             button9.Click += button9_Click;
             // 

@@ -5698,11 +5698,11 @@ namespace ScaleSmooth
 
             if (radioButton1.Checked)
             {
-                pictureBox1.Image = ScaleBilinearInterExtraGray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                pictureBox1.Image = ScaleBilinearApproximationGray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
             }
             else
             {
-                pictureBox1.Image = ScaleBilinearInterExtraColor(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                pictureBox1.Image = ScaleBilinearApproximationColor(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
             }
 
             ProgressText.Text = "100";
@@ -5717,7 +5717,7 @@ namespace ScaleSmooth
             button9.Enabled = true;
         }
 
-        private Image ScaleBilinearInterExtraGray(Image img, int x, int ac)
+        private Image ScaleBilinearApproximationGray(Image img, int x, int ac)
         {
             int ni, ns, oi, os, xm, oim, osm, sxx, sxxm, ixx, ixxm;
             double x50p;
@@ -6030,7 +6030,7 @@ namespace ScaleSmooth
             return img;
         }
 
-        private Image ScaleBilinearInterExtraColor(Image img, int x, int ac)
+        private Image ScaleBilinearApproximationColor(Image img, int x, int ac)
         {
             int ni, ns, oi, os, xm, oim, osm, sxx, sxxm, ixx, ixxm;
             double x50p;
