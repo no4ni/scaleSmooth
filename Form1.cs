@@ -4076,7 +4076,7 @@ namespace ScaleSmooth
             {
                 Parallel.For(iysx, ys2x, s =>
                 {
-                    ri[i, s] = Bilinear(i, (int)s, xsx, ysx, xsxp, ysxp, sr[xs, ys], sr[xsp, ys], sr[xsp, ysp], sr[xs, ysp]);
+                    ri[i, s] = Bilinear(i, s, xsx, ysx, xsxp, ysxp, sr[xs, ys], sr[xsp, ys], sr[xsp, ysp], sr[xs, ysp]);
                 });
             }
 
@@ -4802,9 +4802,9 @@ namespace ScaleSmooth
             {
                 Parallel.For(iysx, ys2x, s =>
                 {
-                    ri[i, s] = Bilinear(i, (int)s, xsx, ysx, xsxp, ysxp, sr[xs, ys], sr[xsp, ys], sr[xsp, ysp], sr[xs, ysp]);
-                    gi[i, s] = Bilinear(i, (int)s, xsx, ysx, xsxp, ysxp, sg[xs, ys], sg[xsp, ys], sg[xsp, ysp], sg[xs, ysp]);
-                    bi[i, s] = Bilinear(i, (int)s, xsx, ysx, xsxp, ysxp, sb[xs, ys], sb[xsp, ys], sb[xsp, ysp], sb[xs, ysp]);
+                    ri[i, s] = Bilinear(i, s, xsx, ysx, xsxp, ysxp, sr[xs, ys], sr[xsp, ys], sr[xsp, ysp], sr[xs, ysp]);
+                    gi[i, s] = Bilinear(i, s, xsx, ysx, xsxp, ysxp, sg[xs, ys], sg[xsp, ys], sg[xsp, ysp], sg[xs, ysp]);
+                    bi[i, s] = Bilinear(i, s, xsx, ysx, xsxp, ysxp, sb[xs, ys], sb[xsp, ys], sb[xsp, ysp], sb[xs, ysp]);
                 });
             }
 
@@ -5440,7 +5440,7 @@ namespace ScaleSmooth
                             }
                         }
 
-                        if (ac > 80)
+                        if (ac >= 80)
                         {
                             for (int sx = osm; sx > -1; sx--)
                             {
@@ -5623,7 +5623,7 @@ namespace ScaleSmooth
                     }
                     else
                     {
-                        dr = (byte)((ri[i, s] - rmaax2) / aax * rex + rmin + 0.5);
+                        dr = (byte)((ri[i, s] - rmaax2)* rex / aax  + rmin + 0.5);
                     }
 
                     if (gi[i, s] < gmaax2)
@@ -5636,7 +5636,7 @@ namespace ScaleSmooth
                     }
                     else
                     {
-                        dg = (byte)((gi[i, s] - gmaax2) / aax * gex + gmin + 0.5);
+                        dg = (byte)((gi[i, s] - gmaax2)* gex / aax  + gmin + 0.5);
                     }
 
                     if (bi[i, s] < bmaax2)
@@ -5649,7 +5649,7 @@ namespace ScaleSmooth
                     }
                     else
                     {
-                        db = (byte)((bi[i, s] - bmaax2) / aax * bex + bmin + 0.5);
+                        db = (byte)((bi[i, s] - bmaax2)* bex / aax  + bmin + 0.5);
                     }
                     ((Bitmap)img).SetPixel(i, s, Color.FromArgb(dr, dg, db));
                 }
@@ -5671,6 +5671,10 @@ namespace ScaleSmooth
             ry1 = r21 * y1 + r12 * y2;
             ry2 = r34 * y4 + r43 * y3;
             dry21 = ry2 - ry1;
+            if (double.IsNaN((ry2 - y) / dry21 * r1 + (y - ry1) / dry21 * r2))
+            {
+                return (r1 + r2) / 2;
+            }
             return (ry2 - y) / dry21 * r1 + (y - ry1) / dry21 * r2;
         }
 
@@ -5792,7 +5796,7 @@ namespace ScaleSmooth
                     }
                 }
             }
-            
+            double k = 2; //0 - save derivative; 32 - save mean value 
             for (int kki = (int)(xs - ki / 2); kki < xs + ki / 2 - 0.5; kki++)
             {
                 ProgressText.Text = ((int)((kki - (int)(xs - ki / 2) + 1) / (ki + 2) * 100)).ToString();
@@ -5822,7 +5826,7 @@ namespace ScaleSmooth
                         Parallel.For(iysx, ys2x, s =>
                         {
                             r[i, s] = Bilinear(i, s, xsx, ysx, xsxp, ysxp, sr[kki, kks], sr[xsp, kks], sr[xsp, ysp], sr[kki, ysp]);
-                            double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx), 2);
+                            double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx), k);
                             ri[i, s] = (r[i, s] * dist + ri[i, s] * ris[i, s]) / (dist + ris[i, s]);
                             ris[i, s] = dist + ris[i, s];
                         });
@@ -5840,7 +5844,7 @@ namespace ScaleSmooth
                             Parallel.For(iysx, ys2x, s =>
                             {
                                 r[i, s] = Bilinear(i, s, ixxm, ysx, dixxp, ysxp, (r[ixxm, iysx] + r[ixxm, iysxp]) / 2, sr[ix, kks], sr[ix, kks + 1], (r[ixxm, iysxpi] + r[ixxm, iysxpp]) / 2);
-                                double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx), 2);
+                                double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx), k);
                                 ri[i, s] = (r[i, s] * dist + ri[i, s] * ris[i, s]) / (dist + ris[i, s]);
                                 ris[i, s] = dist + ris[i, s];
                             });
@@ -5858,7 +5862,7 @@ namespace ScaleSmooth
                             Parallel.For(iysx, ys2x, s =>
                             {
                                 r[i, s] = Bilinear(i, s, dixxm, ysx, dixxp, ysxp, sr[ix, kks], (r[dixxp, iysx] + r[dixxp, iysxp]) / 2, (r[dixxp, iysxpi] + r[dixxp, iysxpp]) / 2, sr[ix, kks + 1]);
-                                double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx), 2);
+                                double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx), k);
                                 ri[i, s] = (r[i, s] * dist + ri[i, s] * ris[i, s]) / (dist + ris[i, s]);
                                 ris[i, s] = dist + ris[i, s];
                             });
@@ -5878,7 +5882,7 @@ namespace ScaleSmooth
                             Parallel.For(dsxxm, dsxx, s =>
                             {
                                 r[i, s] = Bilinear(i, s, xsx, sxxm, xsxp, dsxxp, (r[ixsx, sxxm] + r[ixsxp, sxxm]) / 2, (r[ixsxpi, sxxm] + r[ixsxpp, sxxm]) / 2, sr[kki + 1, sx], sr[kki, sx]);
-                                double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx), 2);
+                                double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx), k);
                                 ri[i, s] = (r[i, s] * dist + ri[i, s] * ris[i, s]) / (dist + ris[i, s]);
                                 ris[i, s] = dist + ris[i, s];
                             });
@@ -5896,7 +5900,7 @@ namespace ScaleSmooth
                             Parallel.For(dsxx, sxxm, s =>
                             {
                                 r[i, s] = Bilinear(i, s, xsx, dsxxm, xsxp, sxxm, sr[kki, sx], sr[xsp, sx], (r[ixsxpi, sxxm] + r[ixsxpp, sxxm]) / 2, (r[ixsx, sxxm] + r[ixsxp, sxxm]) / 2);
-                                double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx),2);
+                                double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx),k);
                                 ri[i, s] = (r[i, s] * dist + ri[i, s] * ris[i, s]) / (dist + ris[i, s]);
                                 ris[i, s] = dist + ris[i, s];
                             });
@@ -5923,7 +5927,7 @@ namespace ScaleSmooth
                                 Parallel.For(dsxxm, dsxx, s =>
                                 {
                                     r[i, s] = Bilinear(i, s, ixxm, sxxm, dixxp, dsxxp, r[ixxm, sxxm], (r[dixxm, sxxm] + r[iixx, sxxm]) / 2, sr[ix, sx], (r[ixxm, dsxxm] + r[ixxm, isxx]) / 2);
-                                    double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx), 2);
+                                    double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx),k);
                                     ri[i, s] = (r[i, s] * dist + ri[i, s] * ris[i, s]) / (dist + ris[i, s]);
                                     ris[i, s] = dist + ris[i, s];
                                 });
@@ -5949,7 +5953,7 @@ namespace ScaleSmooth
                                 Parallel.For(dsxxm, sxxm, s =>
                                 {
                                     r[i, s] = Bilinear(i, s, dixxp, dsxxp, ixxm, sxxm, sr[ix, sx], (r[ixxm, dsxxm] + r[ixxm, isxx]) / 2, r[ixxm, sxxm], (r[dixxm, sxxm] + r[iixx, sxxm]) / 2);
-                                    double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx), 2);
+                                    double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx),k);
                                     ri[i, s] = (r[i, s] * dist + ri[i, s] * ris[i, s]) / (dist + ris[i, s]);
                                     ris[i, s] = dist + ris[i, s];
                                 });
@@ -5976,7 +5980,7 @@ namespace ScaleSmooth
                                 Parallel.For(sxx, dsxx, s =>
                                 {
                                     r[i, s] = Bilinear(i, s, dixxp, isxxm, dixx, dsxxp, (r[dixxm, isxxm] + r[iixx, isxxm]) / 2, r[dixx, isxxm], (r[dixx, isxx] + r[dixx, sxx]) / 2, sr[ix, sx]);
-                                    double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx), 2);
+                                    double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx),k);
                                     ri[i, s] = (r[i, s] * dist + ri[i, s] * ris[i, s]) / (dist + ris[i, s]);
                                     ris[i, s] = dist + ris[i, s];
                                 });
@@ -6003,7 +6007,7 @@ namespace ScaleSmooth
                                 Parallel.For(sxx, dsxx, s =>
                                 {
                                     r[i, s] = Bilinear(i, s, ixxm, dsxxp, dixxp, dsxx, (r[ixxm, sxx] + r[ixxm, isxx]) / 2, sr[ix, sx], (r[ixx, dsxx] + r[iixx, dsxx]) / 2, r[ixxm, dsxx]);
-                                    double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx), 2);
+                                    double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx), k);
                                     ri[i, s] = (r[i, s] * dist + ri[i, s] * ris[i, s]) / (dist + ris[i, s]);
                                     ris[i, s] = dist + ris[i, s];
                                 });
