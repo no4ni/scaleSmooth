@@ -8,7 +8,7 @@ Algorithms for most-accurate upscaling image **without AI and neural network** (
 <b>scaleSmooth</b> lets you enlarge and enhance low-resolution images using only math.<br>
 Enlarge images and get more quality without losing accuracy (except contrastBoldScale) and hallucinations. It's just math!<br><br>
 
-<img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/examples/img/demo4.png"/>
+<img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/examples/demo4.png"/>
 
 **scaleSmooth** is a windows application on .NET 8.0 on Visual Studio C#, but we'll be glad, if you create your repository of scaleSmooth / scaleRough / scaleFurry / contrastBoldScale / scaleSeparate / scaleBilinearApproximation for other platforms and languages (write me and I'll attach link to your repository) or commit here updates for optimization, batch, interface or more accuracy.<br>
 
