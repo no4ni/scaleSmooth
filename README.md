@@ -24,7 +24,7 @@ Threshold, autoThreshold, Mean Cuvatute Blur, Median Blur, adjustment by Lanczos
 - Unpack into any folder
 - Run .exe<br></td></tr></table>
 
-  <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/examples/img/demo5.png"/>
+  <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demo5.png"/>
 
 # 🛠 Using in your projects
 - Just copy necessary function (**ScaleSmoothGray** / **ScaleSmoothColor** / **ScaleRoughGray** and S255 / **ScaleRoughColor** and S255 / **ScaleFurryGray** and S255 / **ScaleFurryColor** and S255 / **ContrastBoldScaleGray**, S255f and S255 / **ContrastBoldScaleColor**, S255f and S255 / **ScaleSeparateGray**, Quadrilateral and Bilinear / **ScaleSeparateColor**, Quadrilateral and Bilinear / **ScaleBilinearApproximationGray**, Dist4 and Bilinear / **ScaleBilinearApproximationColor**, Dist4 and Bilinear) (you can harmless remove ProgressText from code)
