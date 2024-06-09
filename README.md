@@ -1,7 +1,7 @@
 # scaleSmooth
 Algorithms for most-accurate upscaling image **without AI and neural network** (gray or color, smooth, rough, furry or contrastBold variants available)<br>
 <div align="center"><a href="https://dzen.ru/suite/b70ea5e2-65bd-49ea-b0e4-49fc31e96df6">Мои эксперименты с изображениями</a><br>
-<a href="https://dzen.ru/video/watch/6633aca1aef1ff543f59646e">Объяснение принипа работы и больше примеров и сравнений в FullHD</a>  
+Объяснение принипа работы и больше примеров и сравнений в FullHD: <a href="https://dzen.ru/video/watch/6633aca1aef1ff543f59646e">#1</a>, <a href="https://dzen.ru/video/watch/66655d8129a5762762127928">#2</a>  
   <br><br>
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demo.png"/><br><br>
 <b>Free and Open Source Image Upscaler</b></div><br>
