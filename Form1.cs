@@ -4123,7 +4123,7 @@ namespace ScaleSmooth
                 {
                     Parallel.For(dsxxm, dsxx, s =>
                     {
-                        ri[i, s] = Bilinear(i, (int)s, xsx, sxxm, xsxp, dsxxp, (ri[ixsx, sxxm] + ri[ixsxp, sxxm]) / 2, (ri[ixsxpi, sxxm] + ri[ixsxpp, sxxm]) / 2, sr[xs + 1, sx], sr[xs, sx]);
+                        ri[i, s] = Bilinear(i, s, xsx, sxxm, xsxp, dsxxp, (ri[ixsx, sxxm] + ri[ixsxp, sxxm]) / 2, (ri[ixsxpi, sxxm] + ri[ixsxpp, sxxm]) / 2, sr[xs + 1, sx], sr[xs, sx]);
                     });
                 }
             }
