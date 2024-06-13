@@ -9,16 +9,11 @@ namespace ScaleSmooth
     public partial class Form1 : Form
     {
 
-        string pp="";
+        string pp = "";
         public Form1()
         {
             InitializeComponent();
         }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-        }
-
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -51,6 +46,8 @@ namespace ScaleSmooth
 
         private void button3_Click(object sender, EventArgs e)
         {
+            label3.Text = "scaleSmooth";
+            label5.Text = label3.Text;
             button2.Enabled = false;
             button3.Enabled = false;
             button5.Enabled = false;
@@ -928,6 +925,7 @@ namespace ScaleSmooth
 
         private void button5_Click(object sender, EventArgs e)
         {
+            label3.Text = "scaleRough"; label5.Text = label3.Text;
             button2.Enabled = false;
             button3.Enabled = false;
             button5.Enabled = false;
@@ -2835,6 +2833,7 @@ namespace ScaleSmooth
 
         private void button6_Click(object sender, EventArgs e)
         {
+            label3.Text = "scaleFurry"; label5.Text = label3.Text;
             button2.Enabled = false;
             button3.Enabled = false;
             button5.Enabled = false;
@@ -2865,6 +2864,7 @@ namespace ScaleSmooth
 
         private void button7_Click(object sender, EventArgs e)
         {
+            label3.Text = "contrastBoldScale"; label5.Text = label3.Text;
             button2.Enabled = false;
             button3.Enabled = false;
             button5.Enabled = false;
@@ -3969,6 +3969,7 @@ namespace ScaleSmooth
 
         private void button8_Click(object sender, EventArgs e)
         {
+            label3.Text = "scaleSeparate"; label5.Text = label3.Text;
             button2.Enabled = false;
             button3.Enabled = false;
             button5.Enabled = false;
@@ -3979,7 +3980,7 @@ namespace ScaleSmooth
 
             Image smpl = pictureBox1.Image;
 
-            
+
             if (radioButton1.Checked)
             {
                 pictureBox1.Image = ScaleSeparateGray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
@@ -5623,7 +5624,7 @@ namespace ScaleSmooth
                     }
                     else
                     {
-                        dr = (byte)((ri[i, s] - rmaax2)* rex / aax  + rmin + 0.5);
+                        dr = (byte)((ri[i, s] - rmaax2) * rex / aax + rmin + 0.5);
                     }
 
                     if (gi[i, s] < gmaax2)
@@ -5636,7 +5637,7 @@ namespace ScaleSmooth
                     }
                     else
                     {
-                        dg = (byte)((gi[i, s] - gmaax2)* gex / aax  + gmin + 0.5);
+                        dg = (byte)((gi[i, s] - gmaax2) * gex / aax + gmin + 0.5);
                     }
 
                     if (bi[i, s] < bmaax2)
@@ -5649,7 +5650,7 @@ namespace ScaleSmooth
                     }
                     else
                     {
-                        db = (byte)((bi[i, s] - bmaax2)* bex / aax  + bmin + 0.5);
+                        db = (byte)((bi[i, s] - bmaax2) * bex / aax + bmin + 0.5);
                     }
                     ((Bitmap)img).SetPixel(i, s, Color.FromArgb(dr, dg, db));
                 }
@@ -5692,6 +5693,7 @@ namespace ScaleSmooth
 
         private void button9_Click(object sender, EventArgs e)
         {
+            label3.Text = "scaleBiliniearApproximation"; label5.Text = label3.Text;
             button2.Enabled = false;
             button3.Enabled = false;
             button5.Enabled = false;
@@ -5753,12 +5755,12 @@ namespace ScaleSmooth
 
             double xs = oim / 2d, ys = osm / 2d;
             double nxs = (ni - 1) / 2d, nys = (ns - 1) / 2d;
-            
+
             double ki = oim * ac / 100;
             double ks = osm * ac / 100;
             double ki2 = ki - 1;
             double ks2 = ks - 1;
-            
+
             if (ac < 100)
             {
                 for (int kki = 0; kki < oim; kki += 2)
@@ -5790,7 +5792,7 @@ namespace ScaleSmooth
                             Parallel.For(iysx, ys2x, s =>
                             {
                                 ri[i, s] = Bilinear(i, s, xsx, ysx, xsxp, ysxp, sr[kki, kks], sr[xsp, kks], sr[xsp, ysp], sr[kki, ysp]);
-                                ris[i, s] = Math.Pow(2,Math.Max(Math.Abs(i - nxs)/ki , Math.Abs(s - nys)/ks)-x);
+                                ris[i, s] = Math.Pow(2, Math.Max(Math.Abs(i - nxs) / ki, Math.Abs(s - nys) / ks) - x);
                             });
                         }
                     }
@@ -5831,7 +5833,7 @@ namespace ScaleSmooth
                             ris[i, s] = dist + ris[i, s];
                         });
                     }
-                    
+
                     for (int ix = kki + 2; ix < kki + 2 + ki2 && ix < oi; ix++)
                     {
                         int dixxm = ix * x;
@@ -5900,7 +5902,7 @@ namespace ScaleSmooth
                             Parallel.For(dsxx, sxxm, s =>
                             {
                                 r[i, s] = Bilinear(i, s, xsx, dsxxm, xsxp, sxxm, sr[kki, sx], sr[xsp, sx], (r[ixsxpi, sxxm] + r[ixsxpp, sxxm]) / 2, (r[ixsx, sxxm] + r[ixsxp, sxxm]) / 2);
-                                double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx),k);
+                                double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx), k);
                                 ri[i, s] = (r[i, s] * dist + ri[i, s] * ris[i, s]) / (dist + ris[i, s]);
                                 ris[i, s] = dist + ris[i, s];
                             });
@@ -5927,7 +5929,7 @@ namespace ScaleSmooth
                                 Parallel.For(dsxxm, dsxx, s =>
                                 {
                                     r[i, s] = Bilinear(i, s, ixxm, sxxm, dixxp, dsxxp, r[ixxm, sxxm], (r[dixxm, sxxm] + r[iixx, sxxm]) / 2, sr[ix, sx], (r[ixxm, dsxxm] + r[ixxm, isxx]) / 2);
-                                    double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx),k);
+                                    double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx), k);
                                     ri[i, s] = (r[i, s] * dist + ri[i, s] * ris[i, s]) / (dist + ris[i, s]);
                                     ris[i, s] = dist + ris[i, s];
                                 });
@@ -5953,7 +5955,7 @@ namespace ScaleSmooth
                                 Parallel.For(dsxxm, sxxm, s =>
                                 {
                                     r[i, s] = Bilinear(i, s, dixxp, dsxxp, ixxm, sxxm, sr[ix, sx], (r[ixxm, dsxxm] + r[ixxm, isxx]) / 2, r[ixxm, sxxm], (r[dixxm, sxxm] + r[iixx, sxxm]) / 2);
-                                    double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx),k);
+                                    double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx), k);
                                     ri[i, s] = (r[i, s] * dist + ri[i, s] * ris[i, s]) / (dist + ris[i, s]);
                                     ris[i, s] = dist + ris[i, s];
                                 });
@@ -5980,7 +5982,7 @@ namespace ScaleSmooth
                                 Parallel.For(sxx, dsxx, s =>
                                 {
                                     r[i, s] = Bilinear(i, s, dixxp, isxxm, dixx, dsxxp, (r[dixxm, isxxm] + r[iixx, isxxm]) / 2, r[dixx, isxxm], (r[dixx, isxx] + r[dixx, sxx]) / 2, sr[ix, sx]);
-                                    double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx),k);
+                                    double dist = 1 / Math.Pow(Dist4(i, s, cx, cy, halfx), k);
                                     ri[i, s] = (r[i, s] * dist + ri[i, s] * ris[i, s]) / (dist + ris[i, s]);
                                     ris[i, s] = dist + ris[i, s];
                                 });
@@ -6423,29 +6425,29 @@ namespace ScaleSmooth
             {
                 if (s < cy)
                 {
-                    return Math.Max(Math.Abs(i - cx + x2) + Math.Abs(s - cy + x2),0.0001d);
+                    return Math.Max(Math.Abs(i - cx + x2) + Math.Abs(s - cy + x2), 0.0001d);
                 }
                 else
                 {
-                    return Math.Max(Math.Abs(i - cx + x2) + Math.Abs(s - cy - x2),0.0001d);
+                    return Math.Max(Math.Abs(i - cx + x2) + Math.Abs(s - cy - x2), 0.0001d);
                 }
             }
             else
             {
                 if (s < cy)
                 {
-                    return Math.Max(Math.Abs(i - cx - x2) + Math.Abs(s - cy + x2),0.0001d);
+                    return Math.Max(Math.Abs(i - cx - x2) + Math.Abs(s - cy + x2), 0.0001d);
                 }
                 else
                 {
-                    return Math.Max(Math.Abs(i - cx - x2) + Math.Abs(s - cy - x2),0.0001d);
+                    return Math.Max(Math.Abs(i - cx - x2) + Math.Abs(s - cy - x2), 0.0001d);
                 }
             }
         }
 
         private void Progress(object sender, EventArgs e)
         {
-            if (ProgressText.Text!=pp)
+            if (ProgressText.Text != pp)
             {
                 pp = ProgressText.Text;
                 ProgressText.Refresh();
@@ -6455,12 +6457,21 @@ namespace ScaleSmooth
                 {
                     ProgressText.Visible = false;
                     label4.Visible = false;
-                } else
+                }
+                else
                 {
                     ProgressText.Visible = true;
                     label4.Visible = true;
                 }
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            label5.Parent = pictureBox1;
+            label3.Parent = label5;
+            label3.ForeColor = Color.Black;
+            label3.Left = 2;
         }
     }
 

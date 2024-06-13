@@ -47,6 +47,8 @@
             button9 = new Button();
             ProgressText = new Label();
             label4 = new Label();
+            label3 = new Label();
+            label5 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
@@ -238,11 +240,35 @@
             label4.Text = "Calculating...                         %";
             label4.Visible = false;
             // 
+            // label3
+            // 
+            label3.BackColor = Color.Transparent;
+            label3.FlatStyle = FlatStyle.Flat;
+            label3.Font = new Font("Segoe UI", 36F);
+            label3.Location = new Point(0, 0);
+            label3.Name = "label3";
+            label3.Size = new Size(768, 89);
+            label3.TabIndex = 19;
+            label3.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // label5
+            // 
+            label5.BackColor = Color.Transparent;
+            label5.FlatStyle = FlatStyle.Flat;
+            label5.Font = new Font("Segoe UI", 36F);
+            label5.ForeColor = Color.White;
+            label5.Location = new Point(5, 0);
+            label5.Name = "label5";
+            label5.Size = new Size(768, 89);
+            label5.TabIndex = 20;
+            label5.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(963, 768);
+            Controls.Add(label3);
             Controls.Add(ProgressText);
             Controls.Add(button9);
             Controls.Add(button8);
@@ -258,9 +284,10 @@
             Controls.Add(numericUpDown1);
             Controls.Add(button2);
             Controls.Add(button1);
-            Controls.Add(pictureBox1);
             Controls.Add(label1);
             Controls.Add(label4);
+            Controls.Add(label5);
+            Controls.Add(pictureBox1);
             FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
@@ -294,5 +321,7 @@
         private Button button9;
         private Label ProgressText;
         private Label label4;
+        private Label label3;
+        private Label label5;
     }
 }
