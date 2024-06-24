@@ -11,7 +11,31 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\A8.png" />
+    <None Remove="Resources\short13.png" />
+    <None Remove="Resources\shortBil.png" />
+    <None Remove="Resources\shortBilApprox.png" />
+    <None Remove="Resources\shortContrast.png" />
+    <None Remove="Resources\shortFurry.png" />
+    <None Remove="Resources\shortRough.png" />
+    <None Remove="Resources\shortSeparate.png" />
+    <None Remove="Resources\shortSmooth.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="shortcut.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\A8.png" />
+    <Resource Include="Resources\short13.png" />
+    <Resource Include="Resources\shortBil.png" />
+    <Resource Include="Resources\shortBilApprox.png" />
+    <Resource Include="Resources\shortContrast.png" />
+    <Resource Include="Resources\shortFurry.png" />
+    <Resource Include="Resources\shortRough.png" />
+    <Resource Include="Resources\shortSeparate.png" />
+    <Resource Include="Resources\shortSmooth.png" />
   </ItemGroup>
 
   <ItemGroup>

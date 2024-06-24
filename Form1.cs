@@ -46,34 +46,63 @@ namespace ScaleSmooth
 
         private void button3_Click(object sender, EventArgs e)
         {
-            label3.Text = "scaleSmooth";
-            label5.Text = label3.Text;
             button2.Enabled = false;
             button3.Enabled = false;
-            button5.Enabled = false;
-            button6.Enabled = false;
-            button7.Enabled = false;
-            button8.Enabled = false;
-            button9.Enabled = false;
+            button1.Enabled = false;
             if (radioButton1.Checked)
             {
-                pictureBox1.Image = ScaleSmoothGray(pictureBox1.Image, (int)(numericUpDown1.Value), (int)(trackBar1.Value));
+                switch (comboBox1.SelectedItem)
+                {
+                    case "scaleSmooth":
+                        pictureBox1.Image = ScaleSmoothGray(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                        break;
+                    case "scaleFurry":
+                        pictureBox1.Image = ScaleFurryGray(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                        break;
+                    case "scaleRough":
+                        pictureBox1.Image = ScaleRoughGray(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                        break;
+                    case "contrastBoldScale":
+                        pictureBox1.Image = ContrastBoldScaleGray(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                        break;
+                    case "scaleSeparate":
+                        pictureBox1.Image = ScaleSeparateGray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                        break;
+                    case "scaleBilinearApproximation":
+                        pictureBox1.Image = ScaleBilinearApproximationGray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                        break;
+                }
             }
             else
             {
-                pictureBox1.Image = ScaleSmoothColor(pictureBox1.Image, (int)(numericUpDown1.Value), (int)(trackBar1.Value));
+                switch (comboBox1.SelectedItem)
+                {
+                    case "scaleSmooth":
+                        pictureBox1.Image = ScaleSmoothColor(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                        break;
+                    case "scaleFurry":
+                        pictureBox1.Image = ScaleFurryColor(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                        break;
+                    case "scaleRough":
+                        pictureBox1.Image = ScaleRoughColor(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                        break;
+                    case "contrastBoldScale":
+                        pictureBox1.Image = ContrastBoldScaleColor(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                        break;
+                    case "scaleSeparate":
+                        pictureBox1.Image = ScaleSeparateColor(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                        break;
+                    case "scaleBilinearApproximation":
+                        pictureBox1.Image = ScaleBilinearApproximationColor(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                        break;
+                }
             }
 
-            ProgressText.Text = 100.ToString();
-
+            ProgressText.Text = "100";
             pictureBox1.Refresh();
-            button2.Enabled = true;
             button3.Enabled = true;
-            button5.Enabled = true;
-            button6.Enabled = true;
-            button7.Enabled = true;
-            button8.Enabled = true;
-            button9.Enabled = true;
+            button2.Enabled = true;
+            button1.Enabled = true;
         }
 
         private Image ScaleSmoothGray(Image img, int x, int ac)
@@ -923,36 +952,7 @@ namespace ScaleSmooth
             return img;
         }
 
-        private void button5_Click(object sender, EventArgs e)
-        {
-            label3.Text = "scaleRough"; label5.Text = label3.Text;
-            button2.Enabled = false;
-            button3.Enabled = false;
-            button5.Enabled = false;
-            button6.Enabled = false;
-            button7.Enabled = false;
-            button8.Enabled = false;
-            button9.Enabled = false;
-            if (radioButton1.Checked)
-            {
-                pictureBox1.Image = ScaleRoughGray(pictureBox1.Image, (int)(numericUpDown1.Value), (int)(trackBar1.Value));
-            }
-            else
-            {
-                pictureBox1.Image = ScaleRoughColor(pictureBox1.Image, (int)(numericUpDown1.Value), (int)(trackBar1.Value));
-            }
 
-            ProgressText.Text = "100";
-
-            pictureBox1.Refresh();
-            button2.Enabled = true;
-            button3.Enabled = true;
-            button5.Enabled = true;
-            button6.Enabled = true;
-            button7.Enabled = true;
-            button8.Enabled = true;
-            button9.Enabled = true;
-        }
 
         private Image ScaleRoughGray(Image img, int x, int ac)
         {
@@ -2831,67 +2831,8 @@ namespace ScaleSmooth
             return (float)(0.000000002833333 * Math.Pow(v, 5) - 0.00000181137 * Math.Pow(v, 4) + 0.0003605953 * Math.Pow(v, 3) - 0.01970911609 * Math.Pow(v, 2) + 0.63316688184 * v);
         }
 
-        private void button6_Click(object sender, EventArgs e)
-        {
-            label3.Text = "scaleFurry"; label5.Text = label3.Text;
-            button2.Enabled = false;
-            button3.Enabled = false;
-            button5.Enabled = false;
-            button6.Enabled = false;
-            button7.Enabled = false;
-            button8.Enabled = false;
-            button9.Enabled = false;
-            if (radioButton1.Checked)
-            {
-                pictureBox1.Image = ScaleFurryGray(pictureBox1.Image, (int)(numericUpDown1.Value), (int)(trackBar1.Value));
-            }
-            else
-            {
-                pictureBox1.Image = ScaleFurryColor(pictureBox1.Image, (int)(numericUpDown1.Value), (int)(trackBar1.Value));
-            }
 
-            ProgressText.Text = "100";
 
-            pictureBox1.Refresh();
-            button2.Enabled = true;
-            button3.Enabled = true;
-            button5.Enabled = true;
-            button6.Enabled = true;
-            button7.Enabled = true;
-            button8.Enabled = true;
-            button9.Enabled = true;
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            label3.Text = "contrastBoldScale"; label5.Text = label3.Text;
-            button2.Enabled = false;
-            button3.Enabled = false;
-            button5.Enabled = false;
-            button6.Enabled = false;
-            button7.Enabled = false;
-            button8.Enabled = false;
-            button9.Enabled = false;
-            if (radioButton1.Checked)
-            {
-                pictureBox1.Image = ContrastBoldScaleGray(pictureBox1.Image, (int)(numericUpDown1.Value), (int)(trackBar1.Value));
-            }
-            else
-            {
-                pictureBox1.Image = ContrastBoldScaleColor(pictureBox1.Image, (int)(numericUpDown1.Value), (int)(trackBar1.Value));
-            }
-
-            ProgressText.Text = "100";
-
-            pictureBox1.Refresh();
-            button2.Enabled = true;
-            button3.Enabled = true;
-            button5.Enabled = true;
-            button6.Enabled = true;
-            button7.Enabled = true;
-            button8.Enabled = true;
-            button9.Enabled = true;
-        }
 
         private Image ContrastBoldScaleGray(Image img, int x, int ac)
         {
@@ -2995,14 +2936,14 @@ namespace ScaleSmooth
                                                 ld = d[i, s];
                                                 if (c < xoimac)
                                                 {
-                                                    if (rnd.Next(0, xoim) > c)
-                                                    {
+                                                    if (rnd.Next(0, xoim) > c)   //you can remove this
+                                                    {                            //to reduce grid structure
                                                         d[i, s] = (byte)(S255((ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
-                                                    }
-                                                    else
-                                                    {
-                                                        d[i, s] = (byte)rnd.Next(0, 256);
-                                                    }
+                                                    }                                         //you can
+                                                    else                                      //remove this
+                                                    {                                         //to reduce
+                                                        d[i, s] = (byte)rnd.Next(0, 256);     //grid
+                                                    }                                         //structure
                                                 }
                                                 else if (c == xoimac)
                                                 {
@@ -3356,14 +3297,14 @@ namespace ScaleSmooth
                                                 ld = r[i, s];
                                                 if (c < xoimac)
                                                 {
-                                                    if (rnd.Next(0, xoim) > c)
-                                                    {
+                                                    if (rnd.Next(0, xoim) > c)   //you can remove this
+                                                    {                            //to reduce grid structure
                                                         r[i, s] = (byte)(S255((rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
-                                                    }
-                                                    else
-                                                    {
-                                                        r[i, s] = (byte)rnd.Next(0, 256);
-                                                    }
+                                                    }                                          //you can
+                                                    else                                       //remove this
+                                                    {                                          //to reduce
+                                                        r[i, s] = (byte)rnd.Next(0, 256);      //grid
+                                                    }                                          //structure
                                                 }
                                                 else if (c == xoimac)
                                                 {
@@ -3459,14 +3400,14 @@ namespace ScaleSmooth
                                                 ld = g[i, s];
                                                 if (c < xoimac)
                                                 {
-                                                    if (rnd.Next(0, xoim) > c)
-                                                    {
+                                                    if (rnd.Next(0, xoim) > c)  //you can remove this
+                                                    {                           //to reduce grid structure
                                                         g[i, s] = (byte)(S255((gs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + gs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + gs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + gs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + gs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + gs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + gs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + gs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + gs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
-                                                    }
-                                                    else
-                                                    {
-                                                        g[i, s] = (byte)rnd.Next(0, 256);
-                                                    }
+                                                    }                                     //you can
+                                                    else                                  //remove this
+                                                    {                                     //to reduce
+                                                        g[i, s] = (byte)rnd.Next(0, 256); //grid
+                                                    }                                     //structure
                                                 }
                                                 else if (c == xoimac)
                                                 {
@@ -3562,14 +3503,14 @@ namespace ScaleSmooth
                                                 ld = b[i, s];
                                                 if (c < xoimac)
                                                 {
-                                                    if (rnd.Next(0, xoim) > c)
-                                                    {
+                                                    if (rnd.Next(0, xoim) > c)             //you can remove this
+                                                    {                                      //to reduce grid structure
                                                         b[i, s] = (byte)(S255((bs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + bs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + bs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + bs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + bs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + bs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + bs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + bs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + bs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
-                                                    }
-                                                    else
-                                                    {
-                                                        b[i, s] = (byte)rnd.Next(0, 256);
-                                                    }
+                                                    }                                      //you
+                                                    else                                   //can
+                                                    {                                      //remove this
+                                                        b[i, s] = (byte)rnd.Next(0, 256);  //to reduce
+                                                    }                                      //grid structure
                                                 }
                                                 else if (c == xoimac)
                                                 {
@@ -3940,7 +3881,6 @@ namespace ScaleSmooth
                 }
             }
 
-
             rs2 = rs;
             gs2 = gs;
             bs2 = bs;
@@ -3967,40 +3907,7 @@ namespace ScaleSmooth
             return img;
         }
 
-        private void button8_Click(object sender, EventArgs e)
-        {
-            label3.Text = "scaleSeparate"; label5.Text = label3.Text;
-            button2.Enabled = false;
-            button3.Enabled = false;
-            button5.Enabled = false;
-            button6.Enabled = false;
-            button7.Enabled = false;
-            button8.Enabled = false;
-            button9.Enabled = false;
 
-            Image smpl = pictureBox1.Image;
-
-
-            if (radioButton1.Checked)
-            {
-                pictureBox1.Image = ScaleSeparateGray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
-            }
-            else
-            {
-                pictureBox1.Image = ScaleSeparateColor(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
-            }
-
-            ProgressText.Text = "100";
-
-            pictureBox1.Refresh();
-            button2.Enabled = true;
-            button3.Enabled = true;
-            button5.Enabled = true;
-            button6.Enabled = true;
-            button7.Enabled = true;
-            button8.Enabled = true;
-            button9.Enabled = true;
-        }
 
         private Image ScaleSeparateGray(Image img, int x, int ac)
         {
@@ -5691,38 +5598,6 @@ namespace ScaleSmooth
             return (y2 - y) / y21 * r1 + (y - y1) / y21 * r2;
         }
 
-        private void button9_Click(object sender, EventArgs e)
-        {
-            label3.Text = "scaleBiliniearApproximation"; label5.Text = label3.Text;
-            button2.Enabled = false;
-            button3.Enabled = false;
-            button5.Enabled = false;
-            button6.Enabled = false;
-            button7.Enabled = false;
-            button8.Enabled = false;
-            button9.Enabled = false;
-
-            if (radioButton1.Checked)
-            {
-                pictureBox1.Image = ScaleBilinearApproximationGray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
-            }
-            else
-            {
-                pictureBox1.Image = ScaleBilinearApproximationColor(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
-            }
-
-            ProgressText.Text = "100";
-
-            pictureBox1.Refresh();
-            button2.Enabled = true;
-            button3.Enabled = true;
-            button5.Enabled = true;
-            button6.Enabled = true;
-            button7.Enabled = true;
-            button8.Enabled = true;
-            button9.Enabled = true;
-        }
-
         private Image ScaleBilinearApproximationGray(Image img, int x, int ac)
         {
             int ni, ns, oi, os, xm, oim, osm, sxx, sxxm, ixx, ixxm;
@@ -6468,10 +6343,62 @@ namespace ScaleSmooth
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            label5.Parent = pictureBox1;
-            label3.Parent = label5;
-            label3.ForeColor = Color.Black;
-            label3.Left = 2;
+            comboBox1.SelectedIndex = 0;
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (comboBox1.SelectedItem)
+            {
+                case "scaleSmooth":
+                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSmooth);
+                    label6.Text = "Most accurate, but little bit blurred (much less than any interpolation) and mesh structure is still visible\r\n\r\nFast and you can process multiple images at the same time without losing speed";
+                    break;
+                case "scaleBilinearApproximation":
+                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortBilApprox);
+                    label6.Text = "A clearly defined grid structure and Gibbs ringing artifacts are present, but even if these shortcomings are not removed with other tools, it is more accurate than Lanczos and clearer than Lanczos and Bicubic\r\n\r\nFast - Very very slow, and you can't process multiple images at the same time without losing speed";
+                    break;
+                case "contrastBoldScale":
+                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortContrast);
+                    label6.Text = "Perfect result, but too contrasty (for accuracy, subsequent reverse correction is required) and too small details are lost\r\n\r\nFast - Slow, but you can process multiple images at the same time without losing speed";
+                    break;
+                case "scaleFurry":
+                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortFurry);
+                    label6.Text = "Beautiful and detailed result, but only for monochrome images (only pure black and white, or for color - only pure red, black, green, yellow, fuchsia, blue, cyan and white)\r\n\r\nVery slow, but you can process multiple images at the same time without losing speed";
+                    break;
+                case "scaleRough":
+                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortRough);
+                    label6.Text = "Typographic raster stylization, but for monochrome images it gives acceptable result\r\n\r\nSlow, but you can process multiple images at the same time without losing speed";
+                    break;
+                case "scaleSeparate":
+                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSeparate);
+                    label6.Text = "Gives monochrome result and there are Gibbs ringing artifacts\r\n\r\nVery fast, but you can't process multiple images at the same time without losing speed";
+                    break;
+            }
+        }
+
+        private void pictureBox4_Click(object sender, EventArgs e)
+        {
+            if (comboBox1.SelectedIndex == comboBox1.Items.Count - 1)
+            {
+                comboBox1.SelectedIndex = 0;
+            }
+            else
+            {
+                comboBox1.SelectedIndex++;
+            }
+        }
+
+        private void pictureBox5_Click(object sender, EventArgs e)
+        {
+            if (comboBox1.SelectedIndex == 0)
+            {
+                comboBox1.SelectedIndex = comboBox1.Items.Count - 1;
+            }
+            else
+            {
+                comboBox1.SelectedIndex--;
+            }
         }
     }
 
