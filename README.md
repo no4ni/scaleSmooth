@@ -12,8 +12,6 @@ Enlarge images and get more quality without losing accuracy (except contrastBold
 
 **scaleSmooth** is a windows application on .NET 8.0 on Visual Studio C#, but we'll be glad, if you create your repository of scaleSmooth / scaleRough / scaleFurry / contrastBoldScale / scaleSeparate / scaleBilinearApproximation for other platforms and languages (write me and I'll attach link to your repository) or commit here updates for optimization, batch, interface or more accuracy.<br>
 
-**scaleSmooth** is algorithms by sequential calculations, so it's might be very slow (use fast/accurate regulator if it will be needed) and it can't parallelize by many CPU's or GPU (except scaleSeparate and scaleBilinearApproximation - now realized parallelize only by CPU's), but you can run as many copies of other methods at the same time as many logical CPU's you have without losing speed.<br>
-
 Threshold, autoThreshold, Mean Cuvatute Blur, Median Blur, adjustment by Lanczos and other tools, which can help you get more usefull results for your specific needs are NOT included!
 <table align="center"><tr><td>
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demo2.png"/></td><td>
@@ -56,7 +54,9 @@ Very fast, but you can't process multiple images at the same time without losing
 
 - scaleBilinearApproximation<br>
 A clearly defined grid structure and Gibbs ringing artifacts are present, but even if these shortcomings are not removed with other tools, it is more accurate than Lanczos and clearer than Lanczos and Bicubic<br>
-Fast - Very very slow, and you can't process multiple images at the same time without losing speed<br>
+Fast - Very very slow, and you can't process multiple images at the same time without losing speed<br><br>
+
+You can increase speed instead of accuracy and vice versa<br>
 
 
 
