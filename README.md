@@ -33,7 +33,30 @@ Threshold, autoThreshold, Mean Cuvatute Blur, Median Blur, adjustment by Lanczos
 
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demo3.png"/>
 
+# ℹ️ Description of methods
+- scaleSmooth<br>
+Most accurate, but little bit blurred (much less than any interpolation) and mesh structure is still visible<br>
+Fast and you can process multiple images at the same time without losing speed<br><br>
 
+- contrastBoldScale<br>
+Perfect result, but too contrasty (for accuracy, subsequent reverse correction is required) and too small details are lost<br>
+Fast - Slow, but you can process multiple images at the same time without losing speed<br><br>
+
+- scaleFurry<br>
+Beautiful and detailed result, but only for monochrome images (only pure black and white, or for color - only pure red, black, green, yellow, fuchsia, blue, cyan and white)<br>
+Very slow, but you can process multiple images at the same time without losing speed<br><br>
+
+- scaleRough<br>
+Typographic raster stylization, but for monochrome images it gives acceptable result<br>
+Slow, but you can process multiple images at the same time without losing speed<br><br>
+
+- scaleSeparate<br>
+Gives monochrome result and there are Gibbs ringing artifacts<br>
+Very fast, but you can't process multiple images at the same time without losing speed<br><br>
+
+- scaleBilinearApproximation<br>
+A clearly defined grid structure and Gibbs ringing artifacts are present, but even if these shortcomings are not removed with other tools, it is more accurate than Lanczos and clearer than Lanczos and Bicubic<br>
+Fast - Very very slow, and you can't process multiple images at the same time without losing speed<br>
 
 
 
