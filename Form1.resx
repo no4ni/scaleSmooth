@@ -117,6 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="label6.Text" xml:space="preserve">
+    <value>Most accurate, but little bit blurred (much less than any interpolation) and grid structure is still visible
+
+Very fast - Fast, and you can process multiple images at the same time without losing speed</value>
+  </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>46</value>
   </metadata>

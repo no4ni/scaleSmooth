@@ -204,7 +204,7 @@
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox1.Font = new Font("Segoe UI", 10F);
             comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "scaleSmooth", "contrastBoldScale", "scaleFurry", "scaleRough", "scaleSeparate", "scaleBilinearApproximation" });
+            comboBox1.Items.AddRange(new object[] { "scaleSmooth", "boldScale", "contrastBoldScale", "scaleFurry", "scaleRough", "scaleSeparate", "scaleBilinearApproximation" });
             comboBox1.Location = new Point(6, 64);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(183, 25);
@@ -256,7 +256,7 @@
             label6.Name = "label6";
             label6.Size = new Size(194, 171);
             label6.TabIndex = 26;
-            label6.Text = "Most accurate, but little bit blurred (much less than any interpolation) and mesh structure is still visible\r\n\r\nFast and you can process multiple images at the same time without losing speed";
+            label6.Text = resources.GetString("label6.Text");
             label6.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // Form1
