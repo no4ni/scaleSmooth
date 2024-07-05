@@ -59,9 +59,9 @@ Very fast, but you can't process multiple images at the same time without losing
 A clearly defined grid structure and Gibbs ringing artifacts are present, but even if these shortcomings are not removed with other tools, it is more accurate than Lanczos and clearer than Lanczos and Bicubic<br>
 Fast - Very very slow, and you can't process multiple images at the same time without losing speed<br><br>
 
-You can increase speed instead of accuracy and vice versa<br>
+You can increase speed instead of accuracy and vice versa<br><br>
 
-
+<img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demo6.png"/>
 
 
 
