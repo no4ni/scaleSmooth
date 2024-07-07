@@ -33,7 +33,7 @@ Threshold, autoThreshold, Mean Cuvatute Blur, Median Blur, adjustment by Lanczos
 # ℹ️ Description of methods
 - **scaleSmooth**<br>
 Most accurate, but little bit blurred (much less than any interpolation) and grid structure is still visible<br>
-Very fast - Fast, and you can process multiple images at the same time without losing speed<br><br>
+Very fast - Fast, and you can process multiple images at the same time without losing speed (just run function in other thread or run .exe one more time)<br><br>
 
 - **boldScale**<br>
 Little bit grid structure, noisy and contrasty (for accuracy, subsequent reverse correction is desirable) and too small details may lost<br>
