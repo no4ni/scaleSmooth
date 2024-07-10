@@ -33,7 +33,7 @@ Threshold, autoThreshold, Mean Cuvatute Blur, Median Blur, adjustment by Lanczos
 # ℹ️ Description of methods
 - **scaleSmooth**<br>
 Most accurate, but little bit blurred (much less than any interpolation) and grid structure is still visible<br>
-Very fast - Fast, and you can process multiple images at the same time without losing speed<br><br>
+Very fast - Fast, and you can process multiple images at the same time without losing speed (just run function in other thread or run .exe one more time)<br><br>
 
 - **boldScale**<br>
 Little bit grid structure, noisy and contrasty (for accuracy, subsequent reverse correction is desirable) and too small details may lost<br>
@@ -59,9 +59,9 @@ Very fast, but you can't process multiple images at the same time without losing
 A clearly defined grid structure and Gibbs ringing artifacts are present, but even if these shortcomings are not removed with other tools, it is more accurate than Lanczos and clearer than Lanczos and Bicubic<br>
 Fast - Very very slow, and you can't process multiple images at the same time without losing speed<br><br>
 
-You can increase speed instead of accuracy and vice versa<br>
+You can increase speed instead of accuracy and vice versa<br><br>
 
-
+<img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demo6.png"/>
 
 
 
