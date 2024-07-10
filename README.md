@@ -1,5 +1,5 @@
 # scaleSmooth
-Algorithms for most-accurate upscaling image **without AI and neural network**<br>
+Algorithms for most-accurate upscaling image **without AI and neural network**<br><br>
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoM.png"/><br>
 (gray or color/ smooth, rough, furry, separate, approximation, bold or contrastBold / fast or accuracy variants available)<br>
 <div align="center"><a href="https://dzen.ru/suite/b70ea5e2-65bd-49ea-b0e4-49fc31e96df6">Мои эксперименты с изображениями</a><br>
