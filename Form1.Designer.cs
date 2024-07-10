@@ -48,6 +48,7 @@
             pictureBox4 = new PictureBox();
             pictureBox5 = new PictureBox();
             label6 = new Label();
+            checkBox1 = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
@@ -204,7 +205,7 @@
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox1.Font = new Font("Segoe UI", 10F);
             comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "scaleSmooth", "boldScale", "contrastBoldScale", "scaleFurry", "scaleRough", "scaleSeparate", "scaleBilinearApproximation" });
+            comboBox1.Items.AddRange(new object[] { "scaleSmooth", "scaleSmoothContinuous", "boldScale", "contrastBoldScale", "scaleFurry", "scaleRough", "scaleSeparate", "scaleBilinearApproximation" });
             comboBox1.Location = new Point(6, 64);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(183, 25);
@@ -259,11 +260,24 @@
             label6.Text = resources.GetString("label6.Text");
             label6.TextAlign = ContentAlignment.MiddleCenter;
             // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Font = new Font("Segoe UI", 7F);
+            checkBox1.Location = new Point(33, 95);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(131, 16);
+            checkBox1.TabIndex = 27;
+            checkBox1.Text = "NVidia GPU Acceleration";
+            checkBox1.UseVisualStyleBackColor = true;
+            checkBox1.Visible = false;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(963, 768);
+            Controls.Add(checkBox1);
             Controls.Add(label6);
             Controls.Add(pictureBox5);
             Controls.Add(pictureBox4);
@@ -321,5 +335,6 @@
         private PictureBox pictureBox4;
         private PictureBox pictureBox5;
         private Label label6;
+        private CheckBox checkBox1;
     }
 }

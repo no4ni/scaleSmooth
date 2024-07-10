@@ -2,12 +2,31 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <Platforms>AnyCPU;x64</Platforms>
     <ApplicationIcon>shortcut.ico</ApplicationIcon>
+    
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +39,7 @@
     <None Remove="Resources\shortRough.png" />
     <None Remove="Resources\shortSeparate.png" />
     <None Remove="Resources\shortSmooth.png" />
+    <None Remove="Resources\shortSmoothCont.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +56,7 @@
     <Resource Include="Resources\shortRough.png" />
     <Resource Include="Resources\shortSeparate.png" />
     <Resource Include="Resources\shortSmooth.png" />
+    <Resource Include="Resources\shortSmoothCont.png" />
   </ItemGroup>
 
   <ItemGroup>
