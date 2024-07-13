@@ -69,7 +69,7 @@ Very fast - Very very slow, and you can't process multiple images at the same ti
 
 You can increase speed instead of accuracy and vice versa<br><br>
 
-<img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demo6.png"/>
+<img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoSeparateApproximation.png"/>
 
 
 
