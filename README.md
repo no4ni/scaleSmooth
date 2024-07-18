@@ -44,7 +44,7 @@ Most accurate for scenes where objects extend beyond the boundaries of the image
 Fast, and you can process multiple images at the same time without losing speed (just run function in other thread or run .exe one more time)<br><br>
 
 - **boldScale**<br>
-Little bit grid structure, noisy and contrasty (for accuracy, subsequent reverse correction is desirable) and too small details may lost<br>
+Grid structure, little bit noisy and contrasty (for accuracy, subsequent reverse correction is desirable) and too small details may lost<br>
 Fast - Slow, but you can process multiple images at the same time without losing speed<br><br>
 
 - **contrastBoldScale**<br>
