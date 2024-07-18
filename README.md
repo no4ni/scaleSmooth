@@ -12,7 +12,7 @@ Enlarge images and get more quality without losing accuracy (except contrastBold
 
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoRoughFurry.png"/>
 
-**scaleSmooth** is a windows application on .NET 8.0 on Visual Studio C#, but we'll be glad, if you create your repository of scaleSmooth / scaleRough / scaleFurry / contrastBoldScale / scaleSeparate / scaleBilinearApproximation for other platforms and languages (write me and I'll attach link to your repository) or commit here updates for optimization, batch, interface or more accuracy.<br>
+**scaleSmooth** is a windows application on .NET 8.0 on Visual Studio C#, but we'll be glad, if you create your repository of scaleSmooth / scaleRough / scaleFurry / contrastBoldScale / scaleSeparate / scaleBilinearApproximation for other platforms and languages (write me and I'll attach link to your repository) or **commit** here updates for optimization, batch, interface or more accuracy. If you want improve anything we'll be glad for **pull request**, if you disagree with something boldly **fork** to your own repository<br>
 
 Threshold, autoThreshold, Mean Cuvatute Blur, Median Blur, adjustment by Lanczos, Antiringing and other tools, which can help you get more usefull results for your specific needs are NOT included!
 <table align="center"><tr><td width="50%">
