@@ -52,11 +52,11 @@ Perfect result, but too contrasty (for accuracy, subsequent reverse correction i
 Fast - Slow, but you can process multiple images at the same time without losing speed<br><br>
 
 - **scaleFurry**<br>
-Beautiful and detailed result, but only for monochrome images (only pure black and white, or for color - only pure red, black, green, yellow, fuchsia, blue, cyan and white)<br>
+Beautiful and detailed result, but only if bigger version must be monochrome image (only pure black and white, or for color - only pure red, black, green, yellow, fuchsia, blue, cyan and white)<br>
 Slow - Very slow, but you can process multiple images at the same time without losing speed<br><br>
 
 - **scaleRough**<br>
-Typographic raster stylization, but for monochrome images it gives acceptable result<br>
+Typographic raster stylization, but if bigger version must be monochrome image it gives acceptable upscaling<br>
 Slow - Very slow, but you can process multiple images at the same time without losing speed<br><br>
 
 - **scaleSeparate**<br>
