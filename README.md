@@ -60,7 +60,7 @@ Typographic raster stylization, but for monochrome images it gives acceptable re
 Slow - Very slow, but you can process multiple images at the same time without losing speed<br><br>
 
 - **scaleSeparate**<br>
-Gives monochrome result and there are Gibbs ringing artifacts<br>
+Gives beatiful, but almost monochrome result and there are Gibbs ringing artifacts<br>
 Very fast, but you can't process multiple images at the same time without losing speed<br><br>
 
 - **scaleBilinearApproximation**<br>
