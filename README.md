@@ -19,7 +19,7 @@ Threshold, autoThreshold, Mean Cuvatute Blur, Median Blur, adjustment by Lanczos
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoText.png"/></td><td>
 
 # 🏃 Run
-(required Windows 10+ x64, .NET 8.0+) 
+(required Windows 7?-10+ x64, .NET 8.0+) 
 - Download <a href="https://github.com/no4ni/scaleSmooth/blob/main/run/ScaleSmooth.exe">release</a>
 - Run .exe<br>
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoBilinear.png"/>
