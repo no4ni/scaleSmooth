@@ -29,7 +29,7 @@ Threshold, autoThreshold, Mean Cuvatute Blur, Median Blur, adjustment by Lanczos
 
 # 🛠 Using in your projects
 - Just copy necessary function (**ScaleSmoothGray** / **ScaleSmoothColor** / **ScaleRoughGray** and S255 / **ScaleRoughColor** and S255 / **ScaleFurryGray** and S255 / **ScaleFurryColor** and S255 / **ContrastBoldScaleGray** and S255f / **ContrastBoldScaleColor** and S255f / **BoldScaleGray** and S255f / **BoldScaleColor** and S255f / **ScaleSeparateGray**, Quadrilateral and Bilinear / **ScaleSeparateColor**, Quadrilateral and Bilinear / **ScaleBilinearApproximationGray**, Dist4 and Bilinear / **ScaleBilinearApproximationColor**, Dist4 and Bilinear) (you can harmless remove ProgressText from code)
-- Call it with parameters (**image** as type Image, int **scale**, int **accuracy** - where 0 is fast, 100 is accurate)
+- Call it with parameters (**image** as type Image, int **scale** (2-255), int **accuracy** - where 0 is fast, 100 is accurate)
 - It returns new image as type **Image** <br>
 
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoBold.png"/>
