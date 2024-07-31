@@ -37,35 +37,35 @@ Threshold, autoThreshold, Mean Cuvatute Blur, Median Blur, adjustment by Lanczos
 # ℹ️ Description of methods
 - **scaleSmooth**<br>
 Most accurate for scenes where objects are completely in the image, but little bit blurred (much less than any interpolation) and grid structure is still visible<br>
-Fast, and you can process multiple images at the same time without losing speed (just run function in other thread or run .exe one more time)<br><br>
+Very fast - Slow, and you can process multiple images at the same time without losing speed (just run function in other thread or run .exe one more time)<br><br>
 
 - **scaleSmoothContinuous**<br>
 Most accurate for scenes where objects extend beyond the boundaries of the image, but little bit blurred (much less than any interpolation) and grid structure is still visible<br>
-Fast, and you can process multiple images at the same time without losing speed (just run function in other thread or run .exe one more time)<br><br>
+Very fast - Slow, and you can process multiple images at the same time without losing speed (just run function in other thread or run .exe one more time)<br><br>
 
 - **boldScale**<br>
 Grid structure, little bit noisy and contrasty (for accuracy, subsequent reverse correction is desirable) and too small details may lost<br>
-Fast - Slow, but you can process multiple images at the same time without losing speed<br><br>
+Very fast - Very very slow, but you can process multiple images at the same time without losing speed<br><br>
 
 - **contrastBoldScale**<br>
 Perfect result, but too contrasty (for accuracy, subsequent reverse correction is required) and too small details are lost<br>
-Fast - Slow, but you can process multiple images at the same time without losing speed<br><br>
+Very fast - Very very slow, but you can process multiple images at the same time without losing speed<br><br>
 
 - **scaleFurry**<br>
 Beautiful and detailed result, but only if bigger version must be monochrome image (only pure black and white, or for color - only pure red, black, green, yellow, fuchsia, blue, cyan and white)<br>
-Slow - Very slow, but you can process multiple images at the same time without losing speed<br><br>
+Very slow - Very very slow, but you can process multiple images at the same time without losing speed<br><br>
 
 - **scaleRough**<br>
 Typographic raster stylization, but if bigger version must be monochrome image it gives acceptable upscaling<br>
-Slow - Very slow, but you can process multiple images at the same time without losing speed<br><br>
+Very slow, but you can process multiple images at the same time without losing speed<br><br>
 
 - **scaleSeparate**<br>
 Gives beatiful, but almost monochrome result and there are Gibbs ringing artifacts<br>
-Very fast, but you can't process multiple images at the same time without losing speed<br><br>
+Very very fast - fast, but you can't process multiple images at the same time without losing speed<br><br>
 
 - **scaleBilinearApproximation**<br>
 A clearly defined grid structure and Gibbs ringing artifacts are present, but even if these shortcomings are not removed with other tools, it is more accurate than Lanczos and clearer than Lanczos and Bicubic<br>
-Very fast - Very very slow, and you can't process multiple images at the same time without losing speed<br><br>
+Very very fast - Very slow, and you can't process multiple images at the same time without losing speed<br><br>
 
 You can increase speed instead of accuracy and vice versa<br><br>
 
