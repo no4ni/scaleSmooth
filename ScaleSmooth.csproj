@@ -31,9 +31,12 @@
 
   <ItemGroup>
     <None Remove="Resources\A8.png" />
+    <None Remove="Resources\arLeft.png" />
+    <None Remove="Resources\arRight.png" />
     <None Remove="Resources\short13.png" />
     <None Remove="Resources\shortBil.png" />
     <None Remove="Resources\shortBilApprox.png" />
+    <None Remove="Resources\shortBold.png" />
     <None Remove="Resources\shortContrast.png" />
     <None Remove="Resources\shortFurry.png" />
     <None Remove="Resources\shortRough.png" />
@@ -47,10 +50,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ILGPU" Version="1.5.1" />
+    <PackageReference Include="ILGPU.Algorithms" Version="1.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Resources\A8.png" />
+    <Resource Include="Resources\arLeft.png" />
+    <Resource Include="Resources\arRight.png" />
     <Resource Include="Resources\short13.png" />
     <Resource Include="Resources\shortBil.png" />
     <Resource Include="Resources\shortBilApprox.png" />
+    <Resource Include="Resources\shortBold.png" />
     <Resource Include="Resources\shortContrast.png" />
     <Resource Include="Resources\shortFurry.png" />
     <Resource Include="Resources\shortRough.png" />
@@ -65,6 +76,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -72,6 +88,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>

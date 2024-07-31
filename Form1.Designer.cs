@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             pictureBox1 = new PictureBox();
             button1 = new Button();
@@ -49,6 +50,11 @@
             pictureBox5 = new PictureBox();
             label6 = new Label();
             checkBox1 = new CheckBox();
+            button5 = new Button();
+            StopWatchLabel = new Label();
+            toolTip1 = new ToolTip(components);
+            checkBox2 = new CheckBox();
+            label3 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
@@ -64,19 +70,23 @@
             pictureBox1.Image = Properties.Resources.A8;
             pictureBox1.Location = new Point(194, -1);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(768, 768);
+            pictureBox1.Size = new Size(769, 768);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
+            pictureBox1.MouseDoubleClick += ToScreen;
+            pictureBox1.MouseDown += DragNDrop;
             // 
             // button1
             // 
             button1.Font = new Font("Segoe UI", 12F);
+            button1.Image = Properties.Resources.load;
             button1.Location = new Point(5, 5);
             button1.Name = "button1";
-            button1.Size = new Size(185, 54);
+            button1.Size = new Size(183, 54);
             button1.TabIndex = 1;
-            button1.Text = "Load";
+            button1.Text = "Load         ";
+            button1.TextAlign = ContentAlignment.MiddleRight;
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
@@ -84,7 +94,7 @@
             // 
             button2.Enabled = false;
             button2.Font = new Font("Segoe UI", 12F);
-            button2.Location = new Point(6, 579);
+            button2.Location = new Point(6, 585);
             button2.Name = "button2";
             button2.Size = new Size(185, 54);
             button2.TabIndex = 2;
@@ -94,7 +104,7 @@
             // 
             // numericUpDown1
             // 
-            numericUpDown1.Location = new Point(87, 389);
+            numericUpDown1.Location = new Point(87, 383);
             numericUpDown1.Maximum = new decimal(new int[] { 128, 0, 0, 0 });
             numericUpDown1.Minimum = new decimal(new int[] { 2, 0, 0, 0 });
             numericUpDown1.Name = "numericUpDown1";
@@ -107,16 +117,18 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 10F);
-            label1.Location = new Point(47, 388);
+            label1.Location = new Point(47, 382);
             label1.Name = "label1";
             label1.Size = new Size(96, 19);
             label1.TabIndex = 5;
             label1.Text = "Scale:            x";
+            label1.MouseDoubleClick += ToScreen;
+            label1.MouseDown += DragNDrop;
             // 
             // button3
             // 
             button3.Font = new Font("Segoe UI", 12F);
-            button3.Location = new Point(5, 495);
+            button3.Location = new Point(5, 501);
             button3.Name = "button3";
             button3.Size = new Size(185, 54);
             button3.TabIndex = 6;
@@ -139,7 +151,7 @@
             // 
             radioButton1.AutoSize = true;
             radioButton1.Checked = true;
-            radioButton1.Location = new Point(16, 415);
+            radioButton1.Location = new Point(16, 406);
             radioButton1.Name = "radioButton1";
             radioButton1.Size = new Size(49, 19);
             radioButton1.TabIndex = 8;
@@ -151,7 +163,7 @@
             // 
             radioButton2.AutoSize = true;
             radioButton2.CheckAlign = ContentAlignment.MiddleRight;
-            radioButton2.Location = new Point(123, 415);
+            radioButton2.Location = new Point(123, 406);
             radioButton2.Name = "radioButton2";
             radioButton2.Size = new Size(54, 19);
             radioButton2.TabIndex = 9;
@@ -161,26 +173,29 @@
             // 
             // trackBar1
             // 
-            trackBar1.Location = new Point(6, 440);
+            trackBar1.Location = new Point(6, 431);
             trackBar1.Maximum = 100;
             trackBar1.Name = "trackBar1";
             trackBar1.Size = new Size(182, 45);
             trackBar1.TabIndex = 11;
             trackBar1.TickFrequency = 25;
             trackBar1.Value = 42;
+            trackBar1.KeyPress += DefaultIs42;
             // 
             // label2
             // 
-            label2.Location = new Point(6, 464);
+            label2.Location = new Point(6, 451);
             label2.Name = "label2";
             label2.Size = new Size(183, 16);
             label2.TabIndex = 12;
             label2.Text = "Fast                       Accurate";
             label2.TextAlign = ContentAlignment.MiddleCenter;
+            label2.MouseDoubleClick += ToScreen;
+            label2.MouseDown += DragNDrop;
             // 
             // ProgressText
             // 
-            ProgressText.Location = new Point(139, 552);
+            ProgressText.Location = new Point(139, 561);
             ProgressText.Margin = new Padding(0);
             ProgressText.Name = "ProgressText";
             ProgressText.Size = new Size(25, 15);
@@ -193,7 +208,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(16, 552);
+            label4.Location = new Point(16, 561);
             label4.Name = "label4";
             label4.Size = new Size(161, 15);
             label4.TabIndex = 18;
@@ -215,21 +230,25 @@
             // pictureBox2
             // 
             pictureBox2.Image = Properties.Resources.shortBil;
-            pictureBox2.Location = new Point(0, 284);
+            pictureBox2.Location = new Point(0, 282);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(97, 97);
             pictureBox2.TabIndex = 22;
             pictureBox2.TabStop = false;
+            pictureBox2.MouseDoubleClick += ToScreen;
+            pictureBox2.MouseDown += DragNDrop;
             // 
             // pictureBox3
             // 
             pictureBox3.Image = Properties.Resources.shortSmooth;
-            pictureBox3.Location = new Point(97, 284);
+            pictureBox3.Location = new Point(97, 282);
             pictureBox3.Name = "pictureBox3";
             pictureBox3.Size = new Size(97, 97);
             pictureBox3.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox3.TabIndex = 23;
             pictureBox3.TabStop = false;
+            pictureBox3.MouseDoubleClick += ToScreen;
+            pictureBox3.MouseDown += DragNDrop;
             // 
             // pictureBox4
             // 
@@ -259,24 +278,86 @@
             label6.TabIndex = 26;
             label6.Text = resources.GetString("label6.Text");
             label6.TextAlign = ContentAlignment.MiddleCenter;
+            label6.MouseDoubleClick += ToScreen;
+            label6.MouseDown += DragNDrop;
             // 
             // checkBox1
             // 
             checkBox1.AutoSize = true;
-            checkBox1.Font = new Font("Segoe UI", 7F);
-            checkBox1.Location = new Point(33, 95);
+            checkBox1.Font = new Font("Segoe UI", 9F);
+            checkBox1.Location = new Point(41, 95);
             checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(131, 16);
+            checkBox1.Size = new Size(118, 19);
             checkBox1.TabIndex = 27;
-            checkBox1.Text = "NVidia GPU Acceleration";
+            checkBox1.Text = "GPU Acceleration";
+            checkBox1.ThreeState = true;
             checkBox1.UseVisualStyleBackColor = true;
             checkBox1.Visible = false;
+            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
+            // 
+            // button5
+            // 
+            button5.Image = Properties.Resources.restore;
+            button5.ImageAlign = ContentAlignment.MiddleLeft;
+            button5.Location = new Point(8, 8);
+            button5.Name = "button5";
+            button5.Size = new Size(73, 23);
+            button5.TabIndex = 28;
+            button5.Text = "Restore";
+            button5.TextAlign = ContentAlignment.MiddleRight;
+            button5.UseVisualStyleBackColor = true;
+            button5.Click += button5_Click;
+            // 
+            // StopWatchLabel
+            // 
+            StopWatchLabel.Location = new Point(6, 554);
+            StopWatchLabel.Name = "StopWatchLabel";
+            StopWatchLabel.Size = new Size(182, 29);
+            StopWatchLabel.TabIndex = 29;
+            StopWatchLabel.Text = "Stopwatch";
+            StopWatchLabel.TextAlign = ContentAlignment.MiddleCenter;
+            StopWatchLabel.Visible = false;
+            StopWatchLabel.MouseClick += CopyStopwatch;
+            StopWatchLabel.MouseDoubleClick += ToScreen;
+            StopWatchLabel.MouseDown += DragNDrop;
+            // 
+            // toolTip1
+            // 
+            toolTip1.AutomaticDelay = 2000;
+            toolTip1.UseAnimation = false;
+            toolTip1.UseFading = false;
+            // 
+            // checkBox2
+            // 
+            checkBox2.AutoSize = true;
+            checkBox2.Checked = true;
+            checkBox2.CheckState = CheckState.Checked;
+            checkBox2.Font = new Font("Segoe UI", 9F);
+            checkBox2.Location = new Point(41, 478);
+            checkBox2.Name = "checkBox2";
+            checkBox2.Size = new Size(123, 19);
+            checkBox2.TabIndex = 30;
+            checkBox2.Text = "sound notification";
+            checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(552, 5);
+            label3.Name = "label3";
+            label3.Size = new Size(31, 15);
+            label3.TabIndex = 31;
+            label3.Text = "10x8";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(963, 768);
+            Controls.Add(label3);
+            Controls.Add(checkBox2);
+            Controls.Add(StopWatchLabel);
+            Controls.Add(button5);
             Controls.Add(checkBox1);
             Controls.Add(label6);
             Controls.Add(pictureBox5);
@@ -303,6 +384,8 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "scaleSmooth";
             Load += Form1_Load;
+            MouseDoubleClick += ToScreen;
+            MouseDown += DragNDrop;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
@@ -336,5 +419,10 @@
         private PictureBox pictureBox5;
         private Label label6;
         private CheckBox checkBox1;
+        private Button button5;
+        private Label StopWatchLabel;
+        private ToolTip toolTip1;
+        private CheckBox checkBox2;
+        private Label label3;
     }
 }

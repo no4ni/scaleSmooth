@@ -118,40 +118,46 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="shortSmooth" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\shortSmooth.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="A8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\A8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="shortRough" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\shortRough.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="shortContrast" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\shortContrast.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="shortBilApprox" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\shortBilApprox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="shortBil" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\shortBil.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="shortFurry" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\shortFurry.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="shortSeparate" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\shortSeparate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="arLeft" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\arLeft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="arRight" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\arRight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="shortSmoothCont" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\shortSmoothCont.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="shortBold" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\shortBold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="shortSmoothCont" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\shortSmoothCont.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="A8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\A8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="shortSmooth" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\shortSmooth.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="shortContrast" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\shortContrast.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="shortFurry" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\shortFurry.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="shortBilApprox" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\shortBilApprox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="arRight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arRight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="shortBil" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\shortBil.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="shortRough" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\shortRough.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="shortSeparate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\shortSeparate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="load" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\img\load.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="restore" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\img\restore.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -1,0 +1,10 @@
+﻿[*.cs]
+
+# IDE1006: Стили именования
+dotnet_diagnostic.IDE1006.severity = none
+
+# SYSLIB1054: Используйте \"LibraryImportAttribute\" вместо \"DllImportAttribute\" для генерирования кода маршализации P/Invoke во время компиляции
+dotnet_diagnostic.SYSLIB1054.severity = none
+
+# IDE0066: Преобразовать оператор switch в выражение
+csharp_style_prefer_switch_expression = false
