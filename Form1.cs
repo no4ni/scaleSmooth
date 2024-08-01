@@ -306,7 +306,8 @@ namespace ScaleSmooth
 
             }
             oiki = (int)(oim / (float)ki + 0.5f);
-
+            int ski = (oi - rki) / 2 / ki;
+            int sks = (os - rki) / 2 / ks;
 
             var riG = accelerator.Allocate3DDenseXY<short>(new Index3D(ni, ns, kiks));
             var risG = accelerator.Allocate3DDenseXY<float>(new Index3D(ni, ns, kiks));
@@ -319,8 +320,8 @@ namespace ScaleSmooth
             var center = accelerator.LoadStreamKernel(
                 (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
                 {
-                    int kki = Grid.GlobalIndex.Y * ints[12] + ints[13];
-                    int kks = Grid.GlobalIndex.Z * ints[12] + ints[15];
+                    int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
+                    int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
                     int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
                     if (kki < ints[4] && kks < ints[14] && Grid.GlobalIndex.X < ints[16])
                     {
@@ -341,8 +342,8 @@ namespace ScaleSmooth
             var right = accelerator.LoadKernel(
                 (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
                 {
-                    int kki = Grid.GlobalIndex.Y * ints[12] + ints[13];
-                    int kks = Grid.GlobalIndex.Z * ints[12] + ints[15];
+                    int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
+                    int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
                     if (kki < ints[2] && kks < ints[14] && Grid.GlobalIndex.X < ints[10])
                     {
                         int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
@@ -395,8 +396,8 @@ namespace ScaleSmooth
             var left = accelerator.LoadKernel(
                 (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
                 {
-                    int kki = Grid.GlobalIndex.Y * ints[12] + ints[13];
-                    int kks = Grid.GlobalIndex.Z * ints[12] + ints[15];
+                    int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
+                    int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
                     if (kki < ints[4] && kks < ints[14] && Grid.GlobalIndex.X < ints[10])
                     {
                         int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
@@ -451,8 +452,8 @@ namespace ScaleSmooth
             var bottom = accelerator.LoadKernel(
                 (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
                 {
-                    int kki = Grid.GlobalIndex.Y * ints[12] + ints[13];
-                    int kks = Grid.GlobalIndex.Z * ints[12] + ints[15];
+                    int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
+                    int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
                     if (kki < ints[4] && kks < ints[3] && Grid.GlobalIndex.X < ints[10])
                     {
                         int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
@@ -513,8 +514,8 @@ namespace ScaleSmooth
             var top = accelerator.LoadKernel(
                 (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
                 {
-                    int kki = Grid.GlobalIndex.Y * ints[12] + ints[13];
-                    int kks = Grid.GlobalIndex.Z * ints[12] + ints[15];
+                    int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
+                    int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
                     if (kki < ints[4] && kks < ints[14] && Grid.GlobalIndex.X < ints[10])
                     {
                         int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
@@ -575,8 +576,8 @@ namespace ScaleSmooth
             var rightbottom = accelerator.LoadKernel(
         (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
         {
-            int kki = Grid.GlobalIndex.Y * ints[12] + ints[13];
-            int kks = Grid.GlobalIndex.Z * ints[12] + ints[15];
+            int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
+            int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
             if (kki < ints[2] && kks < ints[3] && Grid.GlobalIndex.X < ints[11])
             {
                 int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
@@ -628,8 +629,8 @@ namespace ScaleSmooth
             var lefttop = accelerator.LoadKernel(
         (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
         {
-            int kki = Grid.GlobalIndex.Y * ints[12] + ints[13];
-            int kks = Grid.GlobalIndex.Z * ints[12] + ints[15];
+            int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
+            int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
             int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
             if (kki < ints[4] && kks < ints[14] && Grid.GlobalIndex.X < ints[11] && kkikks < ints[5])
             {
@@ -685,8 +686,8 @@ namespace ScaleSmooth
             var leftbottom = accelerator.LoadKernel(
         (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
         {
-            int kki = Grid.GlobalIndex.Y * ints[12] + ints[13];
-            int kks = Grid.GlobalIndex.Z * ints[12] + ints[15];
+            int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
+            int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
             if (kki < ints[2] && kks < ints[3] && Grid.GlobalIndex.X < ints[11])
             {
                 int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
@@ -743,8 +744,8 @@ namespace ScaleSmooth
             var righttop = accelerator.LoadKernel(
         (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
         {
-            int kki = Grid.GlobalIndex.Y * ints[12] + ints[13];
-            int kks = Grid.GlobalIndex.Z * ints[12] + ints[15];
+            int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
+            int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
             int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
             if (kki < ints[4] && kks < ints[14] && Grid.GlobalIndex.X < ints[11] && kkikks < ints[5])
             {
@@ -813,16 +814,15 @@ namespace ScaleSmooth
             float progress = 0;
             float rki2 = rki * rki;
             float step = 0.98f / rki2;
-            float step4 = 3.92f / rki2;
             float step8 = 7.84f / rki2;
-            float step85 = 83.3f / rki2;
+            float step89 = 87.22f / rki2;
             var dblG = accelerator.Allocate1D<float>([halfx - 0.5f, x - 0.5f, x2p * x, x2p * x2p, halfx, x * 1.5f - 0.5f, x2p, (1f - x) / (x + xx), 2f / (1 + x), (2f - 2 * x) * sqeq, 4f * x * sqeq, 4f * sqeq]);
             var intG = accelerator.Allocate1D<int>(17);
             for (int irk = 0; irk < rki; irk++)
             {
                 for (int srk = 0; srk < rki; srk++)
                 {
-                    intG = accelerator.Allocate1D<int>([x, x - 1, oi, os, oim, kiks, 2 * x, ki, oim / 2 - ki / 2, osm / 2 - ks / 2, xx2, xx, oiki, irk, osm, srk, xx4]);
+                    intG = accelerator.Allocate1D<int>([x, x - 1, oi, os, oim, kiks, 2 * x, ki, oim / 2 - ki / 2, osm / 2 - ks / 2, xx2, xx, oiki, irk, osm, srk, xx4,ski,sks]);
                     Vector3 grp = FitToVolumeByX(xx4, accelerator.Device.MaxGroupSize, threadsPerGroup);
                     KernelConfig kc = new(new Index3D((int)Math.Ceiling(xx4 / grp.X), (int)Math.Ceiling(ki / grp.Y), (int)Math.Ceiling(ks / grp.Z)), new((int)grp.X, (int)grp.Y, (int)grp.Z));
 
@@ -856,13 +856,10 @@ namespace ScaleSmooth
                     ProgressText.Text = ((int)progress).ToString();
                     accelerator.Synchronize();
 
-                    progress += step85;
-                    ProgressText.Text = ((int)progress).ToString();
                     ttl(new Index2D(ni, ns), riG.View, risG.View, intG.View);
-
-                    accelerator.Synchronize();
-                    progress += step4;
+                    progress += step89;
                     ProgressText.Text = ((int)progress).ToString();
+                    accelerator.Synchronize();
                 }
             }
             ProgressText.Text = "99";
@@ -942,7 +939,8 @@ namespace ScaleSmooth
 
             }
             oiki = (int)(oim / (float)ki + 0.5f);
-
+            int ski = (oi - rki) / 2 / ki;
+            int sks = (os - rki) / 2 / ks;
 
             var riRG = accelerator.Allocate3DDenseXY<short>(new Index3D(ni, ns, kiks));
             var riGG = accelerator.Allocate3DDenseXY<short>(new Index3D(ni, ns, kiks));
@@ -957,8 +955,8 @@ namespace ScaleSmooth
             var center = accelerator.LoadStreamKernel(
                 (ArrayView3D<short, Stride3D.DenseXY> riR, ArrayView3D<short, Stride3D.DenseXY> riG, ArrayView3D<short, Stride3D.DenseXY> riB, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView3D<byte, Stride3D.DenseXY> sr) =>
                 {
-                    int kki = Grid.GlobalIndex.Y * ints[12] + ints[13];
-                    int kks = Grid.GlobalIndex.Z * ints[12] + ints[15];
+                    int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
+                    int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
                     int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
                     if (kki < ints[4] && kks < ints[14] && Grid.GlobalIndex.X < ints[16])
                     {
@@ -982,8 +980,8 @@ namespace ScaleSmooth
             var right = accelerator.LoadKernel(
                 (ArrayView3D<short, Stride3D.DenseXY> riR, ArrayView3D<short, Stride3D.DenseXY> riG, ArrayView3D<short, Stride3D.DenseXY> riB, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView3D<byte, Stride3D.DenseXY> sr) =>
                 {
-                    int kki = Grid.GlobalIndex.Y * ints[12] + ints[13];
-                    int kks = Grid.GlobalIndex.Z * ints[12] + ints[15];
+                    int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
+                    int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
                     if (kki < ints[2] && kks < ints[14] && Grid.GlobalIndex.X < ints[10])
                     {
                         int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
@@ -1060,8 +1058,8 @@ namespace ScaleSmooth
             var left = accelerator.LoadKernel(
                 (ArrayView3D<short, Stride3D.DenseXY> riR, ArrayView3D<short, Stride3D.DenseXY> riG, ArrayView3D<short, Stride3D.DenseXY> riB, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView3D<byte, Stride3D.DenseXY> sr) =>
                 {
-                    int kki = Grid.GlobalIndex.Y * ints[12] + ints[13];
-                    int kks = Grid.GlobalIndex.Z * ints[12] + ints[15];
+                    int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
+                    int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
                     if (kki < ints[4] && kks < ints[14] && Grid.GlobalIndex.X < ints[10])
                     {
                         int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
@@ -1140,8 +1138,8 @@ namespace ScaleSmooth
             var bottom = accelerator.LoadKernel(
                 (ArrayView3D<short, Stride3D.DenseXY> riR, ArrayView3D<short, Stride3D.DenseXY> riG, ArrayView3D<short, Stride3D.DenseXY> riB, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView3D<byte, Stride3D.DenseXY> sr) =>
                 {
-                    int kki = Grid.GlobalIndex.Y * ints[12] + ints[13];
-                    int kks = Grid.GlobalIndex.Z * ints[12] + ints[15];
+                    int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
+                    int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
                     if (kki < ints[4] && kks < ints[3] && Grid.GlobalIndex.X < ints[10])
                     {
                         int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
@@ -1220,8 +1218,8 @@ namespace ScaleSmooth
             var top = accelerator.LoadKernel(
                 (ArrayView3D<short, Stride3D.DenseXY> riR, ArrayView3D<short, Stride3D.DenseXY> riG, ArrayView3D<short, Stride3D.DenseXY> riB, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView3D<byte, Stride3D.DenseXY> sr) =>
                 {
-                    int kki = Grid.GlobalIndex.Y * ints[12] + ints[13];
-                    int kks = Grid.GlobalIndex.Z * ints[12] + ints[15];
+                    int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
+                    int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
                     if (kki < ints[4] && kks < ints[14] && Grid.GlobalIndex.X < ints[10])
                     {
                         int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
@@ -1300,8 +1298,8 @@ namespace ScaleSmooth
             var rightbottom = accelerator.LoadKernel(
         (ArrayView3D<short, Stride3D.DenseXY> riR, ArrayView3D<short, Stride3D.DenseXY> riG, ArrayView3D<short, Stride3D.DenseXY> riB, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView3D<byte, Stride3D.DenseXY> sr) =>
         {
-            int kki = Grid.GlobalIndex.Y * ints[12] + ints[13];
-            int kks = Grid.GlobalIndex.Z * ints[12] + ints[15];
+            int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
+            int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
             if (kki < ints[2] && kks < ints[3] && Grid.GlobalIndex.X < ints[11])
             {
                 int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
@@ -1375,8 +1373,8 @@ namespace ScaleSmooth
             var lefttop = accelerator.LoadKernel(
         (ArrayView3D<short, Stride3D.DenseXY> riR, ArrayView3D<short, Stride3D.DenseXY> riG, ArrayView3D<short, Stride3D.DenseXY> riB, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView3D<byte, Stride3D.DenseXY> sr) =>
         {
-            int kki = Grid.GlobalIndex.Y * ints[12] + ints[13];
-            int kks = Grid.GlobalIndex.Z * ints[12] + ints[15];
+            int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
+            int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
             int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
             if (kki < ints[4] && kks < ints[14] && Grid.GlobalIndex.X < ints[11] && kkikks < ints[5])
             {
@@ -1452,8 +1450,8 @@ namespace ScaleSmooth
             var leftbottom = accelerator.LoadKernel(
         (ArrayView3D<short, Stride3D.DenseXY> riR, ArrayView3D<short, Stride3D.DenseXY> riG, ArrayView3D<short, Stride3D.DenseXY> riB, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView3D<byte, Stride3D.DenseXY> sr) =>
         {
-            int kki = Grid.GlobalIndex.Y * ints[12] + ints[13];
-            int kks = Grid.GlobalIndex.Z * ints[12] + ints[15];
+            int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
+            int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
             if (kki < ints[4] && kks < ints[3] && Grid.GlobalIndex.X < ints[11])
             {
                 int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
@@ -1530,8 +1528,8 @@ namespace ScaleSmooth
             var righttop = accelerator.LoadKernel(
         (ArrayView3D<short, Stride3D.DenseXY> riR, ArrayView3D<short, Stride3D.DenseXY> riG, ArrayView3D<short, Stride3D.DenseXY> riB, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView3D<byte, Stride3D.DenseXY> sr) =>
         {
-            int kki = Grid.GlobalIndex.Y * ints[12] + ints[13];
-            int kks = Grid.GlobalIndex.Z * ints[12] + ints[15];
+            int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
+            int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
             int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
             if (kki < ints[4] && kks < ints[14] && Grid.GlobalIndex.X < ints[11] && kkikks < ints[5])
             {
@@ -1620,16 +1618,15 @@ namespace ScaleSmooth
             float progress = 0;
             float rki2 = rki * rki;
             float step = 0.98f / rki2;
-            float step4 = 3.92f / rki2;
             float step8 = 7.84f / rki2;
-            float step85 = 83.3f / rki2;
+            float step89 = 87.22f / rki2;
             var dblG = accelerator.Allocate1D<float>([halfx - 0.5f, x - 0.5f, x2p * x, x2p * x2p, halfx, x * 1.5f - 0.5f, x2p, (1f - x) / (x + xx), 2f / (1 + x), (2f - 2 * x) * sqeq, 4f * x * sqeq, 4f * sqeq]);
             var intG = accelerator.Allocate1D<int>(17);
             for (int irk = 0; irk < rki; irk++)
             {
                 for (int srk = 0; srk < rki; srk++)
                 {
-                    intG = accelerator.Allocate1D<int>([x, x - 1, oi, os, oim, kiks, 2 * x, ki, oim / 2 - ki / 2, osm / 2 - ks / 2, xx2, xx, oiki, irk, osm, srk, xx4]);
+                    intG = accelerator.Allocate1D<int>([x, x - 1, oi, os, oim, kiks, 2 * x, ki, oim / 2 - ki / 2, osm / 2 - ks / 2, xx2, xx, oiki, irk, osm, srk, xx4,ski,sks]);
                     Vector3 grp = FitToVolumeByX(xx4, accelerator.Device.MaxGroupSize, threadsPerGroup);
                     KernelConfig kc = new(new Index3D((int)Math.Ceiling(xx4 / grp.X), (int)Math.Ceiling(ki / grp.Y), (int)Math.Ceiling(ks / grp.Z)), new((int)grp.X, (int)grp.Y, (int)grp.Z));
 
@@ -1663,15 +1660,13 @@ namespace ScaleSmooth
                     ProgressText.Text = ((int)progress).ToString();//oi/ki or center? accuracy analyze
                     accelerator.Synchronize();//2bit -> Smooth?
 
-                    progress += step85; //contrast +80?
-                    ProgressText.Text = ((int)progress).ToString();//определить края монохромным, потом smooth?
+                    progress += step89; //contrast +80?
                     ttl(new Index2D(ni, ns), riRG.View, riGG.View, riBG.View, risG.View, intG.View);
+                    ProgressText.Text = ((int)progress).ToString();//contrast+80->Furry/Smooth
                     accelerator.Synchronize();
-
-                    progress += step4;
-                    ProgressText.Text = ((int)progress).ToString();
                 }
             }
+
             ProgressText.Text = "99";
             rR = riRG.View.SubView(new Index3D(0, 0, 0), new Index3D(ni, ns, 1)).GetAsArray3D();
             rG = riGG.View.SubView(new Index3D(0, 0, 0), new Index3D(ni, ns, 1)).GetAsArray3D();
@@ -7852,7 +7847,7 @@ namespace ScaleSmooth
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortBilApprox);
                     label6.Text = "A clearly defined grid structure and Gibbs ringing artifacts are present, but even if these shortcomings are not removed with other tools, it is more accurate than Lanczos and clearer than Lanczos and Bicubic\r\n\r\nVery very fast - Very slow, and you can't process multiple images at the same time without losing speed";
                     checkBox1.Visible = true;
-                    break; //GPU //Can't?
+                    break;
             }
         }
 
