@@ -19,7 +19,7 @@ Threshold, autoThreshold, Mean Cuvatute Blur, Median Blur, adjustment by Lanczos
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoText.png"/></td><td>
 
 # 🏃 Run
-(required Windows 7?-10+ x64, .NET 8.0+) 
+(required Windows 7?-10.0.19041+ x64, .NET 8.0+) 
 - Download <a href="https://github.com/no4ni/scaleSmooth/raw/main/run/scaleSmooth-WinX64.zip">release</a>
 - Extract
 - Run .exe<br>
@@ -29,7 +29,7 @@ Threshold, autoThreshold, Mean Cuvatute Blur, Median Blur, adjustment by Lanczos
   <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoSmoothRough.png"/>
 
 # 🛠 Using in your projects
-- Just copy necessary function (**ScaleSmoothGray** / **ScaleSmoothColor** / **ScaleRoughGray** and S255 / **ScaleRoughColor** and S255 / **ScaleFurryGray** and S255 / **ScaleFurryColor** and S255 / **ContrastBoldScaleGray** and S255f / **ContrastBoldScaleColor** and S255f / **BoldScaleGray** and S255f / **BoldScaleColor** and S255f / **ScaleSeparateGray**, Quadrilateral and Bilinear / **ScaleSeparateColor**, Quadrilateral and Bilinear / **ScaleBilinearApproximationGray**, Dist4 and Bilinear / **ScaleBilinearApproximationColor**, Dist4 and Bilinear) (you can harmless remove ProgressText from code)
+- Just copy necessary function (**ScaleSmoothGray** / **ScaleSmoothColor** / **ScaleRoughGray** and S255 / **ScaleRoughColor** and S255 / **ScaleFurryGray** and S255 / **ScaleFurryColor** and S255 / **ContrastBoldScaleGray** and S255f / **ContrastBoldScaleColor** and S255f / **BoldScaleGray** and S255f / **BoldScaleColor** and S255f / **ScaleSeparateGray**, Quadrilateral and Bilinear / **ScaleSeparateColor**, Quadrilateral and Bilinear / **ScaleBilinearApproximationGray[GPU/Auto]**, Dist4 and Bilinear / **ScaleBilinearApproximationColor[GPU/Auto]**, Dist4 and Bilinear) (you can harmless remove ProgressText from code)
 - Call it with parameters (**image** as type Image, int **scale** (2-255), int **accuracy** - where 0 is fast, 100 is accurate)
 - It returns new image as type **Image** <br>
 
