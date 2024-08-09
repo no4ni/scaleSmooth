@@ -180,6 +180,7 @@
             trackBar1.TabIndex = 11;
             trackBar1.TickFrequency = 25;
             trackBar1.Value = 42;
+            trackBar1.Scroll += trackBar1_Scroll;
             trackBar1.KeyPress += DefaultIs42;
             // 
             // label2
@@ -293,7 +294,6 @@
             checkBox1.ThreeState = true;
             checkBox1.UseVisualStyleBackColor = true;
             checkBox1.Visible = false;
-            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
             // 
             // button5
             // 

@@ -1,4 +1,4 @@
-using ILGPU;
+ï»¿using ILGPU;
 using ILGPU.Runtime;
 using ScaleSmooth.Properties;
 using System.Diagnostics;
@@ -26,7 +26,7 @@ namespace ScaleSmooth
         private void button1_Click(object sender, EventArgs e)
         {
             using OpenFileDialog openFileDialog = new();
-            openFileDialog.Filter = "Raster image|*.png;*.jpg;*.bmp;*.gif";
+            openFileDialog.Filter = "Raster image|*.png;*.jpg;*.bmp;*.gif;*.jpeg";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 lastfile = @openFileDialog.FileName;
@@ -125,7 +125,8 @@ namespace ScaleSmooth
                         }
                         break;
                     case "neighborSubpixel":
-                        pictureBox1.Image = NeighborSubpixelGray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                        for (int i = 0; i < 100; i++)
+                            pictureBox1.Image = NeighborSubpixelGray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                         break;
                 }
             }
@@ -269,7 +270,7 @@ namespace ScaleSmooth
             }
 #endif
             if (ac < 1) ac = 1;
-            int ni, ns, oi, os, oim, osm;
+            int ni, ns, oi, os, oim, osm; //ushort all?
             int xx4 = 4 * x * x;
             int xx2 = xx4 / 2;
             int xx = xx2 / 2;
@@ -284,12 +285,12 @@ namespace ScaleSmooth
             short[,,] ri = new short[ni, ns, 1];
             byte[,] sr = GrayFromBMP(img, 0, 0, 0, 0, oi, os);
 
-            int ki = (int)MathF.Ceiling(oim * ac / 100f);
+            int ki = (int)MathF.Ceiling(oim * ac / 100f);//nint?
             int ks = (int)MathF.Ceiling(osm * ac / 100f);
             int kiks = ki * ks + 1;
             ulong nins = (ulong)(ni * ns * 6);
             int rki = 1;
-            int oiki = ac;
+            int oiki = ac;//?
             if (nins * (ulong)kiks > mem)
             {
                 ac = (int)(Math.Sqrt((mem / (float)nins - 1) / (oim * osm / 10000f)));
@@ -315,7 +316,6 @@ namespace ScaleSmooth
             float halfx = x / 2f;
             float x2p = halfx + 0.5f;
             float sqeq = 1 / (1f + 2 * x + xx);
-
 
             var center = accelerator.LoadStreamKernel(
                 (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
@@ -798,7 +798,7 @@ namespace ScaleSmooth
             }
         });
 
-            int threadsPerGroup = accelerator.Device.WarpSize;
+            int threadsPerGroup = accelerator.Device.WarpSize; //short
 
             var ttl = accelerator.LoadAutoGroupedStreamKernel(
         (Index2D ii, ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints) =>
@@ -822,7 +822,8 @@ namespace ScaleSmooth
             {
                 for (int srk = 0; srk < rki; srk++)
                 {
-                    intG = accelerator.Allocate1D<int>([x, x - 1, oi, os, oim, kiks, 2 * x, ki, oim / 2 - ki / 2, osm / 2 - ks / 2, xx2, xx, oiki, irk, osm, srk, xx4,ski,sks]);
+                    //ushorts??
+                    intG = accelerator.Allocate1D<int>([x, x - 1, oi, os, oim, kiks, 2 * x, ki, oim / 2 - ki / 2, osm / 2 - ks / 2, xx2, xx, oiki, irk, osm, srk, xx4, ski, sks]);
                     Vector3 grp = FitToVolumeByX(xx4, accelerator.Device.MaxGroupSize, threadsPerGroup);
                     KernelConfig kc = new(new Index3D((int)Math.Ceiling(xx4 / grp.X), (int)Math.Ceiling(ki / grp.Y), (int)Math.Ceiling(ks / grp.Z)), new((int)grp.X, (int)grp.Y, (int)grp.Z));
 
@@ -917,12 +918,12 @@ namespace ScaleSmooth
             short[,,] rB = new short[ni, ns, 1];
             byte[,,] sr = RGBfromBMP(img, 0, 0, 0, 0, oi, os);
 
-            int ki = (int)MathF.Ceiling(oim * ac / 100f);
+            int ki = (int)MathF.Ceiling(oim * ac / 100f);//nint
             int ks = (int)MathF.Ceiling(osm * ac / 100f);
             int kiks = ki * ks + 1;
             ulong nins = (ulong)(ni * ns * 10);
             int rki = 1;
-            int oiki = ac;
+            int oiki = ac;//?
             if (nins * (ulong)kiks > mem)
             {
                 ac = (int)(Math.Sqrt((mem / (float)nins - 1) / (oim * osm / 10000f)));
@@ -1626,7 +1627,7 @@ namespace ScaleSmooth
             {
                 for (int srk = 0; srk < rki; srk++)
                 {
-                    intG = accelerator.Allocate1D<int>([x, x - 1, oi, os, oim, kiks, 2 * x, ki, oim / 2 - ki / 2, osm / 2 - ks / 2, xx2, xx, oiki, irk, osm, srk, xx4,ski,sks]);
+                    intG = accelerator.Allocate1D<int>([x, x - 1, oi, os, oim, kiks, 2 * x, ki, oim / 2 - ki / 2, osm / 2 - ks / 2, xx2, xx, oiki, irk, osm, srk, xx4, ski, sks]);
                     Vector3 grp = FitToVolumeByX(xx4, accelerator.Device.MaxGroupSize, threadsPerGroup);
                     KernelConfig kc = new(new Index3D((int)Math.Ceiling(xx4 / grp.X), (int)Math.Ceiling(ki / grp.Y), (int)Math.Ceiling(ks / grp.Z)), new((int)grp.X, (int)grp.Y, (int)grp.Z));
 
@@ -1757,7 +1758,7 @@ namespace ScaleSmooth
 
         private static float Dist2Left(int i, int s, float cx, float cy, float x2) //private static OR static? time?
         {
-            if (s < cy) //how to get rid IF??? formula of letter W?
+            if (s < cy) //parabola?
             {
                 return cx - i - x2 + Math.Abs(s - cy + x2);
             }
@@ -1823,6 +1824,34 @@ namespace ScaleSmooth
             NaiveExtrapolation(sr, oi, os);
 
             return BMPfromGray(sr, oi + 2, os + 2);
+            /*byte[,,] sr = RGBfromBMP(img, 1, 1, 1, 1, oi, os);
+            byte[,] srR = new byte[oi + 2, os + 2];
+            byte[,] srG = new byte[oi + 2, os + 2];
+            byte[,] srB = new byte[oi + 2, os + 2];
+            for (int i = 0; i < oi + 2; i++)
+            {
+                for (int s = 0; s < os + 2; s++)
+                {
+                    srR[i, s] = sr[i, s, 0];
+                    srG[i, s] = sr[i, s, 1];
+                    srB[i, s] = sr[i, s, 2];
+                }
+            }
+            NaiveExtrapolation(srR, oi, os);
+            NaiveExtrapolation(srG, oi, os);
+            NaiveExtrapolation(srB, oi, os);
+            int o = 2;
+            if (os < 1416) o = 0;
+            for (int i = 0; i < oi + 2; i++)
+            {
+                for (int s = o/2; s < os + 2; s++)
+                {
+                    sr[i, s - o / 2, 0] = srR[i, s];
+                    sr[i, s - o / 2, 1] = srG[i, s];
+                    sr[i, s - o / 2, 2] = srB[i, s];
+                }
+            }
+            return BMPfromRGB(sr, oi + 2, os + 2 - o);*/
         }
 
         static byte[,] GrayFromBMP(Image img, int marginLeft, int marginRight, int marginTop, int marginBottom, int w, int h) //RGBA, after optimization
@@ -7006,7 +7035,7 @@ namespace ScaleSmooth
             r1 = r21 * rq1 + r12 * rq2;
             r2 = r34 * rq4 + r43 * rq3;
             res[0] = (short)(ry2y * r1 + yry1 * r2 + 0.5);
-            if (double.IsNaN(res[0])) //â êàêîì ñëó÷àå - îïòèìèçèðîâàòü?
+            if (double.IsNaN(res[0])) //Ð² ÐºÐ°ÐºÐ¾Ð¼ ÑÐ»ÑƒÑ‡Ð°Ðµ - Ð¾Ð¿Ñ‚Ð¸Ð¼Ð¸Ð·Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ?
             {
                 res[0] = (short)((r1 + r2) / 2 + 0.5);
             }
@@ -7053,19 +7082,19 @@ namespace ScaleSmooth
 
         static short Bilinear(int x, int y, double x1, double y1, double x2, double y2, double q1, double q2, double q3, double q4)
         {
-            double r1, r2, r12, r21, d21, y21;
+            double r1, r2, r12, r21, d21, y21; //float?
             d21 = x2 - x1;
             r21 = (x2 - x) / d21;
             r12 = (x - x1) / d21;
             r1 = r21 * q1 + r12 * q2;
             r2 = r21 * q4 + r12 * q3;
             y21 = y2 - y1;
-            return (short)((y2 - y) / y21 * r1 + (y - y1) / y21 * r2 + 0.5);
+            return (short)((y2 - y) / y21 * r1 + (y - y1) / y21 * r2 + 0.5); // /d21 one div?
         }
 
         static short[] Bilinear3(int x, int y, double x1, double y1, double x2, double y2, double q1r, double q2r, double q3r, double q4r, double q1g, double q2g, double q3g, double q4g, double q1b, double q2b, double q3b, double q4b)
         {
-            double r1r, r2r, r1g, r2g, r1b, r2b, r12, r21, d21, y21;
+            double r1r, r2r, r1g, r2g, r1b, r2b, r12, r21, d21, y21; //float?
             d21 = x2 - x1;
             y21 = y2 - y1;
             r21 = (x2 - x) / d21;
@@ -7082,13 +7111,12 @@ namespace ScaleSmooth
         }
 
 
-        private Bitmap ScaleBilinearApproximationGray(Image img, int x, int ac) //color also
+        private Bitmap ScaleBilinearApproximationGray(Image img, int x, int ac)//after nupkg, application and project
         {
-            if (ac < 1) ac = 1; //all Approx!
+            if (ac < 1) ac = 1;
             int ni, ns, oi, os, xm, oim, osm, sxx, sxxm, ixx, ixxm;
-            float x50p;
-            float halfx = (float)x / 2;
-            x50p = halfx - 0.5f;
+            float halfx = x / 2f;
+            float x50p = halfx - 0.5f;
 
             oi = img.Width;
             os = img.Height;
@@ -7097,38 +7125,37 @@ namespace ScaleSmooth
             oim = oi - 1;
             osm = os - 1;
             xm = x - 1;
-            short[,] r = new short[ni, ns];//nint?
+            short[,] r = new short[ni, ns];
             short[,] ri = new short[ni, ns];
             float[,] ris = new float[ni, ns];
-            byte[,] sr = GrayFromBMP(img, 0, 0, 0, 0, oi, os);//*2?
+            byte[,] sr = GrayFromBMP(img, 0, 0, 0, 0, oi, os);
 
             float xs = oim / 2f, ys = osm / 2f;
             float nxs = (ni - 1) / 2f, nys = (ns - 1) / 2f;
 
-            float ki = MathF.Ceiling(oim * ac / 100f); //float???? int
-            float ks = MathF.Ceiling(osm * ac / 100f); //all Approx Ceiling!
+            int ki = (int)MathF.Ceiling(oim * ac / 100f);
+            int ks = (int)MathF.Ceiling(osm * ac / 100f);
             float ki2 = ki - 1;
             float ks2 = ks - 1;
-            //oiki
+            int oiki = (int)(oim / (float)ki + 0.5f);
 
-            float k = 4f; //-8 - only Gibbs ringing, 0 - save derivative with Gibbs ringing; 8 - save mean value 
-            for (int kki = (int)(xs - ki / 2); kki < xs + ki / 2 - 0.5f; kki++)
+            float k = -4f; //+8 - only Gibbs ringing, 0 - save derivative with Gibbs ringing; -8 - save mean value 
+            for (int kki = 0; kki < ki * oiki; kki += oiki)//after ALL, -4 sub +8/2??? as clear Gibbs ringing???
             {
-                ProgressText.Text = ((int)((kki - (int)(xs - ki / 2) + 1) / (ki + 2) * 100)).ToString();
-                for (int kks = (int)(ys - ks / 2); kks < ys + ks / 2 - 0.5f; kks++)
+                ProgressText.Text = (kki * 100 / oim).ToString();
+                for (int kks = 0; kks < ks * oiki; kks += oiki)
                 {
-                    float xsx = kki * x + x50p;
-                    float xsxp = xsx + x;
-                    float ysx = kks * x + x50p;
-                    float ysxp = ysx + x;
-                    int ys2x = (kks + 2) * x;
-
+                    int ixsx = kki * x;
                     int iysx = kks * x;
+                    float xsx = ixsx + x50p;
+                    float xsxp = xsx + x;
+                    float ysx = iysx + x50p;
+                    float ysxp = ysx + x;
+
                     int iysxp = iysx + xm;
                     int iysxpi = iysxp + 1;
                     int iysxpp = iysxpi + xm;
-
-                    int ixsx = kki * x;
+                    int ys2x = iysxpp + 1;
                     int ixsxp = ixsx + xm;
                     int ixsxpi = ixsxp + 1;
                     float cx = ixsxp + 0.5f;
@@ -7136,18 +7163,18 @@ namespace ScaleSmooth
                     int ixsxpp = ixsxpi + xm;
                     int xsp = kki + 1, ysp = kks + 1;
 
-                    Parallel.For(ixsx, (kki + 2) * x, i =>
+                    Parallel.For(ixsx, (kki + 2) * x, i => //center
                     {
                         for (int s = iysx; s < ys2x; s++)
                         {
                             r[i, s] = Bilinear(i, s, xsx, ysx, xsxp, ysxp, sr[kki, kks], sr[xsp, kks], sr[xsp, ysp], sr[kki, ysp]);
-                            float dist = 1 / MathF.Pow(Dist4(i, s, cx, cy, halfx), k);//dist2X? -k!
+                            float dist = MathF.Pow(Dist4(i, s, cx, cy, halfx), k);
                             ri[i, s] = (short)((r[i, s] * dist + ri[i, s] * ris[i, s]) / (dist + ris[i, s]) + 0.5f);
                             ris[i, s] = dist + ris[i, s];
                         }
                     });
 
-                    for (int ix = kki + 2; ix < oi; ix++)
+                    for (int ix = kki + 2; ix < oi; ix++) //right
                     {
                         int dixxm = ix * x;
                         ixxm = dixxm - 1;
@@ -7159,14 +7186,14 @@ namespace ScaleSmooth
                             for (int s = iysx; s < ys2x; s++)
                             {
                                 r[i, s] = Bilinear(i, s, ixxm, ysx, dixxp, ysxp, (r[ixxm, iysx] + r[ixxm, iysxp]) / 2, sr[ix, kks], sr[ix, kks + 1], (r[ixxm, iysxpi] + r[ixxm, iysxpp]) / 2);
-                                float dist = 1 / MathF.Pow(Dist4(i, s, cx, cy, halfx), k);
+                                float dist = MathF.Pow(Dist2Right(i, s, cx, cy, halfx), k);
                                 ri[i, s] = (short)((r[i, s] * dist + ri[i, s] * ris[i, s]) / (dist + ris[i, s]) + 0.5f);
                                 ris[i, s] = dist + ris[i, s];
                             }
                         });
                     }
 
-                    for (int ix = kki - 1; ix > -1; ix--)
+                    for (int ix = kki - 1; ix > -1; ix--) //left
                     {
                         int dixx = ix * x;
                         int dixxp = dixx + x;
@@ -7174,18 +7201,18 @@ namespace ScaleSmooth
 
                         Parallel.For(dixx, dixxp, i =>
                         {
-                            for (int s = iysx; s < ys2x; s++) //bilinear s -> precalc -> ñðàâíåíèå.txt -> toColor
+                            for (int s = iysx; s < ys2x; s++)
                             {
                                 r[i, s] = Bilinear(i, s, dixxm, ysx, dixxp, ysxp, sr[ix, kks], (r[dixxp, iysx] + r[dixxp, iysxp]) / 2, (r[dixxp, iysxpi] + r[dixxp, iysxpp]) / 2, sr[ix, kks + 1]);
-                                float dist = 1 / MathF.Pow(Dist4(i, s, cx, cy, halfx), k);
+                                float dist = MathF.Pow(Dist2Left(i, s, cx, cy, halfx), k);
                                 ri[i, s] = (short)((r[i, s] * dist + ri[i, s] * ris[i, s]) / (dist + ris[i, s]) + 0.5f);
                                 ris[i, s] = dist + ris[i, s];
                             }
                         });
                     }
 
-                    int xs2x = (kki + 2) * x;
-                    for (int sx = kks + 2; sx < os; sx++)
+                    int xs2x = ixsxpp + 1;
+                    for (int sx = kks + 2; sx < os; sx++) //bottom
                     {
                         int dsxxm = sx * x;
                         sxxm = dsxxm - 1;
@@ -7197,14 +7224,14 @@ namespace ScaleSmooth
                             for (int s = dsxxm; s < dsxx; s++)
                             {
                                 r[i, s] = Bilinear(i, s, xsx, sxxm, xsxp, dsxxp, (r[ixsx, sxxm] + r[ixsxp, sxxm]) / 2, (r[ixsxpi, sxxm] + r[ixsxpp, sxxm]) / 2, sr[kki + 1, sx], sr[kki, sx]);
-                                float dist = 1 / MathF.Pow(Dist4(i, s, cx, cy, halfx), k);
+                                float dist = MathF.Pow(Dist2Bottom(i, s, cx, cy, halfx), k);
                                 ri[i, s] = (short)((r[i, s] * dist + ri[i, s] * ris[i, s]) / (dist + ris[i, s]) + 0.5f);
                                 ris[i, s] = dist + ris[i, s];
                             }
                         });
                     }
 
-                    for (int sx = kks - 1; sx > -1; sx--)
+                    for (int sx = kks - 1; sx > -1; sx--) //top
                     {
                         int dsxx = sx * x;
                         sxxm = dsxx + x;
@@ -7215,14 +7242,14 @@ namespace ScaleSmooth
                             for (int s = dsxx; s < sxxm; s++)
                             {
                                 r[i, s] = Bilinear(i, s, xsx, dsxxm, xsxp, sxxm, sr[kki, sx], sr[xsp, sx], (r[ixsxpi, sxxm] + r[ixsxpp, sxxm]) / 2, (r[ixsx, sxxm] + r[ixsxp, sxxm]) / 2);
-                                float dist = 1 / MathF.Pow(Dist4(i, s, cx, cy, halfx), k);
+                                float dist = MathF.Pow(Dist2Top(i, s, cx, cy, halfx), k);
                                 ri[i, s] = (short)((r[i, s] * dist + ri[i, s] * ris[i, s]) / (dist + ris[i, s]) + 0.5f);
                                 ris[i, s] = dist + ris[i, s];
                             }
                         });
                     }
-
-                    for (int sx = kks + 2; sx < os; sx++)
+                    float cxcyx = cx + x + cy;
+                    for (int sx = kks + 2; sx < os; sx++) //rightbottom
                     {
                         for (int ix = kki + 2; ix < oi; ix++)
                         {
@@ -7239,10 +7266,11 @@ namespace ScaleSmooth
 
                             Parallel.For(dixxm, dixx, i =>
                             {
+                                float cxcyxi = i - cxcyx;
                                 for (int s = dsxxm; s < dsxx; s++)
                                 {
                                     r[i, s] = Bilinear(i, s, ixxm, sxxm, dixxp, dsxxp, r[ixxm, sxxm], (r[dixxm, sxxm] + r[iixx, sxxm]) / 2, sr[ix, sx], (r[ixxm, dsxxm] + r[ixxm, isxx]) / 2);
-                                    float dist = 1 / MathF.Pow(Dist4(i, s, cx, cy, halfx), k);
+                                    float dist = MathF.Pow(cxcyxi + s, k);
                                     ri[i, s] = (short)((r[i, s] * dist + ri[i, s] * ris[i, s]) / (dist + ris[i, s]) + 0.5f);
                                     ris[i, s] = dist + ris[i, s];
                                 }
@@ -7250,7 +7278,8 @@ namespace ScaleSmooth
                         }
                     }
 
-                    for (int sx = kks - 1; sx > -1; sx--)
+                    cxcyx = cx - x + cy;
+                    for (int sx = kks - 1; sx > -1; sx--) //lefttop
                     {
                         for (int ix = kki - 1; ix > -1; ix--)
                         {
@@ -7265,10 +7294,11 @@ namespace ScaleSmooth
 
                             Parallel.For(dixxm, ixxm, i =>
                             {
+                                float cxcyxi = cxcyx - i;
                                 for (int s = dsxxm; s < sxxm; s++)
                                 {
                                     r[i, s] = Bilinear(i, s, dixxp, dsxxp, ixxm, sxxm, sr[ix, sx], (r[ixxm, dsxxm] + r[ixxm, isxx]) / 2, r[ixxm, sxxm], (r[dixxm, sxxm] + r[iixx, sxxm]) / 2);
-                                    float dist = 1 / MathF.Pow(Dist4(i, s, cx, cy, halfx), k);
+                                    float dist = MathF.Pow(cxcyxi - s, k);
                                     ri[i, s] = (short)((r[i, s] * dist + ri[i, s] * ris[i, s]) / (dist + ris[i, s]) + 0.5f);
                                     ris[i, s] = dist + ris[i, s];
                                 }
@@ -7276,7 +7306,8 @@ namespace ScaleSmooth
                         }
                     }
 
-                    for (int sx = kks + 2; sx < os; sx++)
+                    cxcyx = cx - x - cy;
+                    for (int sx = kks + 2; sx < os; sx++) //leftbottom
                     {
                         for (int ix = kki - 1; ix > -1; ix--)
                         {
@@ -7288,14 +7319,15 @@ namespace ScaleSmooth
                             int dixxm = ix * x;
                             int dixx = dixxm + x;
                             int iixx = dixx - 1;
-                            float dixxp = dixxm + x50p;
+                            float dixxp = dixxm + x50p;//after AVX2, update shorts
 
                             Parallel.For(dixxm, dixx, i =>
                             {
+                                float cxcyxi = cxcyx - i;
                                 for (int s = sxx; s < dsxx; s++)
                                 {
                                     r[i, s] = Bilinear(i, s, dixxp, isxxm, dixx, dsxxp, (r[dixxm, isxxm] + r[iixx, isxxm]) / 2, r[dixx, isxxm], (r[dixx, isxx] + r[dixx, sxx]) / 2, sr[ix, sx]);
-                                    float dist = 1 / MathF.Pow(Dist4(i, s, cx, cy, halfx), k);
+                                    float dist = MathF.Pow(cxcyxi + s, k);//precalc
                                     ri[i, s] = (short)((r[i, s] * dist + ri[i, s] * ris[i, s]) / (dist + ris[i, s]) + 0.5f);
                                     ris[i, s] = dist + ris[i, s];
                                 }
@@ -7303,7 +7335,8 @@ namespace ScaleSmooth
                         }
                     }
 
-                    for (int ix = kki + 2; ix < oi; ix++)
+                    cxcyx = cy - x - cx;
+                    for (int ix = kki + 2; ix < oi; ix++) //righttop
                     {
                         for (int sx = kks - 1; sx > -1; sx--)
                         {
@@ -7322,7 +7355,7 @@ namespace ScaleSmooth
                                 for (int s = sxx; s < dsxx; s++)
                                 {
                                     r[i, s] = Bilinear(i, s, ixxm, dsxxp, dixxp, dsxx, (r[ixxm, sxx] + r[ixxm, isxx]) / 2, sr[ix, sx], (r[ixx, dsxx] + r[iixx, dsxx]) / 2, r[ixxm, dsxx]);
-                                    float dist = 1 / MathF.Pow(Dist4(i, s, cx, cy, halfx), k);
+                                    float dist = MathF.Pow(i - s + cxcyx, k);
                                     ri[i, s] = (short)((r[i, s] * dist + ri[i, s] * ris[i, s]) / (dist + ris[i, s]) + 0.5f);
                                     ris[i, s] = dist + ris[i, s];
                                 }
@@ -7349,8 +7382,11 @@ namespace ScaleSmooth
             return BMPfromGray(rb, ni, ns);
         }
 
+
+
         private Bitmap ScaleBilinearApproximationColor(Image img, int x, int ac)
         {
+            if (ac < 1) ac = 1;
             int ni, ns, oi, os, xm, oim, osm, sxx, sxxm, ixx, ixxm;
             float halfx = (float)x / 2;
             float x50p = halfx - 0.5f;
@@ -7370,7 +7406,7 @@ namespace ScaleSmooth
             float xs = oim / 2f, ys = osm / 2f;
             float nxs = (ni - 1) / 2f, nys = (ns - 1) / 2f;
 
-            float ki = oim * ac / 100; /////////////? int!
+            float ki = oim * ac / 100; /////////////? int! Ceiling
             float ks = osm * ac / 100;
             float ki2 = ki - 1;
             float ks2 = ks - 1;
@@ -7379,6 +7415,7 @@ namespace ScaleSmooth
             {
                 for (int kki = 0; kki < oim; kki += 2)
                 {
+                    //ProgressText.Text = ((int)((kki - (xs - ki / 2f) + 1) / (ki + 2) * 100)).ToString();
                     ProgressText.Text = ((int)(kki * 100 / oim / (ki + 2))).ToString();
                     for (int kks = 0; kks < osm; kks += 2)
                     {
@@ -7756,11 +7793,19 @@ namespace ScaleSmooth
         {
             if (Settings.Default.location != new Size(777, 777)) this.Location = (Point)Settings.Default.location;
             //fit to screen
-            comboBox1.SelectedIndex = Settings.Default.method; //translate to Russian
+            if (Settings.Default.method > comboBox1.Items.Count - 1)
+            {
+                comboBox1.SelectedIndex = 0; //translate to Russian
+            }
+            else
+            {
+                comboBox1.SelectedIndex = Settings.Default.method; //translate to Russian
+            }
+
             switch (Settings.Default.gpu)
             {
                 case 0:
-                    checkBox1.CheckState = CheckState.Unchecked;
+                    checkBox1.CheckState = CheckState.Unchecked;//separate -> smooth/rough
                     break;
                 case 1:
                     checkBox1.CheckState = CheckState.Checked;
@@ -7913,12 +7958,21 @@ namespace ScaleSmooth
         private void DefaultIs42(object sender, KeyPressEventArgs e)
         {
             trackBar1.Value = 42;
+            label2.Text = "Fast                       Accurate";
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e) //nupkg AFTER ALL!!
+        private void trackBar1_Scroll(object sender, EventArgs e)//nupkg AFTER ALL!!
         {
-            //////GPU may be littelittlelittelittlelittelittle worst/best??? accurate
-            ///AutoMode
+            int sp;
+            if (trackBar1.Value < 42)
+            {
+                sp = trackBar1.Value * 9 / 42;
+            }
+            else
+            {
+                sp = (trackBar1.Value - 42) * 10 / 58 + 9;
+            }
+            label2.Text = "Fast " + new String(' ', sp) + trackBar1.Value + new String(' ', 19 - sp) + " Accurate";
         }
     }
 
