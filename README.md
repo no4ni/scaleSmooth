@@ -63,11 +63,11 @@ Typographic raster stylization, but if bigger version must be monochrome image i
 Very slow, but you can process multiple images at the same time without losing speed<br><br>
 
 - **scaleSeparate**<br>
-Gives beatiful, but almost monochrome result and there are Gibbs ringing artifacts<br>
+Gives beatiful, but almost monochrome result and there are Gibbs ringing artifacts (to avoid you can try several times x2-x4)<br>
 Very very fast - fast, but you can't process multiple images at the same time without losing speed<br><br>
 
 - **scaleBilinearApproximation**<br>
-A clearly defined grid structure and Gibbs ringing artifacts are present, but even if these shortcomings are not removed with other tools, it is more accurate than Lanczos and clearer than Lanczos and Bicubic<br>
+A clearly defined grid structure (to avoid you can try several times x2), but it's better than nearest neighbour<br>
 Very very fast - Very slow, and you can't process multiple images at the same time without losing speed<br><br>
 
 You can increase speed instead of accuracy and vice versa<br><br>
