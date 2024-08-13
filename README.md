@@ -67,7 +67,7 @@ Gives beatiful, but almost monochrome result and there are Gibbs ringing artifac
 Very very fast - fast, but you can't process multiple images at the same time without losing speed<br><br>
 
 - **scaleBilinearApproximation**<br>
-A clearly defined grid structure (to avoid you can try several times x2), but it's better than nearest neighbour<br>
+A clearly defined grid structure and may be present Gibbs ringing artifacts (to avoid them you can try several times x2), but it's better than nearest neighbour<br>
 Very very fast - Very slow, and you can't process multiple images at the same time without losing speed<br><br>
 
 You can increase speed instead of accuracy and vice versa<br><br>
