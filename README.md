@@ -31,8 +31,8 @@ Threshold, autoThreshold, Mean Cuvatute Blur, Median Blur, adjustment by Lanczos
   <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoSmoothRough.png"/>
 
 # 🛠 Using in your projects
-- Just copy necessary function (**ScaleSmoothGray** / **ScaleSmoothColor** / **ScaleRoughGray** and S255 / **ScaleRoughColor** and S255 / **ScaleFurryGray** and S255 / **ScaleFurryColor** and S255 / **ContrastBoldScaleGray** and S255f / **ContrastBoldScaleColor** and S255f / **BoldScaleGray** and S255f / **BoldScaleColor** and S255f / **ScaleSeparateGray**, Quadrilateral and Bilinear / **ScaleSeparateColor**, Quadrilateral and Bilinear / **ScaleBilinearApproximationGray[GPU/Auto]**, Dist4 and Bilinear / **ScaleBilinearApproximationColor[GPU/Auto]**, Dist4 and Bilinear) (you can harmless remove ProgressText from code)
-- Call it with parameters (**image** as type Image, int **scale** (2-255), int **accuracy** - where 0 is fast, 100 is accurate)
+- Just copy necessary function and it's subfunctions (f.e. **ScaleSmoothGray** / **ScaleSmoothColor** / **ScaleRoughGray** and S255 / **ScaleRoughColor** and S255 / **ScaleFurryGray** and S255 / **ScaleFurryColor** and S255 / **ContrastBoldScaleGray** and S255f / **ContrastBoldScaleColor** and S255f / **BoldScaleGray** and S255f / **BoldScaleColor** and S255f / **ScaleSeparateGray**, Quadrilateral and Bilinear / **ScaleSeparateColor**, Quadrilateral and Bilinear / **ScaleBilinearApproximationGray[GPU/Auto]**, Dist4 and Bilinear / **ScaleBilinearApproximationColor[GPU/Auto]**, Dist4 and Bilinear) (for GPU version install and using ILGPU and ILGPU.Algorithms packet) (you can harmless remove ProgressText from code)
+- Call it with parameters (**image** as type Image, int **scale**, int **accuracy** - where 0 is fast, 100 is accurate)
 - It returns new image as type **Image** <br>
 
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoBold.png"/>
@@ -45,6 +45,10 @@ Very fast - Slow, and you can process multiple images at the same time without l
 - **scaleSmoothContinuous**<br>
 Most accurate for scenes where objects extend beyond the boundaries of the image, but little bit blurred (much less than any interpolation) and grid structure is still visible<br>
 Very fast - Slow, and you can process multiple images at the same time without losing speed (just run function in other thread or run .exe one more time)<br><br>
+
+- **scaleSmoothContinuous**<br>
+Very smooth, after reverse adjustment - most accurate for any scenes, but very contrast and grid structure is still visible\r\n\r\nSlow, but you can process multiple images at the same time without losing speed<br>
+Slow?, but you can process multiple images at the same time without losing speed (just run function in other thread or run .exe one more time)<br><br>
 
 - **boldScale**<br>
 Grid structure, little bit noisy and contrasty (for accuracy, subsequent reverse correction is desirable) and too small details may lost<br>
