@@ -3,7 +3,9 @@ Algorithms for most-accurate upscaling image **without AI and neural network**<b
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoSmooth.png"/><br>
 (gray or color/ smooth, rough, furry, separate, approximation, bold or contrastBold / fast or accuracy variants available)<br>
 <div align="center"><a href="https://dzen.ru/suite/b70ea5e2-65bd-49ea-b0e4-49fc31e96df6">Мои эксперименты с изображениями</a><br>
-Объяснение принипа работы и больше примеров и сравнений в FullHD: <a href="https://dzen.ru/video/watch/6633aca1aef1ff543f59646e">#1</a>, <a href="https://dzen.ru/video/watch/66655d8129a5762762127928">#2</a>  
+Объяснение принипа работы, визуализация и больше примеров и сравнений в видео FullHD: <a href="https://dzen.ru/video/watch/6633aca1aef1ff543f59646e">#1</a>, <a href="https://dzen.ru/video/watch/66655d8129a5762762127928">#2</a><br>
+Теория и объяснение в тексте и картинках: <a href="https://habr.com/ru/articles/812619/">#1</a>, <a href="https://habr.com/ru/articles/821309/">#2</a>
+  
   <br><br>
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoContrastBold.png"/><br><br>
 <b>Free and Open Source Image Upscaler</b></div><br>
@@ -61,11 +63,11 @@ Typographic raster stylization, but if bigger version must be monochrome image i
 Very slow, but you can process multiple images at the same time without losing speed<br><br>
 
 - **scaleSeparate**<br>
-Gives beatiful, but almost monochrome result and there are Gibbs ringing artifacts<br>
+Gives beatiful, but almost monochrome result and there are Gibbs ringing artifacts (to avoid you can try several times x2-x4)<br>
 Very very fast - fast, but you can't process multiple images at the same time without losing speed<br><br>
 
 - **scaleBilinearApproximation**<br>
-A clearly defined grid structure and Gibbs ringing artifacts are present, but even if these shortcomings are not removed with other tools, it is more accurate than Lanczos and clearer than Lanczos and Bicubic<br>
+A clearly defined grid structure and may be present Gibbs ringing artifacts, but it's better than nearest neighbour<br>
 Very very fast - Very slow, and you can't process multiple images at the same time without losing speed<br><br>
 
 You can increase speed instead of accuracy and vice versa<br><br>
