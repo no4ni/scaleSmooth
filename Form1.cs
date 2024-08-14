@@ -35,7 +35,7 @@ namespace ScaleSmooth
             }
             StopWatchLabel.Visible = false;
             label3.Text = pictureBox1.Image.Width + "x" + pictureBox1.Image.Height;
-        } //color - pictogram interface, after YUVA/HSKBA experiment
+        } //after stage4 (YUVA/HSKBA experiment) -> R?G?B?A -> color - pictogram interface 
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -48,7 +48,7 @@ namespace ScaleSmooth
 
         private void button4_Click(object sender, EventArgs e)
         {
-            Settings.Default.method = comboBox1.SelectedIndex; //translate to Russian after settings
+            Settings.Default.method = comboBox1.SelectedIndex; //after optimization, translate to Russian after settings
             switch (checkBox1.CheckState)
             {
                 case CheckState.Checked:
@@ -67,7 +67,6 @@ namespace ScaleSmooth
                 Settings.Default.channels = 3;
             else
                 Settings.Default.channels = 1;
-            //RGBA after optimization
             Settings.Default.accuracy = (byte)trackBar1.Value;
             Settings.Default.sound = checkBox2.Checked;
             Settings.Default.location = (Size)this.Location;
@@ -94,6 +93,9 @@ namespace ScaleSmooth
                         break;
                     case "scaleSmoothContinuous":
                         pictureBox1.Image = ScaleSmoothContinuousGray(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                        break;
+                    case "scaleSmoothContrast":
+                        pictureBox1.Image = ScaleSmoothContrastGray(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                         break;
                     case "scaleFurry":
                         pictureBox1.Image = ScaleFurryGray(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
@@ -139,6 +141,9 @@ namespace ScaleSmooth
                         break;
                     case "scaleSmoothContinuous":
                         pictureBox1.Image = ScaleSmoothContinuousColor(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                        break;
+                    case "scaleSmoothContrast"://afterALL, shorts
+                        pictureBox1.Image = ScaleSmoothContrastColor(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                         break;
                     case "scaleFurry":
                         pictureBox1.Image = ScaleFurryColor(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
@@ -201,8 +206,8 @@ namespace ScaleSmooth
                 }
             }
             label3.Text = pictureBox1.Image.Width + "x" + pictureBox1.Image.Height;
-            toolTip1.Active = true;//through oi/ki all approx
-        }//all doubles on ALL methods to float?
+            toolTip1.Active = true;
+        }
 
         private Bitmap ScaleBilinearApproximationColorAuto(Image img, int x, int ac)
         {
@@ -254,7 +259,7 @@ namespace ScaleSmooth
             }
         }
 
-        private Bitmap ScaleBilinearApproximationGrayGPU(Image img, int x, int ac)
+        private Bitmap ScaleBilinearApproximationGrayGPU(Image img, int x, int ac) //After ALL, update demo
         {
             Context context = Context.Create(b => b.AllAccelerators().EnableAlgorithms().Optimize(OptimizationLevel.O2).PageLocking(PageLockingMode.Aggressive));
 #if DEBUG
@@ -270,7 +275,7 @@ namespace ScaleSmooth
             }
 #endif
             if (ac < 1) ac = 1;
-            int ni, ns, oi, os, oim, osm; //ushort all?
+            int ni, ns, oi, os, oim, osm;
             int xx4 = 4 * x * x;
             int xx2 = xx4 / 2;
             int xx = xx2 / 2;
@@ -285,12 +290,12 @@ namespace ScaleSmooth
             short[,,] ri = new short[ni, ns, 1];
             byte[,] sr = GrayFromBMP(img, 0, 0, 0, 0, oi, os);
 
-            int ki = (int)MathF.Ceiling(oim * ac / 100f);//nint?
+            int ki = (int)MathF.Ceiling(oim * ac / 100f);
             int ks = (int)MathF.Ceiling(osm * ac / 100f);
             int kiks = ki * ks + 1;
             ulong nins = (ulong)(ni * ns * 6);
             int rki = 1;
-            int oiki = ac;//?
+
             if (nins * (ulong)kiks > mem)
             {
                 ac = (int)(MathF.Sqrt((mem / (float)nins - 1) / (oim * osm / 10000f)));
@@ -306,7 +311,7 @@ namespace ScaleSmooth
                 kiks = ki * ks + 1;
 
             }
-            oiki = (int)(oim / (float)ki + 0.5f);
+            int oiki = (int)(oim / (float)ki + 0.5f);
             int ski = (oi - rki) / 2 / ki;
             int sks = (os - rki) / 2 / ks;
 
@@ -539,7 +544,7 @@ namespace ScaleSmooth
                             float q4 = (ri[ixsx, sxxm, kkikks] + ri[ixsxp, sxxm, kkikks]) / 2;
                             float q3 = (ri[ixsxpi, sxxm, kkikks] + ri[ixsxpp, sxxm, kkikks]) / 2;
                             ry21 = (sxxm - s);
-                            ry12 = (s - dsxxm); //1bit channel! 192thresold ||to2bits
+                            ry12 = (s - dsxxm); //After optimization, 1bit channel! 192thresold ||to2bits
                             rx21 = (xsx + ints[0] - i);
                             rx12 = (i - xsx);
                             ri[i, s, kkikks] = (short)((ry21 * (rx21 * sr[kki, sx] + rx12 * sr[xsp, sx]) + ry12 * (rx21 * q4 + rx12 * q3)) / dbls[2] + 0.5);
@@ -798,7 +803,7 @@ namespace ScaleSmooth
             }
         });
 
-            int threadsPerGroup = accelerator.Device.WarpSize; //short
+            int threadsPerGroup = accelerator.Device.WarpSize;
 
             var ttl = accelerator.LoadAutoGroupedStreamKernel(
         (Index2D ii, ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints) =>
@@ -818,11 +823,11 @@ namespace ScaleSmooth
             float step89 = 87.22f / rki2;
             var dblG = accelerator.Allocate1D<float>([halfx - 0.5f, x - 0.5f, x2p * x, x2p * x2p, halfx, x * 1.5f - 0.5f, x2p, (1f - x) / (x + xx), 2f / (1 + x), (2f - 2 * x) * sqeq, 4f * x * sqeq, 4f * sqeq]);
             var intG = accelerator.Allocate1D<int>(17);
+
             for (int irk = 0; irk < rki; irk++)
             {
                 for (int srk = 0; srk < rki; srk++)
                 {
-                    //ushorts??
                     intG = accelerator.Allocate1D<int>([x, x - 1, oi, os, oim, kiks, 2 * x, ki, oim / 2 - ki / 2, osm / 2 - ks / 2, xx2, xx, oiki, irk, osm, srk, xx4, ski, sks]);
                     Vector3 grp = FitToVolumeByX(xx4, accelerator.Device.MaxGroupSize, threadsPerGroup);
                     KernelConfig kc = new(new Index3D((int)MathF.Ceiling(xx4 / grp.X), (int)MathF.Ceiling(ki / grp.Y), (int)MathF.Ceiling(ks / grp.Z)), new((int)grp.X, (int)grp.Y, (int)grp.Z));
@@ -868,13 +873,13 @@ namespace ScaleSmooth
             accelerator.Dispose();
             context.Dispose();
             byte[,] rb = new byte[ni, ns];
-            Parallel.For(0, ni, i => //avx2
+            Parallel.For(0, ni, i =>
             {
                 for (int s = 0; s < ns; s++)
                 {
                     if (ri[i, s, 0] < 0.5)
-                        rb[i, s] = 0; //0&&0=0  //contrast??? 0x1 - not gray //sobel? AFTER ALL and release
-                    else if (ri[i, s, 0] > 254.5) //AverageBilinear, AFTER ALL and release
+                        rb[i, s] = 0; //AFTER ALL (and release) 0&&0=0  //contrast??? 0x1 - not gray //sobel? 
+                    else if (ri[i, s, 0] > 254.5) //AFTER ALL, AverageBilinear(parabola)
                         rb[i, s] = 255;
                     else
                         rb[i, s] = (byte)(ri[i, s, 0] + 0.5);
@@ -918,12 +923,11 @@ namespace ScaleSmooth
             short[,,] rB = new short[ni, ns, 1];
             byte[,,] sr = RGBfromBMP(img, 0, 0, 0, 0, oi, os);
 
-            int ki = (int)MathF.Ceiling(oim * ac / 100f);//nint
+            int ki = (int)MathF.Ceiling(oim * ac / 100f);
             int ks = (int)MathF.Ceiling(osm * ac / 100f);
             int kiks = ki * ks + 1;
             ulong nins = (ulong)(ni * ns * 10);
             int rki = 1;
-            int oiki = ac;//?
             if (nins * (ulong)kiks > mem)
             {
                 ac = (int)(MathF.Sqrt((mem / (float)nins - 1) / (oim * osm / 10000f)));
@@ -939,7 +943,7 @@ namespace ScaleSmooth
                 kiks = ki * ks + 1;
 
             }
-            oiki = (int)(oim / (float)ki + 0.5f);
+            int oiki = (int)(oim / (float)ki + 0.5f);
             int ski = (oi - rki) / 2 / ki;
             int sks = (os - rki) / 2 / ks;
 
@@ -1248,7 +1252,7 @@ namespace ScaleSmooth
                             float q4B = (riB[ixsx, sxxm, kkikks] + riB[ixsxp, sxxm, kkikks]) / 2;
                             float q3B = (riB[ixsxpi, sxxm, kkikks] + riB[ixsxpp, sxxm, kkikks]) / 2;
                             ry21 = (sxxm - s) / dbls[2];
-                            ry12 = (s - dsxxm) / dbls[2]; //1bit channel! 192thresold ||to2bits
+                            ry12 = (s - dsxxm) / dbls[2]; //After ALL, 1bit channel! 192thresold ||to2bits
                             rx21 = (xsx + ints[0] - i);
                             rx12 = (i - xsx);
                             riR[i, s, kkikks] = (short)(ry21 * (rx21 * sr[kki, sx, 0] + rx12 * sr[xsp, sx, 0]) + ry12 * (rx21 * q4R + rx12 * q3R) + 0.5);
@@ -1658,12 +1662,12 @@ namespace ScaleSmooth
                     leftbottom(Stream3, kc, riRG.View, riGG.View, riBG.View, risG.View, intG.View, dblG.View, srG.View);
                     righttop(Stream4, kc, riRG.View, riGG.View, riBG.View, risG.View, intG.View, dblG.View, srG.View);
                     progress += step8;
-                    ProgressText.Text = ((int)progress).ToString();//oi/ki or center? accuracy analyze
-                    accelerator.Synchronize();//2bit -> Smooth?
+                    ProgressText.Text = ((int)progress).ToString();//After all, oi/ki or center? accuracy analyze
+                    accelerator.Synchronize();//After ALL, BilinearApprox2bit -> Smooth?
 
-                    progress += step89; //contrast +80?
+                    progress += step89; //After ALL, contrast +80contrast?
                     ttl(new Index2D(ni, ns), riRG.View, riGG.View, riBG.View, risG.View, intG.View);
-                    ProgressText.Text = ((int)progress).ToString();//contrast+80->Furry/Smooth
+                    ProgressText.Text = ((int)progress).ToString();//After ALL, contrast+80/thin sobel->Furry/Smooth
                     accelerator.Synchronize();
                 }
             }
@@ -1680,22 +1684,22 @@ namespace ScaleSmooth
                 for (int s = 0; s < ns; s++)
                 {
                     if (rR[i, s, 0] < 0.5)
-                        rb[i, s, 0] = 0; //0&&0=0  //contrast??? 0x1 - not gray //sobel? AFTER ALL and release
-                    else if (rR[i, s, 0] > 254.5) //AverageBilinear, AFTER ALL and release
+                        rb[i, s, 0] = 0; //AFTER ALL and release - 0&&0=0  //contrast??? 0x1 - not gray //sobel? 
+                    else if (rR[i, s, 0] > 254.5) //AFTER ALL and release - AverageBilinear 
                         rb[i, s, 0] = 255;
                     else
                         rb[i, s, 0] = (byte)(rR[i, s, 0] + 0.5);
 
                     if (rG[i, s, 0] < 0.5)
-                        rb[i, s, 1] = 0; //0&&0=0  //contrast??? 0x1 - not gray //sobel? AFTER ALL and release
-                    else if (rG[i, s, 0] > 254.5) //AverageBilinear, AFTER ALL and release
+                        rb[i, s, 1] = 0;
+                    else if (rG[i, s, 0] > 254.5)
                         rb[i, s, 1] = 255;
                     else
                         rb[i, s, 1] = (byte)(rG[i, s, 0] + 0.5);
 
                     if (rB[i, s, 0] < 0.5)
-                        rb[i, s, 2] = 0; //0&&0=0  //contrast??? 0x1 - not gray //sobel? AFTER ALL and release
-                    else if (rB[i, s, 0] > 254.5) //AverageBilinear, AFTER ALL and release
+                        rb[i, s, 2] = 0;
+                    else if (rB[i, s, 0] > 254.5)
                         rb[i, s, 2] = 255;
                     else
                         rb[i, s, 2] = (byte)(rB[i, s, 0] + 0.5);
@@ -1704,7 +1708,6 @@ namespace ScaleSmooth
 
             return BMPfromRGB(rb, ni, ns);
         }
-
 
         private static float Dist2Top(int i, int s, float cx, float cy, float x2)
         {
@@ -1722,9 +1725,9 @@ namespace ScaleSmooth
         {
             if (i < cx)
             {
-                if (s < cy) //parabola?
+                if (s < cy) //After ALL, parabola?
                 {
-                    return MathF.Max(MathF.Abs(i - cx + x2) + MathF.Abs(s - cy + x2), 0.0001f); //analyze accurate
+                    return MathF.Max(MathF.Abs(i - cx + x2) + MathF.Abs(s - cy + x2), 0.0001f);
                 }
                 else
                 {
@@ -1756,9 +1759,9 @@ namespace ScaleSmooth
             }
         }
 
-        private static float Dist2Left(int i, int s, float cx, float cy, float x2) //private static OR static? time?
+        private static float Dist2Left(int i, int s, float cx, float cy, float x2)
         {
-            if (s < cy) //parabola?
+            if (s < cy)
             {
                 return cx - i - x2 + MathF.Abs(s - cy + x2);
             }
@@ -1808,7 +1811,7 @@ namespace ScaleSmooth
             return grp;
         }
 
-        private Bitmap NeighborSubpixelGray(Image img, int x, int ac) //color
+        private Bitmap NeighborSubpixelGray(Image img, int x, int ac) //After stage3, color
         {
             int ni, ns, oi, os;
             oi = img.Width;
@@ -1854,7 +1857,7 @@ namespace ScaleSmooth
             return BMPfromRGB(sr, oi + 2, os + 2 - o);*/
         }
 
-        static byte[,] GrayFromBMP(Image img, int marginLeft, int marginRight, int marginTop, int marginBottom, int w, int h) //RGBA, after optimization
+        static byte[,] GrayFromBMP(Image img, int marginLeft, int marginRight, int marginTop, int marginBottom, int w, int h)
         {
             Bitmap bmp = (Bitmap)img;
             byte[,] sr = new byte[w + marginLeft + marginRight, h + marginTop + marginBottom];
@@ -1876,7 +1879,7 @@ namespace ScaleSmooth
                         int realc = c - stridew3 * (c / stride);
                         int realc3 = realc / 3;
                         int i = realc3 % w + marginLeft;
-                        int s = realc3 / w + marginTop; //AVX2
+                        int s = realc3 / w + marginTop;
                         if (realc % 3 == 0)
                             sr[i, s] = (byte)(rgbValues[c] * 0.114 + rgbValues[c + 1] * 0.587 + rgbValues[c + 2] * 0.299 + 0.5);
                     }
@@ -2123,7 +2126,7 @@ namespace ScaleSmooth
                                         if (s != 0 && s != nsm)
                                         {
                                             ld = d[i, s];
-                                            d[i, s] = (byte)((d[i - 1, s] + d[i + 1, s] + d[i, s - 1] + d[i, s + 1] + d[i - 1, s - 1] + d[i + 1, s + 1] + d[i + 1, s - 1] + d[i - 1, s + 1]) / 8d + 0.5);
+                                            d[i, s] = (byte)((d[i - 1, s] + d[i + 1, s] + d[i, s - 1] + d[i, s + 1] + d[i - 1, s - 1] + d[i + 1, s + 1] + d[i + 1, s - 1] + d[i - 1, s + 1]) / 8f + 0.5);
                                             r = d[i, s] - ld;
                                             if (r > 0)
                                             {
@@ -2295,9 +2298,9 @@ namespace ScaleSmooth
             return BMPfromGray(d, ni, ns);
         }
 
-        private Bitmap ScaleSmoothGray(Image img, int x, int ac) ///COMMENT EACH ALGORITHM
+        private Bitmap ScaleSmoothGray(Image img, int x, int ac) //AFTER optimization, COMMENT EACH ALGORITHM
         {
-            int ni, ns, oi, os, oim, osm, xm, nim, nsm; //-RND +float Function
+            int ni, ns, oi, os, oim, osm, xm, nim, nsm;
             xm = x - 1;
             oi = img.Width;
             os = img.Height;
@@ -2364,10 +2367,8 @@ namespace ScaleSmooth
                                     {
                                         if (s != 0 && s != nsm)
                                         {
-                                            ld = d[i, s]; ///BYTE!
-                                            d[i, s] = (byte)((d[i - 1, s] + d[i + 1, s] + d[i, s - 1] + d[i, s + 1] + d[i - 1, s - 1] + d[i + 1, s + 1] + d[i + 1, s - 1] + d[i - 1, s + 1]) / 8d + dp);
-
-                                            //changePixelWithoutChangingMeanValueBlock(ld, newValue, leftCoordBlock, topCoordBlock, array);
+                                            ld = d[i, s];
+                                            d[i, s] = (byte)((d[i - 1, s] + d[i + 1, s] + d[i, s - 1] + d[i, s + 1] + d[i - 1, s - 1] + d[i + 1, s + 1] + d[i + 1, s - 1] + d[i - 1, s + 1]) / 8f + dp);
 
                                             r = d[i, s] - ld;
                                             if (r > 0)
@@ -2540,9 +2541,230 @@ namespace ScaleSmooth
             return BMPfromGray(d, ni, ns);
         }
 
-        private void changePixelWithoutChangingMeanValueBlock(byte oldValue, byte newValue, int leftCoordBlock, int topCoordBlock, ref byte array)
+        private Bitmap ScaleSmoothContrastGray(Image img, int x, int ac)
         {
-            throw new NotImplementedException();
+            int ni, ns, oi, os, oim, osm, xm, nim, nsm;
+            int xx = x * x;
+            xm = x - 1;
+            oi = img.Width;
+            os = img.Height;
+            ni = oi * x;
+            ns = os * x;
+
+            oim = oi - 1;
+            osm = os - 1;
+            nim = ni - 1;
+            nsm = ns - 1;
+
+            ac = (int)MathF.Ceiling(x * ac / 133f);
+
+            float[,] d = new float[ni, ns];
+            byte[,] sr = GrayFromBMP(img, 0, 0, 0, 0, oi, os);
+            Random rnd = new();
+
+            Parallel.For(0, ni, i =>
+            {
+                int ix = i / x;
+                for (int s = 0; s < ns; s++)
+                {
+                    d[i, s] = sr[ix, s / x];
+                }
+            });
+
+            float ld;
+
+            for (int c = 0; c < ac; c++)
+            {
+                for (int ix = oim; ix > -1; ix--)
+                {
+                    int ixx = ix * x;
+                    for (int sx = osm; sx > -1; sx--)
+                    {
+                        int sxx = sx * x;
+                        if (sr[ix, sx] > 0 && sr[ix, sx] < 255)
+                        {
+                            for (int i = ixx + xm; i > ixx - 1; i--)
+                            {
+                                if (i != 0 && i != nim)
+                                {
+                                    for (int s = sxx + xm; s > sxx - 1; s--)
+                                    {
+                                        if (s != 0 && s != nsm)
+                                        {
+                                            ld = d[i, s];
+                                            d[i, s] = (d[i - 1, s] + d[i + 1, s] + d[i, s - 1] + d[i, s + 1] + d[i - 1, s - 1] + d[i + 1, s + 1] + d[i + 1, s - 1] + d[i - 1, s + 1]) / 8f;
+                                            changePixelWithoutChangingMeanValueBlock(ld, d[i, s], ixx, sxx, ref d, x, xx);
+                                        }
+                                    }
+                                }
+                            }
+                            for (int i = ixx + xm; i > ixx - 1; i--)
+                            {
+                                if (i != 0 && i != nim)
+                                {
+                                    for (int s = sxx + xm; s > sxx - 1; s--)
+                                    {
+                                        ld = d[i, s];
+                                        d[i, s] = (d[i - 1, s] + d[i + 1, s]) / 2f;
+                                        changePixelWithoutChangingMeanValueBlock(ld, d[i, s], ixx, sxx, ref d, x, xx);
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                }
+
+                for (int ix = 0; ix < oi; ix++)
+                {
+                    int ixx = ix * x;
+                    for (int sx = 0; sx < os; sx++)
+                    {
+                        int sxx = sx * x;
+                        if (sr[ix, sx] > 0 && sr[ix, sx] < 255)
+                        {
+                            for (int i = ixx; i < ixx + x; i++)
+                            {
+                                if (i != 0 && i != nim)
+                                {
+                                    for (int s = sxx; s < sxx + x; s++)
+                                    {
+                                        if (s != 0 && s != nsm)
+                                        {
+                                            ld = d[i, s];
+                                            d[i, s] = (d[i - 1, s] + d[i + 1, s] + d[i, s - 1] + d[i, s + 1]) / 4f;
+                                            changePixelWithoutChangingMeanValueBlock(ld, d[i, s], ixx, sxx, ref d, x, xx);
+                                        }
+                                    }
+                                }
+
+                            }
+                            for (int i = ixx; i < ixx + x; i++)
+                            {
+                                for (int s = sxx; s < sxx + x; s++)
+                                {
+                                    if (s != 0 && s != nsm)
+                                    {
+                                        ld = d[i, s];
+                                        d[i, s] = (d[i, s - 1] + d[i, s + 1]) / 2f;
+                                        changePixelWithoutChangingMeanValueBlock(ld, d[i, s], ixx, sxx, ref d, x, xx);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                ProgressText.Text = (c * 100 / ac).ToString();
+            }
+
+            byte[,] dd = new byte[ni, ns];
+            for (int i = 0; i < ni; i++)
+            {
+                for (int s = 0; s < ns; s++)
+                {
+                    dd[i, s] = Contrast80(d[i, s]);
+                }
+            }
+
+            return BMPfromGray(dd, ni, ns);
+        }
+
+        private static byte Contrast80(float v)
+        {
+            switch (v)
+            {
+                case <= 89:
+                    return 0;
+                case >= 166:
+                    return 255;
+                default:
+                    return (byte)((v - 89f) / 77f * 255f + 0.5f);
+            }
+        }
+
+        private static void changePixelWithoutChangingMeanValueBlock(float oldValue, float newValue, int leftCoordBlock, int topCoordBlock, ref float[,] d, int x, int xx)
+        {
+            float r = oldValue - newValue;
+            float dif;
+            float nd;
+            int cnt = xx;
+
+            if (r > 0.5f)
+            {
+                for (int i = leftCoordBlock; i < leftCoordBlock + x; i++)
+                {
+                    for (int s = topCoordBlock; s < topCoordBlock + x; s++)
+                    {
+                        if (d[i, s] == 255f)
+                        {
+                            cnt--;
+                        }
+                    }
+                }
+                while (r > 0.5f && cnt > 0)
+                {
+                    dif = r / cnt; //AFTER ALL, for hypoten?
+                    for (int i = leftCoordBlock; i < leftCoordBlock + x; i++)
+                    {
+                        for (int s = topCoordBlock; s < topCoordBlock + x; s++)
+                        {
+                            if (d[i, s] < 255f)
+                            {
+                                nd = d[i, s] + dif;
+                                if (nd > 255)
+                                {
+                                    r -= 255 - d[i, s];
+                                    d[i, s] = 255;
+                                    cnt--;
+                                }
+                                else
+                                {
+                                    d[i, s] = nd;
+                                    r -= dif;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else if (r < -0.5f)
+            {
+                for (int i = leftCoordBlock; i < leftCoordBlock + x; i++)
+                {
+                    for (int s = topCoordBlock; s < topCoordBlock + x; s++)
+                    {
+                        if (d[i, s] == 0f)
+                        {
+                            cnt--;
+                        }
+                    }
+                }
+                while (r < -0.5f && cnt > 0)
+                {
+                    dif = r / cnt;
+                    for (int i = leftCoordBlock; i < leftCoordBlock + x; i++)
+                    {
+                        for (int s = topCoordBlock; s < topCoordBlock + x; s++)
+                        {
+                            if (d[i, s] > 0f)
+                            {
+                                nd = d[i, s] + dif;
+                                if (nd < 0)
+                                {
+                                    r -= d[i, s];
+                                    d[i, s] = 0;
+                                    cnt--;
+                                }
+                                else
+                                {
+                                    d[i, s] = nd;
+                                    r -= dif;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         private Bitmap ScaleSmoothContinuousColor(Image img, int x, int ac)
@@ -2587,7 +2809,7 @@ namespace ScaleSmooth
                     for (int sx = osm; sx > -1; sx--)
                     {
                         int sxx = sx * x;
-                        for (int t = 0; t < 3; t++)
+                        for (byte t = 0; t < 3; t++)
                         {
                             if (sr[ix, sx, t] > 0 && sr[ix, sx, t] < 255)
                             {
@@ -2600,7 +2822,7 @@ namespace ScaleSmooth
                                             if (s != 0 && s != nsm)
                                             {
                                                 ld = r[i, s, t];
-                                                r[i, s, t] = (byte)((r[i - 1, s, t] + r[i + 1, s, t] + r[i, s - 1, t] + r[i, s + 1, t] + r[i - 1, s - 1, t] + r[i + 1, s + 1, t] + r[i + 1, s - 1, t] + r[i - 1, s + 1, t]) / 8d + 0.5);
+                                                r[i, s, t] = (byte)((r[i - 1, s, t] + r[i + 1, s, t] + r[i, s - 1, t] + r[i, s + 1, t] + r[i - 1, s - 1, t] + r[i + 1, s + 1, t] + r[i + 1, s - 1, t] + r[i - 1, s + 1, t]) / 8f + 0.5);
                                                 rn = r[i, s, t] - ld;
                                                 if (rn > 0)
                                                 {
@@ -2682,7 +2904,7 @@ namespace ScaleSmooth
                     for (int sx = 0; sx < os; sx++)
                     {
                         int sxx = sx * x;
-                        for (int t = 0; t < 3; t++)
+                        for (byte t = 0; t < 3; t++)
                         {
                             if (sr[ix, sx, t] > 0 && sr[ix, sx, t] < 255)
                             {
@@ -2736,7 +2958,7 @@ namespace ScaleSmooth
                                         if (s != 0 && s != nsm)
                                         {
                                             ld = r[i, s, t];
-                                            r[i, s, t] = (byte)((r[i, s - 1, t] + r[i, s + 1, t]) / 2f + 0.5); //2d?
+                                            r[i, s, t] = (byte)((r[i, s - 1, t] + r[i, s + 1, t]) / 2f + 0.5);
                                             rn = r[i, s, t] - ld;
                                             if (rn > 0)
                                             {
@@ -2842,14 +3064,15 @@ namespace ScaleSmooth
 
             for (int c = 0; c < ac; c++)
             {
-                for (int ix = oim; ix > -1; ix--)
+                for (byte t = 0; t < 3; t++)
                 {
-                    int ixx = ix * x;
-                    for (int sx = osm; sx > -1; sx--)
+                    for (int ix = oim; ix > -1; ix--)
                     {
-                        int sxx = sx * x;
-                        for (int t = 0; t < 3; t++)
+                        int ixx = ix * x;
+                        for (int sx = osm; sx > -1; sx--)
                         {
+                            int sxx = sx * x;
+
                             if (sr[ix, sx, t] > 0 && sr[ix, sx, t] < 255)
                             {
                                 for (int i = ixx + xm; i > ixx - 1; i--)
@@ -2861,7 +3084,7 @@ namespace ScaleSmooth
                                             if (s != 0 && s != nsm)
                                             {
                                                 ld = r[i, s, t];
-                                                r[i, s, t] = (byte)((r[i - 1, s, t] + r[i + 1, s, t] + r[i, s - 1, t] + r[i, s + 1, t] + r[i - 1, s - 1, t] + r[i + 1, s + 1, t] + r[i + 1, s - 1, t] + r[i - 1, s + 1, t]) / 8d + dp[t]);
+                                                r[i, s, t] = (byte)((r[i - 1, s, t] + r[i + 1, s, t] + r[i, s - 1, t] + r[i, s + 1, t] + r[i - 1, s - 1, t] + r[i + 1, s + 1, t] + r[i + 1, s - 1, t] + r[i - 1, s + 1, t]) / 8f + dp[t]);
                                                 rn = r[i, s, t] - ld;
                                                 if (rn > 0)
                                                 {
@@ -2935,16 +3158,14 @@ namespace ScaleSmooth
                             }
                         }
                     }
-                }
 
-                for (int ix = 0; ix < oi; ix++)
-                {
-                    int ixx = ix * x;
-                    for (int sx = 0; sx < os; sx++)
+
+                    for (int ix = 0; ix < oi; ix++)
                     {
-                        int sxx = sx * x;
-                        for (int t = 0; t < 3; t++)
+                        int ixx = ix * x;
+                        for (int sx = 0; sx < os; sx++)
                         {
+                            int sxx = sx * x;
                             if (sr[ix, sx, t] > 0 && sr[ix, sx, t] < 255)
                             {
                                 for (int i = ixx; i < ixx + x; i++)
@@ -3039,7 +3260,228 @@ namespace ScaleSmooth
             return BMPfromRGB(r, ni, ns);
         }
 
-        private Bitmap ScaleRoughGray(Image img, int x, int ac)//AVX2 for all meth?
+        private Bitmap ScaleSmoothContrastColor(Image img, int x, int ac)
+        {
+            int ni, ns, oi, os, oim, osm, xm, nim, nsm;
+            xm = x - 1;
+            oi = img.Width;
+            os = img.Height;
+            ni = oi * x;
+            ns = os * x;
+            int xx = x * x;
+            oim = oi - 1;
+            osm = os - 1;
+            nim = ni - 1;
+            nsm = ns - 1;
+
+            ac = (int)MathF.Ceiling(x * ac / 133f);
+
+            float[,,] r = new float[ni, ns, 3];
+            byte[,,] sr = RGBfromBMP(img, 0, 0, 0, 0, oi, os);
+            Random rnd = new();
+
+            Parallel.For(0, ni, i =>
+            {
+                int ix = i / x;
+                for (int s = 0; s < ns; s++)
+                {
+                    r[i, s, 0] = sr[ix, s / x, 0];
+                    r[i, s, 1] = sr[ix, s / x, 1];
+                    r[i, s, 2] = sr[ix, s / x, 2];
+                }
+            });
+
+            float ld;
+
+            for (int c = 0; c < ac; c++)
+            {
+                for (int ix = oim; ix > -1; ix--)
+                {
+                    int ixx = ix * x;
+                    for (int sx = osm; sx > -1; sx--)
+                    {
+                        int sxx = sx * x;
+                        for (byte t = 0; t < 3; t++)
+                        {
+                            if (sr[ix, sx, t] > 0 && sr[ix, sx, t] < 255)
+                            {
+                                for (int i = ixx + xm; i > ixx - 1; i--)
+                                {
+                                    if (i != 0 && i != nim)
+                                    {
+                                        for (int s = sxx + xm; s > sxx - 1; s--)
+                                        {
+                                            if (s != 0 && s != nsm)
+                                            {
+                                                ld = r[i, s, t];
+                                                r[i, s, t] = (r[i - 1, s, t] + r[i + 1, s, t] + r[i, s - 1, t] + r[i, s + 1, t] + r[i - 1, s - 1, t] + r[i + 1, s + 1, t] + r[i + 1, s - 1, t] + r[i - 1, s + 1, t]) / 8f;
+                                                changePixelWithoutChangingMeanValueBlockMultichannel(t, ld, r[i, s, t], ixx, sxx, r, x, xx);
+                                            }
+                                        }
+                                    }
+                                }
+                                for (int i = ixx + xm; i > ixx - 1; i--)
+                                {
+                                    if (i != 0 && i != nim)
+                                    {
+                                        for (int s = sxx + xm; s > sxx - 1; s--)
+                                        {
+                                            ld = r[i, s, t];
+                                            r[i, s, t] = (r[i - 1, s, t] + r[i + 1, s, t]) / 2f;
+                                            changePixelWithoutChangingMeanValueBlockMultichannel(t, ld, r[i, s, t], ixx, sxx, r, x, xx);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                for (int ix = 0; ix < oi; ix++)
+                {
+                    int ixx = ix * x;
+                    for (int sx = 0; sx < os; sx++)
+                    {
+                        int sxx = sx * x;
+                        for (byte t = 0; t < 3; t++)
+                        {
+                            if (sr[ix, sx, t] > 0 && sr[ix, sx, t] < 255)
+                            {
+                                for (int i = ixx; i < ixx + x; i++)
+                                {
+                                    if (i != 0 && i != nim)
+                                    {
+                                        for (int s = sxx; s < sxx + x; s++)
+                                        {
+                                            if (s != 0 && s != nsm)
+                                            {
+                                                ld = r[i, s, t];
+                                                r[i, s, t] = (r[i - 1, s, t] + r[i + 1, s, t] + r[i, s - 1, t] + r[i, s + 1, t]) / 4f;
+                                                changePixelWithoutChangingMeanValueBlockMultichannel(t, ld, r[i, s, t], ixx, sxx, r, x, xx);
+                                            }
+                                        }
+                                    }
+                                }
+                                for (int i = ixx; i < ixx + x; i++)
+                                {
+                                    for (int s = sxx; s < sxx + x; s++)
+                                    {
+                                        if (s != 0 && s != nsm)
+                                        {
+                                            ld = r[i, s, t];
+                                            r[i, s, t] = (r[i, s - 1, t] + r[i, s + 1, t]) / 2f;
+                                            changePixelWithoutChangingMeanValueBlockMultichannel(t, ld, r[i, s, t], ixx, sxx, r, x, xx);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                ProgressText.Text = (c * 100 / ac).ToString();
+            }
+
+            byte[,,] dd = new byte[ni, ns, 3];
+            for (byte t = 0; t < 3; t++)
+            {
+                for (int i = 0; i < ni; i++)
+                {
+                    for (int s = 0; s < ns; s++)
+                    {
+                        dd[i, s, t] = Contrast80(r[i, s, t]);
+                    }
+                }
+            }
+
+            return BMPfromRGB(dd, ni, ns);
+        }
+
+        private void changePixelWithoutChangingMeanValueBlockMultichannel(byte layer, float oldValue, float newValue, int leftCoordBlock, int topCoordBlock, float[,,] d, int x, int xx)
+        {
+            float r = oldValue - newValue;
+            float dif;
+            float nd;
+            int cnt = xx;
+
+            if (r > 0.5f)
+            {
+                for (int i = leftCoordBlock; i < leftCoordBlock + x; i++)
+                {
+                    for (int s = topCoordBlock; s < topCoordBlock + x; s++)
+                    {
+                        if (d[i, s, layer] == 255f)
+                        {
+                            cnt--;
+                        }
+                    }
+                }
+                while (r > 0.5f && cnt > 0)
+                {
+                    dif = r / cnt; // for hypoten?
+                    for (int i = leftCoordBlock; i < leftCoordBlock + x; i++)
+                    {
+                        for (int s = topCoordBlock; s < topCoordBlock + x; s++)
+                        {
+                            if (d[i, s, layer] < 255f)
+                            {
+                                nd = d[i, s, layer] + dif;
+                                if (nd > 255)
+                                {
+                                    r -= 255 - d[i, s, layer];
+                                    d[i, s, layer] = 255;
+                                    cnt--;
+                                }
+                                else
+                                {
+                                    d[i, s, layer] = nd;
+                                    r -= dif;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else if (r < -0.5f)
+            {
+                for (int i = leftCoordBlock; i < leftCoordBlock + x; i++)
+                {
+                    for (int s = topCoordBlock; s < topCoordBlock + x; s++)
+                    {
+                        if (d[i, s, layer] == 0f)
+                        {
+                            cnt--;
+                        }
+                    }
+                }
+                while (r < -0.5f && cnt > 0)
+                {
+                    dif = r / cnt;
+                    for (int i = leftCoordBlock; i < leftCoordBlock + x; i++)
+                    {
+                        for (int s = topCoordBlock; s < topCoordBlock + x; s++)
+                        {
+                            if (d[i, s, layer] > 0f)
+                            {
+                                nd = d[i, s, layer] + dif;
+                                if (nd < 0)
+                                {
+                                    r -= d[i, s, layer];
+                                    d[i, s, layer] = 0;
+                                    cnt--;
+                                }
+                                else
+                                {
+                                    d[i, s, layer] = nd;
+                                    r -= dif;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private Bitmap ScaleRoughGray(Image img, int x, int ac)
         {
             int ni, ns, oi, os, oim, osm, xm, nim, nsm, ac2;
             xm = x - 1;
@@ -3277,7 +3719,7 @@ namespace ScaleSmooth
             return BMPfromGray(d, ni, ns);
         }
 
-        private Bitmap ScaleFurryGray(Image img, int x, int ac) //256mono for Furrys and Roughs
+        private Bitmap ScaleFurryGray(Image img, int x, int ac) //after ALL, 256monoGray for Furrys and Roughs
         {
             int ni, ns, oi, os, oim, osm, xm, nim, nsm, ac2;
             xm = x - 1;
@@ -3468,7 +3910,7 @@ namespace ScaleSmooth
                                             {
                                                 while (r != 0)
                                                 {
-                                                    ii = rnd.Next(ixx, ixx + x); //ixx+x as other variable
+                                                    ii = rnd.Next(ixx, ixx + x);
                                                     ss = rnd.Next(sxx, sxx + x);
                                                     if (d[ii, ss] < 255)
                                                     {
@@ -3492,7 +3934,7 @@ namespace ScaleSmooth
                                 {
                                     if (s != 0 && s != nsm)
                                     {
-                                        ld = d[i, s]; //2d?
+                                        ld = d[i, s];
                                         d[i, s] = S255((d[i, s + rnd.Next(-1, 2)] + d[i, s + rnd.Next(-1, 2)]) / 2f);
                                         r = d[i, s] - ld;
                                         if (r > 0)
@@ -3579,7 +4021,7 @@ namespace ScaleSmooth
 
             for (int c = 0; c < ac; c++)
             {
-                for (int t = 0; t < 3; t++)
+                for (byte t = 0; t < 3; t++)
                 {
                     int r, ld, ii, ss;
                     bool ac2c = ac2 <= c;
@@ -3813,7 +4255,7 @@ namespace ScaleSmooth
                 int ix = i / x;
                 for (int s = 0; s < ns; s++)
                 {
-                    for (int t = 0; t < 3; t++)
+                    for (byte t = 0; t < 3; t++)
                     {
                         dr[i, s, t] = sr[ix, s / x, t];
                         fr[i, s, t] = dr[i, s, t];
@@ -3833,7 +4275,7 @@ namespace ScaleSmooth
                     for (int sx = osm; sx > -1; sx--)
                     {
                         int sxx = sx * x;
-                        for (int t = 0; t < 3; t++)
+                        for (byte t = 0; t < 3; t++)
                         {
                             if (sr[ix, sx, t] > 0 && sr[ix, sx, t] < 255)
                             {
@@ -3953,7 +4395,7 @@ namespace ScaleSmooth
                     for (int sx = 0; sx < os; sx++)
                     {
                         int sxx = sx * x;
-                        for (int t = 0; t < 3; t++)
+                        for (byte t = 0; t < 3; t++)
                         {
                             if (sr[ix, sx, t] > 0 && sr[ix, sx, t] < 255)
                             {
@@ -4076,7 +4518,7 @@ namespace ScaleSmooth
             return (float)(0.000000002833333 * MathF.Pow(v, 5) - 0.00000181137 * MathF.Pow(v, 4) + 0.0003605953 * MathF.Pow(v, 3) - 0.01970911609 * MathF.Pow(v, 2) + 0.63316688184 * v);
         }
 
-        private Bitmap ContrastBoldScaleGray(Image img, int x, int ac) //one more time contrast s255f
+        private Bitmap ContrastBoldScaleGray(Image img, int x, int ac) //AFTER ALL, one more time contrast s255f
         {
             int ni, ns, oi, os, oim, osm, xm, nim, nsm, xoim, xoim2, xoimac;
             xm = x - 1;
@@ -4461,7 +4903,7 @@ namespace ScaleSmooth
                     }
                     else
                     {
-                        for (int t = 0; t < 3; t++)
+                        for (byte t = 0; t < 3; t++)
                         {
                             rs[i, s, t] = (sr[ix, sx, t] / (MathF.Pow(i - ixx, 2) + MathF.Pow(s - sxx, 2)) + sr[ix + 1, sx, t] / (MathF.Pow(i - ixx - x, 2) + MathF.Pow(s - sxx, 2)) + sr[ix, sx + 1, t] / (MathF.Pow(i - ixx, 2) + MathF.Pow(s - sxx - x, 2)) + sr[ix + 1, sx + 1, t] / (MathF.Pow(i - ixx - x, 2) + MathF.Pow(s - sxx - x, 2))) / (1 / (MathF.Pow(i - ixx, 2) + MathF.Pow(s - sxx, 2)) + 1 / (MathF.Pow(i - ixx - x, 2) + MathF.Pow(s - sxx, 2)) + 1 / (MathF.Pow(i - ixx, 2) + MathF.Pow(s - sxx - x, 2)) + 1 / (MathF.Pow(i - ixx - x, 2) + MathF.Pow(s - sxx - x, 2)));
                         }
@@ -4475,7 +4917,7 @@ namespace ScaleSmooth
                 for (int s = nsm; s > -1; s--)
                 {
                     int sx = s / x;
-                    for (int t = 0; t < 3; t++)
+                    for (byte t = 0; t < 3; t++)
                     {
                         if (sr[ix, sx, t] == 0 || sr[ix, sx, t] == 255)
                         {
@@ -4489,16 +4931,15 @@ namespace ScaleSmooth
                 }
             }
 
-            for (int c = 0; c < xoim2; c++)
+            for (int c = 0; c < xoimac; c++)
             {
-                bool cxoimac = c <= xoimac;
                 for (int ix = oim; ix > -1; ix--)
                 {
                     int ixx = ix * x;
                     for (int sx = osm; sx > -1; sx--)
                     {
                         int sxx = sx * x;
-                        for (int t = 0; t < 3; t++)
+                        for (byte t = 0; t < 3; t++)
                         {
                             if (sr[ix, sx, t] > 0 && sr[ix, sx, t] < 255)
                             {
@@ -4510,54 +4951,45 @@ namespace ScaleSmooth
                                         {
                                             if (s > 0 && s < nsm)
                                             {
-                                                if (cxoimac)
-                                                {
-                                                    int ld = r[i, s, t];
-                                                    if (c < xoimac) //two for c???
-                                                    {
-                                                        if (rnd.Next(0, xoim) > c)   //you can remove this
-                                                        {                            //to reduce grid structure
-                                                            r[i, s, t] = (byte)(S255f((rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), 0] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), 1] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), 2] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t]) / 9));
-                                                        }                                          //you can
-                                                        else                                       //remove this
-                                                        {                                          //to reduce
-                                                            r[i, s, t] = (byte)rnd.Next(0, 256);      //grid
-                                                        }                                          //structure
-                                                    }
-                                                    else if (c == xoimac) //three for c???
-                                                    {
-                                                        r[i, s, t] = (byte)rs[i, s, t];
-                                                    }
+                                                int ld = r[i, s, t];
 
-                                                    int rz = r[i, s, t] - ld;
-                                                    if (rz > 0)
+                                                if (rnd.Next(0, xoim) > c)   //you can remove this
+                                                {                            //to reduce grid structure
+                                                    r[i, s, t] = (byte)(S255f((rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), 0] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), 1] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), 2] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t]) / 9));
+                                                }                                          //you can
+                                                else                                       //remove this
+                                                {                                          //to reduce
+                                                    r[i, s, t] = (byte)rnd.Next(0, 256);   //grid
+                                                }                                          //structure
+
+                                                int rz = r[i, s, t] - ld;
+                                                if (rz > 0)
+                                                {
+                                                    while (rz != 0)
                                                     {
-                                                        while (rz != 0)
+                                                        int ii = rnd.Next(ixx, ixx + x);
+                                                        int ss = rnd.Next(sxx, sxx + x);
+                                                        if (r[ii, ss, t] > 0)
                                                         {
-                                                            int ii = rnd.Next(ixx, ixx + x);
-                                                            int ss = rnd.Next(sxx, sxx + x);
-                                                            if (r[ii, ss, t] > 0)
-                                                            {
-                                                                r[ii, ss, t] = (byte)(r[ii, ss, t] - 1);
-                                                                rz--;
-                                                            }
+                                                            r[ii, ss, t] = (byte)(r[ii, ss, t] - 1);
+                                                            rz--;
                                                         }
                                                     }
-                                                    else
-                                                    {
-                                                        while (rz != 0)
-                                                        {
-                                                            int ii = rnd.Next(ixx, ixx + x);
-                                                            int ss = rnd.Next(sxx, sxx + x);
-                                                            if (r[ii, ss, t] < 255)
-                                                            {
-                                                                r[ii, ss, t] = (byte)(r[ii, ss, t] + 1);
-                                                                rz++;
-                                                            }
-                                                        }
-                                                    }
-                                                    rs[i, s, t] = (rs[i, s, t] * c + r[i, s, t]) / (c + 1);
                                                 }
+                                                else
+                                                {
+                                                    while (rz != 0)
+                                                    {
+                                                        int ii = rnd.Next(ixx, ixx + x);
+                                                        int ss = rnd.Next(sxx, sxx + x);
+                                                        if (r[ii, ss, t] < 255)
+                                                        {
+                                                            r[ii, ss, t] = (byte)(r[ii, ss, t] + 1);
+                                                            rz++;
+                                                        }
+                                                    }
+                                                }
+                                                rs[i, s, t] = (rs[i, s, t] * c + r[i, s, t]) / (c + 1);
                                             }
                                         }
                                     }
@@ -4612,7 +5044,7 @@ namespace ScaleSmooth
                     for (int sx = 0; sx < os; sx++)
                     {
                         int sxx = sx * x;
-                        for (int t = 0; t < 3; t++)
+                        for (byte t = 0; t < 3; t++)
                         {
                             if (sr[ix, sx, t] > 0 && sr[ix, sx, t] < 255)
                             {
@@ -4702,20 +5134,367 @@ namespace ScaleSmooth
                         }
                     }
                 }
-
                 ProgressText.Text = (c * 100 / xoim2).ToString();
-                if (!cxoimac)
+            }
+
+
+            for (int ix = oim; ix > -1; ix--)
+            {
+                int ixx = ix * x;
+                for (int sx = osm; sx > -1; sx--)
                 {
-                    Parallel.For(0, ni, i =>
+                    int sxx = sx * x;
+                    for (byte t = 0; t < 3; t++)
                     {
-                        for (int s = 0; s < ns; s++)
+                        if (sr[ix, sx, t] > 0 && sr[ix, sx, t] < 255)
                         {
-                            rs[i, s, 0] = (rs[i, s, 0] * c + r[i, s, 0] + S255f(r[i, s, 0])) / (c + 2);
-                            rs[i, s, 1] = (rs[i, s, 1] * c + r[i, s, 1] + S255f(r[i, s, 1])) / (c + 2);
-                            rs[i, s, 2] = (rs[i, s, 2] * c + r[i, s, 2] + S255f(r[i, s, 2])) / (c + 2);
+                            for (int i = ixx + xm; i >= ixx; i--)
+                            {
+                                if (i != 0 && i != nim)
+                                {
+                                    for (int s = sxx + xm; s >= sxx; s--)
+                                    {
+                                        if (s > 0 && s < nsm)
+                                        {
+                                            int ld = r[i, s, t];
+                                            r[i, s, t] = (byte)rs[i, s, t];
+
+                                            int rz = r[i, s, t] - ld;
+                                            if (rz > 0)
+                                            {
+                                                while (rz != 0)
+                                                {
+                                                    int ii = rnd.Next(ixx, ixx + x);
+                                                    int ss = rnd.Next(sxx, sxx + x);
+                                                    if (r[ii, ss, t] > 0)
+                                                    {
+                                                        r[ii, ss, t] = (byte)(r[ii, ss, t] - 1);
+                                                        rz--;
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                while (rz != 0)
+                                                {
+                                                    int ii = rnd.Next(ixx, ixx + x);
+                                                    int ss = rnd.Next(sxx, sxx + x);
+                                                    if (r[ii, ss, t] < 255)
+                                                    {
+                                                        r[ii, ss, t] = (byte)(r[ii, ss, t] + 1);
+                                                        rz++;
+                                                    }
+                                                }
+                                            }
+                                            rs[i, s, t] = (rs[i, s, t] * xoimac + r[i, s, t]) / (xoimac + 1);
+                                        }
+                                    }
+                                }
+                            }
+
+                            for (int i = ixx + xm; i >= ixx; i--)
+                            {
+                                if (i > 0 && i < nim)
+                                {
+                                    for (int s = sxx + xm; s >= sxx; s--)
+                                    {
+                                        int ld = r[i, s, t];
+                                        r[i, s, t] = (byte)((r[i + rnd.Next(-1, 2), s, t] + r[i + rnd.Next(-1, 2), s, t]) / 2);
+                                        int rz = r[i, s, t] - ld;
+                                        if (rz > 0)
+                                        {
+                                            while (rz != 0)
+                                            {
+                                                int ii = rnd.Next(ixx, ixx + x);
+                                                int ss = rnd.Next(sxx, sxx + x);
+                                                if (r[ii, ss, t] > 0)
+                                                {
+                                                    r[ii, ss, t] = (byte)(r[ii, ss, t] - 1);
+                                                    rz--;
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            while (rz != 0)
+                                            {
+                                                int ii = rnd.Next(ixx, ixx + x);
+                                                int ss = rnd.Next(sxx, sxx + x);
+                                                if (r[ii, ss, t] < 255)
+                                                {
+                                                    r[ii, ss, t] = (byte)(r[ii, ss, t] + 1);
+                                                    rz++;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
-                    });
+                    }
                 }
+            }
+
+            for (int ix = 0; ix < oi; ix++)
+            {
+                int ixx = ix * x;
+                for (int sx = 0; sx < os; sx++)
+                {
+                    int sxx = sx * x;
+                    for (byte t = 0; t < 3; t++)
+                    {
+                        if (sr[ix, sx, t] > 0 && sr[ix, sx, t] < 255)
+                        {
+                            for (int i = ixx; i < ixx + x; i++)
+                            {
+                                if (i != 0 && i != nim)
+                                {
+                                    for (int s = sxx; s < sxx + x; s++)
+                                    {
+                                        if (s != 0 && s != nsm)
+                                        {
+                                            int ld = r[i, s, t];
+                                            r[i, s, t] = (byte)((r[i + rnd.Next(-1, 2), s, t] + r[i + rnd.Next(-1, 2), s, t] + r[i, s + rnd.Next(-1, 2), t] + r[i, s + rnd.Next(-1, 2), t]) / 4);
+
+                                            int rz = r[i, s, t] - ld;
+                                            if (rz > 0)
+                                            {
+                                                while (rz != 0)
+                                                {
+                                                    int ii = rnd.Next(ixx, ixx + x);
+                                                    int ss = rnd.Next(sxx, sxx + x);
+                                                    if (r[ii, ss, t] > 0)
+                                                    {
+                                                        r[ii, ss, t] = (byte)(r[ii, ss, t] - 1);
+                                                        rz--;
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                while (rz != 0)
+                                                {
+                                                    int ii = rnd.Next(ixx, ixx + x);
+                                                    int ss = rnd.Next(sxx, sxx + x);
+                                                    if (r[ii, ss, t] < 255)
+                                                    {
+                                                        r[ii, ss, t] = (byte)(r[ii, ss, t] + 1);
+                                                        rz++;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            for (int i = ixx; i < ixx + x; i++)
+                            {
+                                for (int s = sxx; s < sxx + x; s++)
+                                {
+                                    if (s != 0 && s != nsm)
+                                    {
+                                        int ld = r[i, s, t];
+                                        r[i, s, t] = (byte)((r[i, s + rnd.Next(-1, 2), t] + r[i, s + rnd.Next(-1, 2), t]) / 2);
+
+                                        int rz = r[i, s, t] - ld;
+                                        if (rz > 0)
+                                        {
+                                            while (rz != 0)
+                                            {
+                                                int ii = rnd.Next(ixx, ixx + x);
+                                                int ss = rnd.Next(sxx, sxx + x);
+                                                if (r[ii, ss, t] > 0)
+                                                {
+                                                    r[ii, ss, t] = (byte)(r[ii, ss, t] - 1);
+                                                    rz--;
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            while (rz != 0)
+                                            {
+                                                int ii = rnd.Next(ixx, ixx + x);
+                                                int ss = rnd.Next(sxx, sxx + x);
+                                                if (r[ii, ss, t] < 255)
+                                                {
+                                                    r[ii, ss, t] = (byte)(r[ii, ss, t] + 1);
+                                                    rz++;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            ProgressText.Text = "50";
+
+            for (int c = xoimac + 1; c < xoim2; c++)
+            {
+                for (int ix = oim; ix > -1; ix--)
+                {
+                    int ixx = ix * x;
+                    for (int sx = osm; sx > -1; sx--)
+                    {
+                        int sxx = sx * x;
+                        for (byte t = 0; t < 3; t++)
+                        {
+                            if (sr[ix, sx, t] > 0 && sr[ix, sx, t] < 255)
+                            {
+                                for (int i = ixx + xm; i >= ixx; i--)
+                                {
+                                    if (i > 0 && i < nim)
+                                    {
+                                        for (int s = sxx + xm; s >= sxx; s--)
+                                        {
+                                            int ld = r[i, s, t];
+                                            r[i, s, t] = (byte)((r[i + rnd.Next(-1, 2), s, t] + r[i + rnd.Next(-1, 2), s, t]) / 2);
+                                            int rz = r[i, s, t] - ld;
+                                            if (rz > 0)
+                                            {
+                                                while (rz != 0)
+                                                {
+                                                    int ii = rnd.Next(ixx, ixx + x);
+                                                    int ss = rnd.Next(sxx, sxx + x);
+                                                    if (r[ii, ss, t] > 0)
+                                                    {
+                                                        r[ii, ss, t] = (byte)(r[ii, ss, t] - 1);
+                                                        rz--;
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                while (rz != 0)
+                                                {
+                                                    int ii = rnd.Next(ixx, ixx + x);
+                                                    int ss = rnd.Next(sxx, sxx + x);
+                                                    if (r[ii, ss, t] < 255)
+                                                    {
+                                                        r[ii, ss, t] = (byte)(r[ii, ss, t] + 1);
+                                                        rz++;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                for (int ix = 0; ix < oi; ix++)
+                {
+                    int ixx = ix * x;
+                    for (int sx = 0; sx < os; sx++)
+                    {
+                        int sxx = sx * x;
+                        for (byte t = 0; t < 3; t++)
+                        {
+                            if (sr[ix, sx, t] > 0 && sr[ix, sx, t] < 255)
+                            {
+                                for (int i = ixx; i < ixx + x; i++)
+                                {
+                                    if (i != 0 && i != nim)
+                                    {
+                                        for (int s = sxx; s < sxx + x; s++)
+                                        {
+                                            if (s != 0 && s != nsm)
+                                            {
+                                                int ld = r[i, s, t];
+                                                r[i, s, t] = (byte)((r[i + rnd.Next(-1, 2), s, t] + r[i + rnd.Next(-1, 2), s, t] + r[i, s + rnd.Next(-1, 2), t] + r[i, s + rnd.Next(-1, 2), t]) / 4);
+
+                                                int rz = r[i, s, t] - ld;
+                                                if (rz > 0)
+                                                {
+                                                    while (rz != 0)
+                                                    {
+                                                        int ii = rnd.Next(ixx, ixx + x);
+                                                        int ss = rnd.Next(sxx, sxx + x);
+                                                        if (r[ii, ss, t] > 0)
+                                                        {
+                                                            r[ii, ss, t] = (byte)(r[ii, ss, t] - 1);
+                                                            rz--;
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    while (rz != 0)
+                                                    {
+                                                        int ii = rnd.Next(ixx, ixx + x);
+                                                        int ss = rnd.Next(sxx, sxx + x);
+                                                        if (r[ii, ss, t] < 255)
+                                                        {
+                                                            r[ii, ss, t] = (byte)(r[ii, ss, t] + 1);
+                                                            rz++;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int i = ixx; i < ixx + x; i++)
+                                {
+                                    for (int s = sxx; s < sxx + x; s++)
+                                    {
+                                        if (s != 0 && s != nsm)
+                                        {
+                                            int ld = r[i, s, t];
+                                            r[i, s, t] = (byte)((r[i, s + rnd.Next(-1, 2), t] + r[i, s + rnd.Next(-1, 2), t]) / 2);
+
+                                            int rz = r[i, s, t] - ld;
+                                            if (rz > 0)
+                                            {
+                                                while (rz != 0)
+                                                {
+                                                    int ii = rnd.Next(ixx, ixx + x);
+                                                    int ss = rnd.Next(sxx, sxx + x);
+                                                    if (r[ii, ss, t] > 0)
+                                                    {
+                                                        r[ii, ss, t] = (byte)(r[ii, ss, t] - 1);
+                                                        rz--;
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                while (rz != 0)
+                                                {
+                                                    int ii = rnd.Next(ixx, ixx + x);
+                                                    int ss = rnd.Next(sxx, sxx + x);
+                                                    if (r[ii, ss, t] < 255)
+                                                    {
+                                                        r[ii, ss, t] = (byte)(r[ii, ss, t] + 1);
+                                                        rz++;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                ProgressText.Text = (c * 100 / xoim2).ToString();
+
+                Parallel.For(0, ni, i =>
+                {
+                    for (int s = 0; s < ns; s++)
+                    {
+                        rs[i, s, 0] = (rs[i, s, 0] * c + r[i, s, 0] + S255f(r[i, s, 0])) / (c + 2);
+                        rs[i, s, 1] = (rs[i, s, 1] * c + r[i, s, 1] + S255f(r[i, s, 1])) / (c + 2);
+                        rs[i, s, 2] = (rs[i, s, 2] * c + r[i, s, 2] + S255f(r[i, s, 2])) / (c + 2);
+                    }
+                });
             }
 
             rs2 = rs;
@@ -4754,7 +5533,8 @@ namespace ScaleSmooth
             return BMPfromRGB(r, ni, ns);
         }
 
-        private Bitmap BoldScaleColor(Image img, int x, int ac) //ac=200? analyze different x, imgSize, if true contrast, after optimization
+
+        private Bitmap BoldScaleColor(Image img, int x, int ac)
         {
             int ni, ns, oi, os, oim, osm, xm, nim, nsm, xoim, xoim2, xoimac;
             xm = x - 1;
@@ -4806,7 +5586,7 @@ namespace ScaleSmooth
                     }
                     else
                     {
-                        for (int t = 0; t < 3; t++)
+                        for (byte t = 0; t < 3; t++)
                         {
                             rs[i, s, t] = (sr[ix, sx, t] / (MathF.Pow(i - ixx, 2) + MathF.Pow(s - sxx, 2)) + sr[ix + 1, sx, t] / (MathF.Pow(i - ixx - x, 2) + MathF.Pow(s - sxx, 2)) + sr[ix, sx + 1, t] / (MathF.Pow(i - ixx, 2) + MathF.Pow(s - sxx - x, 2)) + sr[ix + 1, sx + 1, t] / (MathF.Pow(i - ixx - x, 2) + MathF.Pow(s - sxx - x, 2))) / (1 / (MathF.Pow(i - ixx, 2) + MathF.Pow(s - sxx, 2)) + 1 / (MathF.Pow(i - ixx - x, 2) + MathF.Pow(s - sxx, 2)) + 1 / (MathF.Pow(i - ixx, 2) + MathF.Pow(s - sxx - x, 2)) + 1 / (MathF.Pow(i - ixx - x, 2) + MathF.Pow(s - sxx - x, 2)));
                         }
@@ -4820,7 +5600,7 @@ namespace ScaleSmooth
                 for (int s = nsm; s > -1; s--)
                 {
                     int sx = s / x;
-                    for (int t = 0; t < 3; t++)
+                    for (byte t = 0; t < 3; t++)
                     {
                         if (sr[ix, sx, t] == 0 || sr[ix, sx, t] == 255)
                         {
@@ -4834,16 +5614,15 @@ namespace ScaleSmooth
                 }
             }
 
-            for (int c = 0; c < xoim2; c++)
+            for (int c = 0; c < xoimac; c++)
             {
-                bool cxoimac = c <= xoimac;
                 for (int ix = oim; ix > -1; ix--)
                 {
                     int ixx = ix * x;
                     for (int sx = osm; sx > -1; sx--)
                     {
                         int sxx = sx * x;
-                        for (int t = 0; t < 3; t++)
+                        for (byte t = 0; t < 3; t++)
                         {
                             if (sr[ix, sx, t] > 0 && sr[ix, sx, t] < 255)
                             {
@@ -4855,54 +5634,45 @@ namespace ScaleSmooth
                                         {
                                             if (s > 0 && s < nsm)
                                             {
-                                                if (cxoimac)
-                                                {
-                                                    int ld = r[i, s, t];
-                                                    if (c < xoimac) //two for c???
-                                                    {
-                                                        if (rnd.Next(0, xoim) > c)   //you can remove this
-                                                        {                            //to reduce grid structure
-                                                            r[i, s, t] = (byte)(S255f((rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), 0] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), 1] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), 2] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t]) / 9));
-                                                        }                                          //you can
-                                                        else                                       //remove this
-                                                        {                                          //to reduce
-                                                            r[i, s, t] = (byte)rnd.Next(0, 256);      //grid
-                                                        }                                          //structure
-                                                    }
-                                                    else if (c == xoimac) //three for c???
-                                                    {
-                                                        r[i, s, t] = (byte)rs[i, s, t];
-                                                    }
+                                                int ld = r[i, s, t];
 
-                                                    int rz = r[i, s, t] - ld;
-                                                    if (rz > 0)
+                                                if (rnd.Next(0, xoim) > c)   //you can remove this
+                                                {                            //to reduce grid structure
+                                                    r[i, s, t] = (byte)(S255f((rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), 0] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), 1] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), 2] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t] + rs[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2), t]) / 9));
+                                                }                                          //you can
+                                                else                                       //remove this
+                                                {                                          //to reduce
+                                                    r[i, s, t] = (byte)rnd.Next(0, 256);   //grid
+                                                }                                          //structure
+
+                                                int rz = r[i, s, t] - ld;
+                                                if (rz > 0)
+                                                {
+                                                    while (rz != 0)
                                                     {
-                                                        while (rz != 0)
+                                                        int ii = rnd.Next(ixx, ixx + x);
+                                                        int ss = rnd.Next(sxx, sxx + x);
+                                                        if (r[ii, ss, t] > 0)
                                                         {
-                                                            int ii = rnd.Next(ixx, ixx + x);
-                                                            int ss = rnd.Next(sxx, sxx + x);
-                                                            if (r[ii, ss, t] > 0)
-                                                            {
-                                                                r[ii, ss, t] = (byte)(r[ii, ss, t] - 1);
-                                                                rz--;
-                                                            }
+                                                            r[ii, ss, t] = (byte)(r[ii, ss, t] - 1);
+                                                            rz--;
                                                         }
                                                     }
-                                                    else
-                                                    {
-                                                        while (rz != 0)
-                                                        {
-                                                            int ii = rnd.Next(ixx, ixx + x);
-                                                            int ss = rnd.Next(sxx, sxx + x);
-                                                            if (r[ii, ss, t] < 255)
-                                                            {
-                                                                r[ii, ss, t] = (byte)(r[ii, ss, t] + 1);
-                                                                rz++;
-                                                            }
-                                                        }
-                                                    }
-                                                    rs[i, s, t] = (rs[i, s, t] * c + r[i, s, t]) / (c + 1);
                                                 }
+                                                else
+                                                {
+                                                    while (rz != 0)
+                                                    {
+                                                        int ii = rnd.Next(ixx, ixx + x);
+                                                        int ss = rnd.Next(sxx, sxx + x);
+                                                        if (r[ii, ss, t] < 255)
+                                                        {
+                                                            r[ii, ss, t] = (byte)(r[ii, ss, t] + 1);
+                                                            rz++;
+                                                        }
+                                                    }
+                                                }
+                                                rs[i, s, t] = (rs[i, s, t] * c + r[i, s, t]) / (c + 1);
                                             }
                                         }
                                     }
@@ -4957,7 +5727,7 @@ namespace ScaleSmooth
                     for (int sx = 0; sx < os; sx++)
                     {
                         int sxx = sx * x;
-                        for (int t = 0; t < 3; t++)
+                        for (byte t = 0; t < 3; t++)
                         {
                             if (sr[ix, sx, t] > 0 && sr[ix, sx, t] < 255)
                             {
@@ -5047,20 +5817,367 @@ namespace ScaleSmooth
                         }
                     }
                 }
-
                 ProgressText.Text = (c * 100 / xoim2).ToString();
-                if (!cxoimac)
+            }
+
+            for (int ix = oim; ix > -1; ix--)
+            {
+                int ixx = ix * x;
+                for (int sx = osm; sx > -1; sx--)
                 {
-                    Parallel.For(0, ni, i =>
+                    int sxx = sx * x;
+                    for (byte t = 0; t < 3; t++)
                     {
-                        for (int s = 0; s < ns; s++)
+                        if (sr[ix, sx, t] > 0 && sr[ix, sx, t] < 255)
                         {
-                            rs[i, s, 0] = (rs[i, s, 0] * c + r[i, s, 0] + S255f(r[i, s, 0])) / (c + 2);
-                            rs[i, s, 1] = (rs[i, s, 1] * c + r[i, s, 1] + S255f(r[i, s, 1])) / (c + 2);
-                            rs[i, s, 2] = (rs[i, s, 2] * c + r[i, s, 2] + S255f(r[i, s, 2])) / (c + 2);
+                            for (int i = ixx + xm; i >= ixx; i--)
+                            {
+                                if (i != 0 && i != nim)
+                                {
+                                    for (int s = sxx + xm; s >= sxx; s--)
+                                    {
+                                        if (s > 0 && s < nsm)
+                                        {
+                                            int ld = r[i, s, t];
+                                            r[i, s, t] = (byte)rs[i, s, t];
+
+                                            int rz = r[i, s, t] - ld;
+                                            if (rz > 0)
+                                            {
+                                                while (rz != 0)
+                                                {
+                                                    int ii = rnd.Next(ixx, ixx + x);
+                                                    int ss = rnd.Next(sxx, sxx + x);
+                                                    if (r[ii, ss, t] > 0)
+                                                    {
+                                                        r[ii, ss, t] = (byte)(r[ii, ss, t] - 1);
+                                                        rz--;
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                while (rz != 0)
+                                                {
+                                                    int ii = rnd.Next(ixx, ixx + x);
+                                                    int ss = rnd.Next(sxx, sxx + x);
+                                                    if (r[ii, ss, t] < 255)
+                                                    {
+                                                        r[ii, ss, t] = (byte)(r[ii, ss, t] + 1);
+                                                        rz++;
+                                                    }
+                                                }
+                                            }
+                                            rs[i, s, t] = (rs[i, s, t] * xoimac + r[i, s, t]) / (xoimac + 1);
+                                        }
+                                    }
+                                }
+                            }
+
+                            for (int i = ixx + xm; i >= ixx; i--)
+                            {
+                                if (i > 0 && i < nim)
+                                {
+                                    for (int s = sxx + xm; s >= sxx; s--)
+                                    {
+                                        int ld = r[i, s, t];
+                                        r[i, s, t] = (byte)((r[i + rnd.Next(-1, 2), s, t] + r[i + rnd.Next(-1, 2), s, t]) / 2);
+                                        int rz = r[i, s, t] - ld;
+                                        if (rz > 0)
+                                        {
+                                            while (rz != 0)
+                                            {
+                                                int ii = rnd.Next(ixx, ixx + x);
+                                                int ss = rnd.Next(sxx, sxx + x);
+                                                if (r[ii, ss, t] > 0)
+                                                {
+                                                    r[ii, ss, t] = (byte)(r[ii, ss, t] - 1);
+                                                    rz--;
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            while (rz != 0)
+                                            {
+                                                int ii = rnd.Next(ixx, ixx + x);
+                                                int ss = rnd.Next(sxx, sxx + x);
+                                                if (r[ii, ss, t] < 255)
+                                                {
+                                                    r[ii, ss, t] = (byte)(r[ii, ss, t] + 1);
+                                                    rz++;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
-                    });
+                    }
                 }
+            }
+
+            for (int ix = 0; ix < oi; ix++)
+            {
+                int ixx = ix * x;
+                for (int sx = 0; sx < os; sx++)
+                {
+                    int sxx = sx * x;
+                    for (byte t = 0; t < 3; t++)
+                    {
+                        if (sr[ix, sx, t] > 0 && sr[ix, sx, t] < 255)
+                        {
+                            for (int i = ixx; i < ixx + x; i++)
+                            {
+                                if (i != 0 && i != nim)
+                                {
+                                    for (int s = sxx; s < sxx + x; s++)
+                                    {
+                                        if (s != 0 && s != nsm)
+                                        {
+                                            int ld = r[i, s, t];
+                                            r[i, s, t] = (byte)((r[i + rnd.Next(-1, 2), s, t] + r[i + rnd.Next(-1, 2), s, t] + r[i, s + rnd.Next(-1, 2), t] + r[i, s + rnd.Next(-1, 2), t]) / 4);
+
+                                            int rz = r[i, s, t] - ld;
+                                            if (rz > 0)
+                                            {
+                                                while (rz != 0)
+                                                {
+                                                    int ii = rnd.Next(ixx, ixx + x);
+                                                    int ss = rnd.Next(sxx, sxx + x);
+                                                    if (r[ii, ss, t] > 0)
+                                                    {
+                                                        r[ii, ss, t] = (byte)(r[ii, ss, t] - 1);
+                                                        rz--;
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                while (rz != 0)
+                                                {
+                                                    int ii = rnd.Next(ixx, ixx + x);
+                                                    int ss = rnd.Next(sxx, sxx + x);
+                                                    if (r[ii, ss, t] < 255)
+                                                    {
+                                                        r[ii, ss, t] = (byte)(r[ii, ss, t] + 1);
+                                                        rz++;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            for (int i = ixx; i < ixx + x; i++)
+                            {
+                                for (int s = sxx; s < sxx + x; s++)
+                                {
+                                    if (s != 0 && s != nsm)
+                                    {
+                                        int ld = r[i, s, t];
+                                        r[i, s, t] = (byte)((r[i, s + rnd.Next(-1, 2), t] + r[i, s + rnd.Next(-1, 2), t]) / 2);
+
+                                        int rz = r[i, s, t] - ld;
+                                        if (rz > 0)
+                                        {
+                                            while (rz != 0)
+                                            {
+                                                int ii = rnd.Next(ixx, ixx + x);
+                                                int ss = rnd.Next(sxx, sxx + x);
+                                                if (r[ii, ss, t] > 0)
+                                                {
+                                                    r[ii, ss, t] = (byte)(r[ii, ss, t] - 1);
+                                                    rz--;
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            while (rz != 0)
+                                            {
+                                                int ii = rnd.Next(ixx, ixx + x);
+                                                int ss = rnd.Next(sxx, sxx + x);
+                                                if (r[ii, ss, t] < 255)
+                                                {
+                                                    r[ii, ss, t] = (byte)(r[ii, ss, t] + 1);
+                                                    rz++;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            ProgressText.Text = "50";
+
+            for (int c = xoimac + 1; c < xoim2; c++)
+            {
+                for (int ix = oim; ix > -1; ix--)
+                {
+                    int ixx = ix * x;
+                    for (int sx = osm; sx > -1; sx--)
+                    {
+                        int sxx = sx * x;
+                        for (byte t = 0; t < 3; t++)
+                        {
+                            if (sr[ix, sx, t] > 0 && sr[ix, sx, t] < 255)
+                            {
+                                for (int i = ixx + xm; i >= ixx; i--)
+                                {
+                                    if (i > 0 && i < nim)
+                                    {
+                                        for (int s = sxx + xm; s >= sxx; s--)
+                                        {
+                                            int ld = r[i, s, t];
+                                            r[i, s, t] = (byte)((r[i + rnd.Next(-1, 2), s, t] + r[i + rnd.Next(-1, 2), s, t]) / 2);
+                                            int rz = r[i, s, t] - ld;
+                                            if (rz > 0)
+                                            {
+                                                while (rz != 0)
+                                                {
+                                                    int ii = rnd.Next(ixx, ixx + x);
+                                                    int ss = rnd.Next(sxx, sxx + x);
+                                                    if (r[ii, ss, t] > 0)
+                                                    {
+                                                        r[ii, ss, t] = (byte)(r[ii, ss, t] - 1);
+                                                        rz--;
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                while (rz != 0)
+                                                {
+                                                    int ii = rnd.Next(ixx, ixx + x);
+                                                    int ss = rnd.Next(sxx, sxx + x);
+                                                    if (r[ii, ss, t] < 255)
+                                                    {
+                                                        r[ii, ss, t] = (byte)(r[ii, ss, t] + 1);
+                                                        rz++;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                for (int ix = 0; ix < oi; ix++)
+                {
+                    int ixx = ix * x;
+                    for (int sx = 0; sx < os; sx++)
+                    {
+                        int sxx = sx * x;
+                        for (byte t = 0; t < 3; t++)
+                        {
+                            if (sr[ix, sx, t] > 0 && sr[ix, sx, t] < 255)
+                            {
+                                for (int i = ixx; i < ixx + x; i++)
+                                {
+                                    if (i != 0 && i != nim)
+                                    {
+                                        for (int s = sxx; s < sxx + x; s++)
+                                        {
+                                            if (s != 0 && s != nsm)
+                                            {
+                                                int ld = r[i, s, t];
+                                                r[i, s, t] = (byte)((r[i + rnd.Next(-1, 2), s, t] + r[i + rnd.Next(-1, 2), s, t] + r[i, s + rnd.Next(-1, 2), t] + r[i, s + rnd.Next(-1, 2), t]) / 4);
+
+                                                int rz = r[i, s, t] - ld;
+                                                if (rz > 0)
+                                                {
+                                                    while (rz != 0)
+                                                    {
+                                                        int ii = rnd.Next(ixx, ixx + x);
+                                                        int ss = rnd.Next(sxx, sxx + x);
+                                                        if (r[ii, ss, t] > 0)
+                                                        {
+                                                            r[ii, ss, t] = (byte)(r[ii, ss, t] - 1);
+                                                            rz--;
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    while (rz != 0)
+                                                    {
+                                                        int ii = rnd.Next(ixx, ixx + x);
+                                                        int ss = rnd.Next(sxx, sxx + x);
+                                                        if (r[ii, ss, t] < 255)
+                                                        {
+                                                            r[ii, ss, t] = (byte)(r[ii, ss, t] + 1);
+                                                            rz++;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int i = ixx; i < ixx + x; i++)
+                                {
+                                    for (int s = sxx; s < sxx + x; s++)
+                                    {
+                                        if (s != 0 && s != nsm)
+                                        {
+                                            int ld = r[i, s, t];
+                                            r[i, s, t] = (byte)((r[i, s + rnd.Next(-1, 2), t] + r[i, s + rnd.Next(-1, 2), t]) / 2);
+
+                                            int rz = r[i, s, t] - ld;
+                                            if (rz > 0)
+                                            {
+                                                while (rz != 0)
+                                                {
+                                                    int ii = rnd.Next(ixx, ixx + x);
+                                                    int ss = rnd.Next(sxx, sxx + x);
+                                                    if (r[ii, ss, t] > 0)
+                                                    {
+                                                        r[ii, ss, t] = (byte)(r[ii, ss, t] - 1);
+                                                        rz--;
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                while (rz != 0)
+                                                {
+                                                    int ii = rnd.Next(ixx, ixx + x);
+                                                    int ss = rnd.Next(sxx, sxx + x);
+                                                    if (r[ii, ss, t] < 255)
+                                                    {
+                                                        r[ii, ss, t] = (byte)(r[ii, ss, t] + 1);
+                                                        rz++;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                ProgressText.Text = (c * 100 / xoim2).ToString();
+
+                Parallel.For(0, ni, i =>
+                {
+                    for (int s = 0; s < ns; s++)
+                    {
+                        rs[i, s, 0] = (rs[i, s, 0] * c + r[i, s, 0] + S255f(r[i, s, 0])) / (c + 2);
+                        rs[i, s, 1] = (rs[i, s, 1] * c + r[i, s, 1] + S255f(r[i, s, 1])) / (c + 2);
+                        rs[i, s, 2] = (rs[i, s, 2] * c + r[i, s, 2] + S255f(r[i, s, 2])) / (c + 2);
+                    }
+                });
+
             }
 
             Parallel.For(0, ni, i =>
@@ -5147,9 +6264,8 @@ namespace ScaleSmooth
             int r, ld;
             int ii, ss;
 
-            for (int c = 0; c < xoim2; c++)
+            for (int c = 0; c < xoimac; c++)
             {
-                bool cxoimac = c <= xoimac;
                 for (int ix = oim; ix > -1; ix--)
                 {
                     int ixx = ix * x;
@@ -5166,54 +6282,45 @@ namespace ScaleSmooth
                                     {
                                         if (s > 0 && s < nsm)
                                         {
-                                            if (cxoimac)
-                                            {
-                                                ld = d[i, s];
-                                                if (c < xoimac)
-                                                {
-                                                    if (rnd.Next(0, xoim) > c)   //you can remove this
-                                                    {                            //to reduce grid structure
-                                                        d[i, s] = (byte)(S255f((ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
-                                                    }                                         //you can
-                                                    else                                      //remove this
-                                                    {                                         //to reduce
-                                                        d[i, s] = (byte)rnd.Next(0, 256);     //grid
-                                                    }                                         //structure
-                                                }
-                                                else if (c == xoimac)
-                                                {
-                                                    d[i, s] = (byte)ds[i, s];
-                                                }
+                                            ld = d[i, s];
 
-                                                r = d[i, s] - ld; ////float function!?
-                                                if (r > 0)
+                                            if (rnd.Next(0, xoim) > c)   //you can remove this
+                                            {                            //to reduce grid structure
+                                                d[i, s] = (byte)(S255f((ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)] + ds[i + rnd.Next(-1, 2), s + rnd.Next(-1, 2)]) / 9));
+                                            }                                         //you can
+                                            else                                      //remove this
+                                            {                                         //to reduce
+                                                d[i, s] = (byte)rnd.Next(0, 256);     //grid
+                                            }                                         //structure
+
+                                            r = d[i, s] - ld; ////float function!?
+                                            if (r > 0)
+                                            {
+                                                while (r != 0)
                                                 {
-                                                    while (r != 0)
+                                                    ii = rnd.Next(ixx, ixx + x);
+                                                    ss = rnd.Next(sxx, sxx + x);
+                                                    if (d[ii, ss] > 0)
                                                     {
-                                                        ii = rnd.Next(ixx, ixx + x);
-                                                        ss = rnd.Next(sxx, sxx + x);
-                                                        if (d[ii, ss] > 0)
-                                                        {
-                                                            d[ii, ss] = (byte)(d[ii, ss] - 1);
-                                                            r--;
-                                                        }
+                                                        d[ii, ss] = (byte)(d[ii, ss] - 1);
+                                                        r--;
                                                     }
                                                 }
-                                                else
-                                                {
-                                                    while (r != 0)
-                                                    {
-                                                        ii = rnd.Next(ixx, ixx + x);
-                                                        ss = rnd.Next(sxx, sxx + x);
-                                                        if (d[ii, ss] < 255)
-                                                        {
-                                                            d[ii, ss] = (byte)(d[ii, ss] + 1);
-                                                            r++;
-                                                        }
-                                                    }
-                                                }
-                                                ds[i, s] = (ds[i, s] * c + d[i, s]) / (c + 1);
                                             }
+                                            else
+                                            {
+                                                while (r != 0)
+                                                {
+                                                    ii = rnd.Next(ixx, ixx + x);
+                                                    ss = rnd.Next(sxx, sxx + x);
+                                                    if (d[ii, ss] < 255)
+                                                    {
+                                                        d[ii, ss] = (byte)(d[ii, ss] + 1);
+                                                        r++;
+                                                    }
+                                                }
+                                            }
+                                            ds[i, s] = (ds[i, s] * c + d[i, s]) / (c + 1);
                                         }
                                     }
                                 }
@@ -5358,17 +6465,355 @@ namespace ScaleSmooth
                         }
                     }
                 }
-
                 ProgressText.Text = (c * 100 / xoim2).ToString();
-                if (!cxoimac)
+            }
+
+            for (int ix = oim; ix > -1; ix--)
+            {
+                int ixx = ix * x;
+                for (int sx = osm; sx > -1; sx--)
                 {
-                    for (int i = 0; i < ni; i++)
+                    int sxx = sx * x;
+                    if (sr[ix, sx] > 0 && sr[ix, sx] < 255)
                     {
-                        for (int s = 0; s < ns; s++)
+                        for (int i = ixx + xm; i >= ixx; i--)
+                        {
+                            if (i != 0 && i != nim)
+                            {
+                                for (int s = sxx + xm; s > sxx - 1; s--)
+                                {
+                                    if (s > 0 && s < nsm)
+                                    {
+                                        ld = d[i, s];
+                                        d[i, s] = (byte)ds[i, s];
+
+                                        r = d[i, s] - ld;
+                                        if (r > 0)
+                                        {
+                                            while (r != 0)
+                                            {
+                                                ii = rnd.Next(ixx, ixx + x);
+                                                ss = rnd.Next(sxx, sxx + x);
+                                                if (d[ii, ss] > 0)
+                                                {
+                                                    d[ii, ss] = (byte)(d[ii, ss] - 1);
+                                                    r--;
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            while (r != 0)
+                                            {
+                                                ii = rnd.Next(ixx, ixx + x);
+                                                ss = rnd.Next(sxx, sxx + x);
+                                                if (d[ii, ss] < 255)
+                                                {
+                                                    d[ii, ss] = (byte)(d[ii, ss] + 1);
+                                                    r++;
+                                                }
+                                            }
+                                        }
+                                        ds[i, s] = (ds[i, s] * xoimac + d[i, s]) / (xoimac + 1);
+
+                                    }
+                                }
+                            }
+                        }
+
+                        for (int i = ixx + xm; i >= ixx; i--)
+                        {
+                            if (i > 0 && i < nim)
+                            {
+                                for (int s = sxx + xm; s >= sxx; s--)
+                                {
+                                    ld = d[i, s];
+                                    d[i, s] = (byte)((d[i + rnd.Next(-1, 2), s] + d[i + rnd.Next(-1, 2), s]) / 2);
+                                    r = d[i, s] - ld;
+                                    if (r > 0)
+                                    {
+                                        while (r != 0)
+                                        {
+                                            ii = rnd.Next(ixx, ixx + x);
+                                            ss = rnd.Next(sxx, sxx + x);
+                                            if (d[ii, ss] > 0)
+                                            {
+                                                d[ii, ss] = (byte)(d[ii, ss] - 1);
+                                                r--;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        while (r != 0)
+                                        {
+                                            ii = rnd.Next(ixx, ixx + x);
+                                            ss = rnd.Next(sxx, sxx + x);
+                                            if (d[ii, ss] < 255)
+                                            {
+                                                d[ii, ss] = (byte)(d[ii, ss] + 1);
+                                                r++;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            for (int ix = 0; ix < oi; ix++)
+            {
+                int ixx = ix * x;
+                for (int sx = 0; sx < os; sx++)
+                {
+                    int sxx = sx * x;
+                    if (sr[ix, sx] > 0 && sr[ix, sx] < 255)
+                    {
+
+                        for (int i = ixx; i < ixx + x; i++)
                         {
 
-                            ds[i, s] = (ds[i, s] * c + d[i, s] + S255f(d[i, s])) / (c + 2);
+                            if (i != 0 && i != nim)
+                            {
+                                for (int s = sxx; s < sxx + x; s++)
+                                {
+                                    if (s != 0 && s != nsm)
+                                    {
+                                        ld = d[i, s];
+
+                                        d[i, s] = (byte)((d[i + rnd.Next(-1, 2), s] + d[i + rnd.Next(-1, 2), s] + d[i, s + rnd.Next(-1, 2)] + d[i, s + rnd.Next(-1, 2)]) / 4);
+
+
+                                        r = d[i, s] - ld;
+                                        if (r > 0)
+                                        {
+                                            while (r != 0)
+                                            {
+                                                ii = rnd.Next(ixx, ixx + x);
+                                                ss = rnd.Next(sxx, sxx + x);
+                                                if (d[ii, ss] > 0)
+                                                {
+                                                    d[ii, ss] = (byte)(d[ii, ss] - 1);
+                                                    r--;
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            while (r != 0)
+                                            {
+                                                ii = rnd.Next(ixx, ixx + x);
+                                                ss = rnd.Next(sxx, sxx + x);
+                                                if (d[ii, ss] < 255)
+                                                {
+                                                    d[ii, ss] = (byte)(d[ii, ss] + 1);
+                                                    r++;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
                         }
+                        for (int i = ixx; i < ixx + x; i++)
+                        {
+                            for (int s = sxx; s < sxx + x; s++)
+                            {
+
+                                if (s != 0 && s != nsm)
+                                {
+                                    ld = d[i, s];
+                                    d[i, s] = (byte)((d[i, s + rnd.Next(-1, 2)] + d[i, s + rnd.Next(-1, 2)]) / 2);
+                                    r = d[i, s] - ld;
+                                    if (r > 0)
+                                    {
+                                        while (r != 0)
+                                        {
+                                            ii = rnd.Next(ixx, ixx + x);
+                                            ss = rnd.Next(sxx, sxx + x);
+                                            if (d[ii, ss] > 0)
+                                            {
+                                                d[ii, ss] = (byte)(d[ii, ss] - 1);
+                                                r--;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        while (r != 0)
+                                        {
+                                            ii = rnd.Next(ixx, ixx + x);
+                                            ss = rnd.Next(sxx, sxx + x);
+                                            if (d[ii, ss] < 255)
+                                            {
+                                                d[ii, ss] = (byte)(d[ii, ss] + 1);
+                                                r++;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            ProgressText.Text = "50";
+
+            for (int c = xoimac + 1; c < xoim2; c++)
+            {
+                for (int ix = oim; ix > -1; ix--)
+                {
+                    int ixx = ix * x;
+                    for (int sx = osm; sx > -1; sx--)
+                    {
+                        int sxx = sx * x;
+                        if (sr[ix, sx] > 0 && sr[ix, sx] < 255)
+                        {
+                            for (int i = ixx + xm; i >= ixx; i--)
+                            {
+                                if (i > 0 && i < nim)
+                                {
+                                    for (int s = sxx + xm; s >= sxx; s--)
+                                    {
+                                        ld = d[i, s];
+                                        d[i, s] = (byte)((d[i + rnd.Next(-1, 2), s] + d[i + rnd.Next(-1, 2), s]) / 2);
+                                        r = d[i, s] - ld;
+                                        if (r > 0)
+                                        {
+                                            while (r != 0)
+                                            {
+                                                ii = rnd.Next(ixx, ixx + x);
+                                                ss = rnd.Next(sxx, sxx + x);
+                                                if (d[ii, ss] > 0)
+                                                {
+                                                    d[ii, ss] = (byte)(d[ii, ss] - 1);
+                                                    r--;
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            while (r != 0)
+                                            {
+                                                ii = rnd.Next(ixx, ixx + x);
+                                                ss = rnd.Next(sxx, sxx + x);
+                                                if (d[ii, ss] < 255)
+                                                {
+                                                    d[ii, ss] = (byte)(d[ii, ss] + 1);
+                                                    r++;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                for (int ix = 0; ix < oi; ix++)
+                {
+                    int ixx = ix * x;
+                    for (int sx = 0; sx < os; sx++)
+                    {
+                        int sxx = sx * x;
+                        if (sr[ix, sx] > 0 && sr[ix, sx] < 255)
+                        {
+                            for (int i = ixx; i < ixx + x; i++)
+                            {
+                                if (i != 0 && i != nim)
+                                {
+                                    for (int s = sxx; s < sxx + x; s++)
+                                    {
+                                        if (s != 0 && s != nsm)
+                                        {
+                                            ld = d[i, s];
+                                            d[i, s] = (byte)((d[i + rnd.Next(-1, 2), s] + d[i + rnd.Next(-1, 2), s] + d[i, s + rnd.Next(-1, 2)] + d[i, s + rnd.Next(-1, 2)]) / 4);
+
+                                            r = d[i, s] - ld;
+                                            if (r > 0)
+                                            {
+                                                while (r != 0)
+                                                {
+                                                    ii = rnd.Next(ixx, ixx + x);
+                                                    ss = rnd.Next(sxx, sxx + x);
+                                                    if (d[ii, ss] > 0)
+                                                    {
+                                                        d[ii, ss] = (byte)(d[ii, ss] - 1);
+                                                        r--;
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                while (r != 0)
+                                                {
+                                                    ii = rnd.Next(ixx, ixx + x);
+                                                    ss = rnd.Next(sxx, sxx + x);
+                                                    if (d[ii, ss] < 255)
+                                                    {
+                                                        d[ii, ss] = (byte)(d[ii, ss] + 1);
+                                                        r++;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                            }
+                            for (int i = ixx; i < ixx + x; i++)
+                            {
+                                for (int s = sxx; s < sxx + x; s++)
+                                {
+
+                                    if (s != 0 && s != nsm)
+                                    {
+                                        ld = d[i, s];
+                                        d[i, s] = (byte)((d[i, s + rnd.Next(-1, 2)] + d[i, s + rnd.Next(-1, 2)]) / 2);
+                                        r = d[i, s] - ld;
+                                        if (r > 0)
+                                        {
+                                            while (r != 0)
+                                            {
+                                                ii = rnd.Next(ixx, ixx + x);
+                                                ss = rnd.Next(sxx, sxx + x);
+                                                if (d[ii, ss] > 0)
+                                                {
+                                                    d[ii, ss] = (byte)(d[ii, ss] - 1);
+                                                    r--;
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            while (r != 0)
+                                            {
+                                                ii = rnd.Next(ixx, ixx + x);
+                                                ss = rnd.Next(sxx, sxx + x);
+                                                if (d[ii, ss] < 255)
+                                                {
+                                                    d[ii, ss] = (byte)(d[ii, ss] + 1);
+                                                    r++;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                ProgressText.Text = (c * 100 / xoim2).ToString();
+
+                for (int i = 0; i < ni; i++)
+                {
+                    for (int s = 0; s < ns; s++)
+                    {
+                        ds[i, s] = (ds[i, s] * c + d[i, s] + S255f(d[i, s])) / (c + 2);
                     }
                 }
             }
@@ -5471,7 +6916,7 @@ namespace ScaleSmooth
                 Parallel.For(dixxm, dixx, i =>
                 {
                     for (int s = iysx; s < ys2x; s++)
-                    { //optimize bilinear s
+                    {
                         ri[i, s] = Bilinear(i, s, ixxm, (float)ysx, (float)dixxp, (float)ysxp, (ri[ixxm, iysx] + ri[ixxm, iysxp]) / 2, sr[ix, ys], sr[ix, ys + 1], (ri[ixxm, iysxpi] + ri[ixxm, iysxpp]) / 2);
                     }
                 });
@@ -5498,7 +6943,7 @@ namespace ScaleSmooth
                 int dsxxm = sx * x;
                 sxxm = dsxxm - 1;
                 int dsxx = (sx + 1) * x;
-                float dsxxp = dsxxm + x50p; //float?
+                float dsxxp = dsxxm + x50p; 
                 Parallel.For(ixsx, xs2x, i =>
                 {
                     for (int s = dsxxm; s < dsxx; s++)
@@ -5582,7 +7027,7 @@ namespace ScaleSmooth
                     int dixxm = ix * x;
                     int dixx = dixxm + x;
                     int iixx = dixx - 1;
-                    float dixxp = dixxm + x50p; //float?
+                    float dixxp = dixxm + x50p; 
 
                     Parallel.For(dixxm, dixx, i =>
                     {
@@ -5665,7 +7110,7 @@ namespace ScaleSmooth
                                 x1 = ix * x;
                                 ixx = (int)(x1);
                                 ixxm = ixx + x;
-                                x1 += x50p;       //         
+                                x1 += x50p;     
                                 y1 = x50p;        //   [1]   2
                                 q1 = sr[ix, 0];   //   1/4   3
 
@@ -5712,7 +7157,7 @@ namespace ScaleSmooth
                                 float dist1 = MathF.Max(nim - i + s - x, 0);
                                 float dist2 = MathF.Max(MathF.Abs(ixsxpi - i) + MathF.Abs(iysxpi - s) - x, 0);
                                 ri[i, s] = (short)((ri[i, s] * dist1 + r[i, s] * dist2) / (dist1 + dist2) + 0.5);
-                                ris[i, s] = MathF.Min(dist1, dist2); //optimize?
+                                ris[i, s] = MathF.Min(dist1, dist2); 
                             }
                         });
                     }
@@ -5862,7 +7307,7 @@ namespace ScaleSmooth
                                     }
                                     else
                                     {
-                                        sxx = sx * x;      //1    [2]
+                                        sxx = sx * x;             //1    [2]
                                         x2 = oimx;                //         
                                         y2 = sx * x + x50p;       //   4     3
                                         q2 = sr[oim, sx];
@@ -5935,7 +7380,7 @@ namespace ScaleSmooth
                                         r[i, s] = Quadrilateral(i, s, x1, y1, x2, y2, x3, y3, x4, y4, q1, q2, q3, q4);
                                         float dist2 = MathF.Max(nim - i + nsm - s - x, 0);
                                         ri[i, s] = (short)((ri[i, s] * dist2 + r[i, s] * ris[i, s]) / (ris[i, s] + dist2) + 0.5);
-                                        ris[i, s] = MathF.Min(ris[i, s], dist2); //this way!!!!!!!
+                                        ris[i, s] = MathF.Min(ris[i, s], dist2); 
                                     }
                                 });
                             }
@@ -6079,7 +7524,7 @@ namespace ScaleSmooth
                 }
             });
 
-            return BMPfromGray(rb, ni, ns); //visualisation all methods work ac++ video AFTER ALL
+            return BMPfromGray(rb, ni, ns); //AFTER ALL, visualisation all methods work ac++ video 
         }
 
         private Bitmap ScaleSeparateColor(Image img, int x, int ac)
@@ -6119,7 +7564,7 @@ namespace ScaleSmooth
             {
                 for (int sx = 0; sx < os; sx++)
                 {
-                    for (int t = 0; t < 3; t++)
+                    for (byte t = 0; t < 3; t++)
                     {
                         if (sr[ix, sx, t] < rmin[t])
                             rmin[t] = sr[ix, sx, t];
@@ -6165,7 +7610,7 @@ namespace ScaleSmooth
             Parallel.For(ixsx, (xs + 2) * x, i =>
             {
                 for (int s = iysx; s < ys2x; s++)
-                { //optimize bilinear s
+                { 
                     short[] b3 = Bilinear3(i, s, xsx, ysx, xsxp, ysxp, sr[xs, ys, 0], sr[xsp, ys, 0], sr[xsp, ysp, 0], sr[xs, ysp, 0], sr[xs, ys, 1], sr[xsp, ys, 1], sr[xsp, ysp, 1], sr[xs, ysp, 1], sr[xs, ys, 2], sr[xsp, ys, 2], sr[xsp, ysp, 2], sr[xs, ysp, 2]);
                     ri[i, s, 0] = b3[0];
                     ri[i, s, 1] = b3[1];
@@ -6483,11 +7928,11 @@ namespace ScaleSmooth
                         }
                         Parallel.For(ix * x, (ix + 1) * x, i =>
                         {
-                            for (int s = sx * x; s < (sx + 1) * x; s++) //optimize bilinear by i
+                            for (int s = sx * x; s < (sx + 1) * x; s++) 
                             {
                                 short[] b3 = Bilinear3(i, s, x1, y1, x2, y2, rq1, rq2, rq3, rq4, gq1, gq2, gq3, gq4, bq1, bq2, bq3, bq4);
                                 r[i, s, 0] = b3[0];
-                                r[i, s, 1] = b3[1]; //nupkg .NET Standart 2.0
+                                r[i, s, 1] = b3[1]; //AFTER ALL, nupkg .NET Standart 2.0, application & project
                                 r[i, s, 2] = b3[2];
                                 float dist1 = MathF.Max(nim - i + s - x, 0);
                                 float dist2 = MathF.Max(MathF.Abs(ixsxpi - i) + MathF.Abs(iysxpi - s) - x, 0);
@@ -6497,7 +7942,7 @@ namespace ScaleSmooth
                                 ri[i, s, 0] = (short)(ri[i, s, 0] * dis1sdist + r[i, s, 0] * dis2sdist + 0.5);
                                 ri[i, s, 1] = (short)(ri[i, s, 1] * dis1sdist + r[i, s, 1] * dis2sdist + 0.5);
                                 ri[i, s, 2] = (short)(ri[i, s, 2] * dis1sdist + r[i, s, 2] * dis2sdist + 0.5);
-                                ris[i, s] = MathF.Min(dist1, dist2); //optimize?????
+                                ris[i, s] = MathF.Min(dist1, dist2);
                             }
                         });
                     }
@@ -6702,7 +8147,7 @@ namespace ScaleSmooth
                                     }
                                     else
                                     {
-                                        sxx = sx * x;      //1    [2]
+                                        sxx = sx * x;             //1    [2]
                                         x2 = oimx;                //         
                                         y2 = sx * x + x50p;       //   4     3
                                         rq2 = sr[oim, sx, 0];
@@ -6759,7 +8204,7 @@ namespace ScaleSmooth
                                     }
                                     else
                                     {
-                                        x4 = ix * x;             //          
+                                        x4 = ix * x;                    
                                         y4 = sx * x;             //    [1]  2 
                                         ixx = (int)(x4);         //
                                         sxx = (int)(y4);         // 4      3
@@ -6995,7 +8440,7 @@ namespace ScaleSmooth
             {
                 for (int s = 0; s < ns; s++)
                 {
-                    for (int t = 0; t < 3; t++)
+                    for (byte t = 0; t < 3; t++)
                     {
                         if (ri[i, s, t] < rmaax2[t])
                         {
@@ -7027,7 +8472,7 @@ namespace ScaleSmooth
             r34 = (x3 - x) / d34;
             ry1 = r21 * y1 + r12 * y2;
             ry2 = r34 * y4 + r43 * y3;
-            dry21 = ry2 - ry1; //is 0?
+            dry21 = ry2 - ry1; 
             float ry2y = (ry2 - y) / dry21;
             float yry1 = (y - ry1) / dry21;
 
@@ -7035,26 +8480,18 @@ namespace ScaleSmooth
             r1 = r21 * rq1 + r12 * rq2;
             r2 = r34 * rq4 + r43 * rq3;
             res[0] = (short)(ry2y * r1 + yry1 * r2 + 0.5);
-            if (float.IsNaN(res[0])) //в каком случае - оптимизировать?
+            /*if (float.IsNaN(res[0])) //в каком случае - оптимизировать? dry21?
             {
                 res[0] = (short)((r1 + r2) / 2 + 0.5);
-            }
+            }*/
 
             r1 = r21 * gq1 + r12 * gq2;
             r2 = r34 * gq4 + r43 * gq3;
             res[1] = (short)(ry2y * r1 + yry1 * r2 + 0.5);
-            if (float.IsNaN(res[1])) //?
-            {
-                res[1] = (short)((r1 + r2) / 2 + 0.5);
-            }
 
             r1 = r21 * bq1 + r12 * bq2;
             r2 = r34 * bq4 + r43 * bq3;
             res[2] = (short)(ry2y * r1 + yry1 * r2 + 0.5);
-            if (float.IsNaN(res[2])) //?
-            {
-                res[2] = (short)((r1 + r2) / 2 + 0.5);
-            }
 
             return res;
         }
@@ -7073,10 +8510,10 @@ namespace ScaleSmooth
             ry1 = r21 * y1 + r12 * y2;
             ry2 = r34 * y4 + r43 * y3;
             dry21 = ry2 - ry1;
-            if (float.IsNaN((ry2 - y) / dry21 * r1 + (y - ry1) / dry21 * r2)) ///why?
+            /*if (float.IsNaN((ry2 - y) / dry21 * r1 + (y - ry1) / dry21 * r2)) ///why?
             {
                 return (short)((r1 + r2) / 2 + 0.5);
-            }
+            }*/
             return (short)((ry2 - y) / dry21 * r1 + (y - ry1) / dry21 * r2 + 0.5);
         }
 
@@ -7373,8 +8810,8 @@ namespace ScaleSmooth
                 {
                     if (ri[i, s] < 0.5f)
                         rb[i, s] = 0;
-                    else if (ri[i, s] > 254.5) //< 25 interp ? > 172 ??? after optimization 
-                        rb[i, s] = 255;//k=-8;k=4???????? unite at 127.5
+                    else if (ri[i, s] > 254.5) //after optimization, < 25 interp ? > 172 ??? 
+                        rb[i, s] = 255;//after optimization, k=-8;k=4?*2??????? unite at 127.5
                     else
                         rb[i, s] = (byte)(ri[i, s] + 0.5f);
                 }
@@ -7383,7 +8820,7 @@ namespace ScaleSmooth
             return BMPfromGray(rb, ni, ns);
         }
 
-        private Bitmap ScaleBilinearApproximationColor(Image img, int x, int ac)//static or private static?
+        private Bitmap ScaleBilinearApproximationColor(Image img, int x, int ac)
         {
             if (ac < 1) ac = 1;
             int ni, ns, oi, os, xm, oim, osm, sxx, sxxm, ixx, ixxm;
@@ -7405,58 +8842,14 @@ namespace ScaleSmooth
             float xs = oim / 2f, ys = osm / 2f;
             float nxs = (ni - 1) / 2f, nys = (ns - 1) / 2f;
 
-            float ki = oim * ac / 100; /////////////? int! Ceiling
-            float ks = osm * ac / 100;
-            float ki2 = ki - 1;
-            float ks2 = ks - 1;
-            //oiki
-            if (ac < 100) //remove
+            int ki = (int)MathF.Ceiling(oim * ac / 100f);
+            int ks = (int)MathF.Ceiling(osm * ac / 100f);
+            int oiki = (int)(oim / (float)ki + 0.5f);
+                        
+            for (int kki = 0; kki < ki * oiki; kki += oiki)
             {
-                for (int kki = 0; kki < oim; kki += 2)
-                {
-                    //ProgressText.Text = ((int)((kki - (xs - ki / 2f) + 1) / (ki + 2) * 100)).ToString();
-                    ProgressText.Text = ((int)(kki * 100 / oim / (ki + 2))).ToString();
-                    for (int kks = 0; kks < osm; kks += 2)
-                    {
-                        float xsx = kki * x + x50p;
-                        float xsxp = xsx + x;
-                        float ysx = kks * x + x50p;
-                        float ysxp = ysx + x;
-                        int ys2x = (kks + 2) * x;
-
-                        int iysx = kks * x;
-                        int iysxp = iysx + xm;
-                        int iysxpi = iysxp + 1;
-                        int iysxpp = iysxpi + xm;
-
-                        int ixsx = kki * x;
-                        int ixsxp = ixsx + xm;
-                        int ixsxpi = ixsxp + 1;
-                        float cx = ixsxp + 0.5f;
-                        float cy = iysxp + 0.5f;
-                        int ixsxpp = ixsxpi + xm;
-                        int xsp = kki + 1, ysp = kks + 1;
-
-                        Parallel.For(ixsx, (kki + 2) * x, i =>
-                        {
-                            for (int s = iysx; s < ys2x; s++)
-                            {
-                                //optimize bilinear by s
-                                short[] b3 = Bilinear3(i, s, xsx, ysx, xsxp, ysxp, sr[kki, kks, 0], sr[xsp, kks, 0], sr[xsp, ysp, 0], sr[kki, ysp, 0], sr[kki, kks, 1], sr[xsp, kks, 1], sr[xsp, ysp, 1], sr[kki, ysp, 1], sr[kki, kks, 2], sr[xsp, kks, 2], sr[xsp, ysp, 2], sr[kki, ysp, 2]);
-                                ri[i, s, 0] = b3[0];
-                                ri[i, s, 1] = b3[1];
-                                ri[i, s, 2] = b3[2];
-                                ris[i, s] = (short)MathF.Pow(2, MathF.Max(MathF.Abs(i - nxs) / ki, MathF.Abs(s - nys) / ks) - x);
-                            }
-                        });
-                    }
-                }
-            }
-
-            for (int kki = (int)(xs - ki / 2); kki < xs + ki / 2 - 0.5f; kki++)
-            {
-                ProgressText.Text = ((int)((kki - (int)(xs - ki / 2) + 1) / (ki + 2) * 100)).ToString();
-                for (int kks = (int)(ys - ks / 2); kks < ys + ks / 2 - 0.5f; kks++)
+                ProgressText.Text = ProgressText.Text = (kki * 100 / oim).ToString();
+                for (int kks = 0; kks < ks * oiki; kks += oiki)
                 {
                     float xsx = kki * x + x50p;
                     float xsxp = xsx + x;
@@ -7496,7 +8889,7 @@ namespace ScaleSmooth
                         }
                     });
 
-                    for (int ix = kki + 2; ix < kki + 2 + ki2 && ix < oi; ix++)
+                    for (int ix = kki + 2; ix < oi; ix++)
                     {
                         int dixxm = ix * x;
                         ixxm = dixxm - 1;
@@ -7523,7 +8916,7 @@ namespace ScaleSmooth
                         });
                     }
 
-                    for (int ix = kki - 1; ix > kki - 1 - ki2 && ix > -1; ix--)
+                    for (int ix = kki - 1; ix > -1; ix--)
                     {
                         int dixx = ix * x;
                         int dixxp = dixx + x;
@@ -7550,7 +8943,7 @@ namespace ScaleSmooth
                     }
 
                     int xs2x = (kki + 2) * x;
-                    for (int sx = kks + 2; sx < kks + 2 + ks2 && sx < os; sx++)
+                    for (int sx = kks + 2; sx < os; sx++)
                     {
                         int dsxxm = sx * x;
                         sxxm = dsxxm - 1;
@@ -7577,7 +8970,7 @@ namespace ScaleSmooth
                         });
                     }
 
-                    for (int sx = kks - 1; sx > kks - 1 - ks2 && sx > -1; sx--)
+                    for (int sx = kks - 1; sx > -1; sx--)
                     {
                         int dsxx = sx * x;
                         sxxm = dsxx + x;
@@ -7603,9 +8996,9 @@ namespace ScaleSmooth
                         });
                     }
 
-                    for (int sx = kks + 2; sx < kks + 2 + ks2 && sx < os; sx++)
+                    for (int sx = kks + 2; sx < os; sx++)
                     {
-                        for (int ix = kki + 2; ix < kki + 2 + ki2 && ix < oi; ix++)
+                        for (int ix = kki + 2; ix < oi; ix++)
                         {
                             int dsxxm = sx * x;
                             sxxm = dsxxm - 1;
@@ -7639,9 +9032,9 @@ namespace ScaleSmooth
                         }
                     }
 
-                    for (int sx = kks - 1; sx > kks - 1 - ks2 && sx > -1; sx--)
+                    for (int sx = kks - 1; sx > -1; sx--)
                     {
-                        for (int ix = kki - 1; ix > kki - 1 - ki2 && ix > -1; ix--)
+                        for (int ix = kki - 1; ix > -1; ix--)
                         {
                             int dsxxm = sx * x;
                             sxxm = (sx + 1) * x;
@@ -7673,9 +9066,9 @@ namespace ScaleSmooth
                         }
                     }
 
-                    for (int sx = kks + 2; sx < os && sx < kks + 2 + ks2; sx++)
+                    for (int sx = kks + 2; sx < os; sx++)
                     {
-                        for (int ix = kki - 1; ix > -1 && ix > kki - 1 - ki2; ix--)
+                        for (int ix = kki - 1; ix > -1; ix--)
                         {
                             sxx = sx * x;
                             int isxxm = sxx - 1;
@@ -7708,9 +9101,9 @@ namespace ScaleSmooth
                         }
                     }
 
-                    for (int ix = kki + 2; ix < oi && ix < kki + 2 + ki2; ix++)
+                    for (int ix = kki + 2; ix < oi; ix++)
                     {
-                        for (int sx = kks - 1; sx > -1 && sx > kks - 1 - ks2; sx--)
+                        for (int sx = kks - 1; sx > -1; sx--)
                         {
                             sxx = sx * x;
                             int dsxx = sxx + x;
@@ -7753,11 +9146,11 @@ namespace ScaleSmooth
             {
                 for (int s = 0; s < ns; s++)
                 {
-                    for (int t = 0; t < 3; t++)
+                    for (byte t = 0; t < 3; t++)
                     {
                         if (ri[i, s, t] < 0.5f)
                             rb[i, s, t] = 0;
-                        else if (ri[i, s, t] > 254.5) //k=8+ for pixel but gradient
+                        else if (ri[i, s, t] > 254.5) //after optimization, k=8+ for pixelart?
                             rb[i, s, t] = 255;
                         else
                             rb[i, s, t] = (byte)(ri[i, s, t] + 0.5f);
@@ -7791,20 +9184,25 @@ namespace ScaleSmooth
         private void Form1_Load(object sender, EventArgs e)
         {
             if (Settings.Default.location != new Size(777, 777)) this.Location = (Point)Settings.Default.location;
-            //fit to screen
+            if (Left < 0) Left = 0;
+            if (Screen.PrimaryScreen != null)
+            {
+                if (Left + Width > Screen.PrimaryScreen.Bounds.Width) Left = Screen.PrimaryScreen.Bounds.Width - Width;
+                if (Top + Height > Screen.PrimaryScreen.Bounds.Height) Top = Screen.PrimaryScreen.Bounds.Height - Height;
+            }
             if (Settings.Default.method > comboBox1.Items.Count - 1)
             {
-                comboBox1.SelectedIndex = 0; //translate to Russian
+                comboBox1.SelectedIndex = 0; 
             }
             else
             {
-                comboBox1.SelectedIndex = Settings.Default.method; //translate to Russian
+                comboBox1.SelectedIndex = Settings.Default.method;
             }
 
             switch (Settings.Default.gpu)
             {
                 case 0:
-                    checkBox1.CheckState = CheckState.Unchecked;//separate -> smooth/rough
+                    checkBox1.CheckState = CheckState.Unchecked;//after optimization, separate -> smooth/rough
                     break;
                 case 1:
                     checkBox1.CheckState = CheckState.Checked;
@@ -7819,7 +9217,7 @@ namespace ScaleSmooth
                 case 3:
                     radioButton2.Checked = true;
                     break;
-            } //RGBA after optimization
+            }
             trackBar1.Value = Settings.Default.accuracy;
             checkBox2.Checked = Settings.Default.sound;
 
@@ -7832,7 +9230,7 @@ namespace ScaleSmooth
             toolTip1.SetToolTip(comboBox1, "Select method fo upscaling");
             toolTip1.SetToolTip(pictureBox5, "Select previous method fo upscaling");
             toolTip1.SetToolTip(pictureBox4, "Select next method fo upscaling");
-            toolTip1.SetToolTip(checkBox1, "Try increase perfomance by using your videocard?\n\nSquare - Auto decide\nCheck mark - Always\nEmpty - Never");
+            toolTip1.SetToolTip(checkBox1, "Try increase perfomance by using your videocard? (It can interrupt other non-system GPU processes)\n\nSquare - Auto decide\nCheck mark - Always\nEmpty - Never");
             toolTip1.SetToolTip(checkBox2, "Notify that processing is done by loud sound");
             toolTip1.SetToolTip(label6, "before Upscale:\nDrag to move window\nRMB x2 to fit window in screen");
             toolTip1.SetToolTip(pictureBox3, "Example of selected method\n\nbefore Upscale:\nDrag to move window\nRMB x2 to fit window in screen");
@@ -7852,13 +9250,18 @@ namespace ScaleSmooth
             StopWatchLabel.Visible = false;
             switch (comboBox1.SelectedItem)
             {
-                case "scaleSmooth":
+                case "scaleSmooth"://afterALL, replace demo
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSmooth);
                     label6.Text = "Most accurate for scenes where objects are completely in the image, but little bit blurred (much less than any interpolation) and grid structure is still visible\r\n\r\nVery fast - Slow, and you can process multiple images at the same time without losing speed";
                     checkBox1.Visible = false;
                     break;
+                case "scaleSmoothContrast":
+                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSmoothContin);
+                    label6.Text = "Very smooth, after reverse adjustment - most accurate for any scenes, but very contrast and grid structure is still visible\r\n\r\nSlow, but you can process multiple images at the same time without losing speed";
+                    checkBox1.Visible = false;
+                    break;
                 case "scaleSmoothContinuous":
-                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSmoothCont);
+                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSmoothContr);
                     label6.Text = "Most accurate for scenes where objects extend beyond the boundaries of the image, but little bit blurred (much less than any interpolation) and grid structure is still visible\r\n\r\nVery fast - Slow, and you can process multiple images at the same time without losing speed";
                     checkBox1.Visible = false;
                     break;
@@ -7883,13 +9286,13 @@ namespace ScaleSmooth
                     checkBox1.Visible = false;
                     break;
                 case "scaleSeparate":
-                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSeparate);
-                    label6.Text = "Gives beatiful, but almost monochrome result and there are Gibbs ringing artifacts\r\n\r\nVery very fast - fast, but you can't process multiple images at the same time without losing speed";
+                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSeparate);//After all, translate github
+                    label6.Text = "Gives beatiful, but almost monochrome result and there are Gibbs ringing artifacts (to avoid you can try several times x2-x4)\r\n\r\nVery very fast - fast, but you can't process multiple images at the same time without losing speed";
                     checkBox1.Visible = false;
                     break;
                 case "scaleBilinearApproximation":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortBilApprox);
-                    label6.Text = "A clearly defined grid structure and Gibbs ringing artifacts are present, but even if these shortcomings are not removed with other tools, it is more accurate than Lanczos and clearer than Lanczos and Bicubic\r\n\r\nVery very fast - Very slow, and you can't process multiple images at the same time without losing speed";
+                    label6.Text = "A clearly defined grid structure and may be present Gibbs ringing artifacts, but it's better than nearest neighbour\r\n\r\nVery very fast - Very slow, and you can't process multiple images at the same time without losing speed";
                     checkBox1.Visible = true;
                     break;
             }
@@ -7960,7 +9363,7 @@ namespace ScaleSmooth
             label2.Text = "Fast                       Accurate";
         }
 
-        private void trackBar1_Scroll(object sender, EventArgs e)//nupkg AFTER ALL!!
+        private void trackBar1_Scroll(object sender, EventArgs e)
         {
             int sp;
             if (trackBar1.Value < 42)
@@ -7993,7 +9396,6 @@ namespace ScaleSmooth
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
         private interface ITaskbarList3
         {
-            // ITaskbarList
             [PreserveSig]
             void HrInit();
             [PreserveSig]
@@ -8004,12 +9406,8 @@ namespace ScaleSmooth
             void ActivateTab(IntPtr hwnd);
             [PreserveSig]
             void SetActiveAlt(IntPtr hwnd);
-
-            // ITaskbarList2
             [PreserveSig]
             void MarkFullscreenWindow(IntPtr hwnd, [MarshalAs(UnmanagedType.Bool)] bool fFullscreen);
-
-            // ITaskbarList3
             [PreserveSig]
             void SetProgressValue(IntPtr hwnd, UInt64 ullCompleted, UInt64 ullTotal);
             [PreserveSig]

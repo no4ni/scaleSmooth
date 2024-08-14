@@ -193,9 +193,19 @@ namespace ScaleSmooth.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap shortSmoothCont {
+        internal static System.Drawing.Bitmap shortSmoothContin {
             get {
-                object obj = ResourceManager.GetObject("shortSmoothCont", resourceCulture);
+                object obj = ResourceManager.GetObject("shortSmoothContin", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap shortSmoothContr {
+            get {
+                object obj = ResourceManager.GetObject("shortSmoothContr", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

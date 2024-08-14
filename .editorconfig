@@ -8,3 +8,6 @@ dotnet_diagnostic.SYSLIB1054.severity = none
 
 # IDE0066: Преобразовать оператор switch в выражение
 csharp_style_prefer_switch_expression = false
+
+# SYSLIB1096: Преобразовать в "GeneratedComInterface"
+dotnet_diagnostic.SYSLIB1096.severity = none

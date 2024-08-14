@@ -8,6 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Platforms>AnyCPU;x64</Platforms>
     <ApplicationIcon>shortcut.ico</ApplicationIcon>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     
   </PropertyGroup>
 
@@ -43,6 +44,8 @@
     <None Remove="Resources\shortSeparate.png" />
     <None Remove="Resources\shortSmooth.png" />
     <None Remove="Resources\shortSmoothCont.png" />
+    <None Remove="Resources\shortSmoothContin.png" />
+    <None Remove="Resources\shortSmoothContr.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -67,7 +70,8 @@
     <Resource Include="Resources\shortRough.png" />
     <Resource Include="Resources\shortSeparate.png" />
     <Resource Include="Resources\shortSmooth.png" />
-    <Resource Include="Resources\shortSmoothCont.png" />
+    <Resource Include="Resources\shortSmoothContin.png" />
+    <Resource Include="Resources\shortSmoothContr.png" />
   </ItemGroup>
 
   <ItemGroup>
