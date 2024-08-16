@@ -2,6 +2,7 @@
 
 Algorithms for most-accurate upscaling images ****without AI and neural network****<br><br>
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoSmooth.png"/><br>
+<a href="#russian">Русский язык</a>
 (gray or color/ smooth, rough, furry, separate, approximation, bold or contrastBold / fast or accuracy variants available)<br>
 <br>
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoContrastBold.png"/><br><br>
@@ -78,7 +79,7 @@ Very very fast - Very slow, and you can't process multiple images at the same ti
 You can increase speed instead of accuracy and vice versa<br><br>
 
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoSeparateApproximation.png"/>
-<br>
+<br id="russian">
 Алгоритмы для максимально точного масштабирования изображений без ИИ и нейронных сетей<br><br>
 <a href="https://dzen.ru/suite/b70ea5e2-65bd-49ea-b0e4-49fc31e96df6">Мои эксперименты с изображениями</a><br>
 Объяснение принипа работы, визуализация и больше примеров и сравнений в видео FullHD: <a href="https://dzen.ru/video/watch/6633aca1aef1ff543f59646e">#1</a>, <a href="https://dzen.ru/video/watch/66655d8129a5762762127928">#2</a><br>
