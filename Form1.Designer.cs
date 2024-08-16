@@ -85,7 +85,7 @@
             button1.Name = "button1";
             button1.Size = new Size(183, 54);
             button1.TabIndex = 1;
-            button1.Text = "Load         ";
+            button1.Text = Strings.LoadButton;
             button1.TextAlign = ContentAlignment.MiddleRight;
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
@@ -98,7 +98,7 @@
             button2.Name = "button2";
             button2.Size = new Size(185, 54);
             button2.TabIndex = 2;
-            button2.Text = "Save";
+            button2.Text = Strings.SaveButton;
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
@@ -115,13 +115,13 @@
             // 
             // label1
             // 
-            label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 10F);
-            label1.Location = new Point(47, 382);
+            label1.Location = new Point(0, 382);
             label1.Name = "label1";
-            label1.Size = new Size(96, 19);
+            label1.Size = new Size(190, 21);
             label1.TabIndex = 5;
             label1.Text = "Scale:            x";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
             label1.MouseDoubleClick += ToScreen;
             label1.MouseDown += DragNDrop;
             // 
@@ -132,7 +132,7 @@
             button3.Name = "button3";
             button3.Size = new Size(185, 54);
             button3.TabIndex = 6;
-            button3.Text = "Upscale";
+            button3.Text = Strings.Upscale;
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
             // 
@@ -143,7 +143,7 @@
             button4.Name = "button4";
             button4.Size = new Size(185, 54);
             button4.TabIndex = 7;
-            button4.Text = "Close";
+            button4.Text = Strings.CloseButton;
             button4.UseVisualStyleBackColor = true;
             button4.Click += button4_Click;
             // 
@@ -156,18 +156,17 @@
             radioButton1.Size = new Size(49, 19);
             radioButton1.TabIndex = 8;
             radioButton1.TabStop = true;
-            radioButton1.Text = "Gray";
+            radioButton1.Text = Strings.GrayImage;
             radioButton1.UseVisualStyleBackColor = true;
             // 
             // radioButton2
             // 
-            radioButton2.AutoSize = true;
             radioButton2.CheckAlign = ContentAlignment.MiddleRight;
-            radioButton2.Location = new Point(123, 406);
+            radioButton2.Location = new Point(87, 406);
             radioButton2.Name = "radioButton2";
-            radioButton2.Size = new Size(54, 19);
+            radioButton2.Size = new Size(90, 19);
             radioButton2.TabIndex = 9;
-            radioButton2.Text = "Color";
+            radioButton2.Text = Strings.Color;
             radioButton2.TextAlign = ContentAlignment.MiddleRight;
             radioButton2.UseVisualStyleBackColor = true;
             // 
@@ -189,7 +188,7 @@
             label2.Name = "label2";
             label2.Size = new Size(183, 16);
             label2.TabIndex = 12;
-            label2.Text = "Fast                       Accurate";
+            label2.Text = "Fast                    Accurate";
             label2.TextAlign = ContentAlignment.MiddleCenter;
             label2.MouseDoubleClick += ToScreen;
             label2.MouseDown += DragNDrop;
@@ -213,7 +212,7 @@
             label4.Name = "label4";
             label4.Size = new Size(161, 15);
             label4.TabIndex = 18;
-            label4.Text = "Calculating...                         %";
+            label4.Text = Strings.Wait;
             label4.Visible = false;
             // 
             // comboBox1
@@ -273,6 +272,7 @@
             // 
             // label6
             // 
+            label6.Font = new Font("Segoe UI", 8F);
             label6.Location = new Point(0, 110);
             label6.Name = "label6";
             label6.Size = new Size(194, 171);
@@ -284,13 +284,13 @@
             // 
             // checkBox1
             // 
-            checkBox1.AutoSize = true;
             checkBox1.Font = new Font("Segoe UI", 9F);
             checkBox1.Location = new Point(41, 95);
             checkBox1.Name = "checkBox1";
             checkBox1.Size = new Size(118, 19);
             checkBox1.TabIndex = 27;
-            checkBox1.Text = "GPU Acceleration";
+            checkBox1.Text = Strings.GPUacceleration;
+            checkBox1.TextAlign = ContentAlignment.MiddleCenter;
             checkBox1.ThreeState = true;
             checkBox1.UseVisualStyleBackColor = true;
             checkBox1.Visible = false;
@@ -303,7 +303,7 @@
             button5.Name = "button5";
             button5.Size = new Size(73, 23);
             button5.TabIndex = 28;
-            button5.Text = "Restore";
+            button5.Text = Strings.RestoreButton;
             button5.TextAlign = ContentAlignment.MiddleRight;
             button5.UseVisualStyleBackColor = true;
             button5.Click += button5_Click;
@@ -323,21 +323,21 @@
             // 
             // toolTip1
             // 
-            toolTip1.AutomaticDelay = 2000;
+            toolTip1.AutomaticDelay = 1500;
             toolTip1.UseAnimation = false;
             toolTip1.UseFading = false;
             // 
             // checkBox2
             // 
-            checkBox2.AutoSize = true;
             checkBox2.Checked = true;
             checkBox2.CheckState = CheckState.Checked;
             checkBox2.Font = new Font("Segoe UI", 9F);
-            checkBox2.Location = new Point(41, 478);
+            checkBox2.Location = new Point(25, 478);
             checkBox2.Name = "checkBox2";
-            checkBox2.Size = new Size(123, 19);
+            checkBox2.Size = new Size(158, 19);
             checkBox2.TabIndex = 30;
-            checkBox2.Text = "sound notification";
+            checkBox2.Text = Strings.Notification;
+            checkBox2.TextAlign = ContentAlignment.MiddleCenter;
             checkBox2.UseVisualStyleBackColor = true;
             // 
             // label3

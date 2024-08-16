@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Accurate" xml:space="preserve">
+    <value>Точно</value>
+  </data>
+  <data name="BetterVideocard" xml:space="preserve">
+    <value>Более мощная видеокарта требуется! (Рекомендуется NVIDIA, начиная от GeForce 410)</value>
+  </data>
+  <data name="boldScale" xml:space="preserve">
+    <value>Сеточная структура, немного шумно и контрастно (для точности обратная корректировка рекомендуется) и слишком маленькие детали могут потеряться
+
+Очень быстро - Очень очень медленно, но Вы можете обрабатывать несколько изображений одновременно без существенной потери скорости</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Закрыть программу и отменить обработку
+Если это не работает, подождите или снимите задачу scaleSmooth из диспетчера задач (Ctrl+Shift+Esc)</value>
+  </data>
+  <data name="CloseButton" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Цветное</value>
+  </data>
+  <data name="contrastBoldScale" xml:space="preserve">
+    <value>Прекрасный результат, но чересчур контрастно (для точности обратная корректировка обязательна) и слишком маленькие детали могут потеряться
+
+Очень быстро - Очень очень медленно, но Вы можете обрабатывать несколько изображений одновременно без существенной потери скорости</value>
+  </data>
+  <data name="CopyStopwatch" xml:space="preserve">
+    <value>Средняя кнопка мыши (клик на колесико) для копирования значения секундомера</value>
+  </data>
+  <data name="Demo" xml:space="preserve">
+    <value>Пример результата высокого разрешения через выбранный метод</value>
+  </data>
+  <data name="DemoBilinear" xml:space="preserve">
+    <value>Пример изображения низкого разрешения</value>
+  </data>
+  <data name="Fast" xml:space="preserve">
+    <value>Быстро</value>
+  </data>
+  <data name="FastAccurate" xml:space="preserve">
+    <value>Выберите режим - Быстро (0), Точно (100) или что-то среднее
+Нажмите пробел для Баланса (42)</value>
+  </data>
+  <data name="FormMoveInfo" xml:space="preserve">
+    <value>Win+D и клик на рабочий стол для того, чтобы свернуть приложение
+
+до Начала:
+Перетащите окно
+Дважды правой кнопкой мыши, чтобы вписать окно в экран</value>
+  </data>
+  <data name="GPUacceleration" xml:space="preserve">
+    <value>Ускорение ГП</value>
+  </data>
+  <data name="Gray" xml:space="preserve">
+    <value>Обработка только одного канала: Яркость (Luma)
+рассчитывается как Y=0.299*R+0.587*G+0.114*B</value>
+  </data>
+  <data name="GrayImage" xml:space="preserve">
+    <value>Серое</value>
+  </data>
+  <data name="ImageBuffer" xml:space="preserve">
+    <value>Картинка-буфер
+Показывает загруженное изображение и результат
+Позволяет совершать Вам несколько операций до сохранения</value>
+  </data>
+  <data name="Load" xml:space="preserve">
+    <value>Загрузить растровое изображение из файла</value>
+  </data>
+  <data name="LoadButton" xml:space="preserve">
+    <value>Загрузить</value>
+  </data>
+  <data name="Method" xml:space="preserve">
+    <value>Выбрать метод для увеличения</value>
+  </data>
+  <data name="MoreVRAM" xml:space="preserve">
+    <value>Более дорогая видеокарта требуется! (Не хватает памяти (VRAM) для такого размера изображения изображения и масштаба)</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Следующий метод</value>
+  </data>
+  <data name="Notification" xml:space="preserve">
+    <value>звуковое уведомление</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Предыдущий метод</value>
+  </data>
+  <data name="RasterImages" xml:space="preserve">
+    <value>Растровые изображения</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Отменить изменения</value>
+  </data>
+  <data name="RestoreButton" xml:space="preserve">
+    <value>Сброс</value>
+  </data>
+  <data name="RGB" xml:space="preserve">
+    <value>Обработка трёх каналов: Красный, Зелёный, Синий</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Сохранить как PNG</value>
+  </data>
+  <data name="SaveButton" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Scale" xml:space="preserve">
+    <value>Масштаб:             x       </value>
+  </data>
+  <data name="scaleBAContrast" xml:space="preserve">
+    <value>Видна сеточная структура, немного контрастно и может присутствовать звон
+
+Очень очень быстро - Очень медленно, и Вы не можете обрабатывать несколько изображений одновременно</value>
+  </data>
+  <data name="scaleBilinearApproximation" xml:space="preserve">
+    <value>Чётко видна сеточная структура и может присутствовать звон, но это лучше, чем ближайший сосед
+
+Очень очень быстро - Очень медленно, и Вы не можете обрабатывать несколько изображений одновременно</value>
+  </data>
+  <data name="ScaleFactor" xml:space="preserve">
+    <value>Укажите масштаб увеличения (2x-128x)</value>
+  </data>
+  <data name="scaleFurry" xml:space="preserve">
+    <value>Потрясающе детализированный результат, но только, если результат должен быть монохромным (только чистый чёрный и белый, или для цветных изображений - чистые красный, чёрный, зелёный, жёлтый, фуксия, синий, голубой и белый)
+Очень медленно - очень очень медленно, но Вы можете обрабатывать несколько изображений одновременно без большой потери скорости</value>
+  </data>
+  <data name="scaleRough" xml:space="preserve">
+    <value>Стилизация под микротипографику, но если результат должен быть монохромным это даёт приемлемый результат
+
+Очень медленно, но Вы можете обрабатывать несколько изображений одновременно без большой потери скорости</value>
+  </data>
+  <data name="scaleSeparate" xml:space="preserve">
+    <value>Даёт прекрасный, но почти монохромный результат и присутствует звон (чтобы избежать этого попробуйте несколько раз прогнать через масштаб x2-x4)
+
+Очень очень быстро - Очень быстро, но Вы не можете обрабатывать одновременно несколько изображений без потери скорости</value>
+  </data>
+  <data name="ScaleSmooth" xml:space="preserve">
+    <value>Наиболее точно для сцен, где объекты полностью в кадре, но немного размыто (намного меньше, чем у любой интерполяции) и видна сеточная структура
+
+Очень быстро - медленно, но Вы не можете обрабатывать одновременно несколько изображений без потери скорости</value>
+  </data>
+  <data name="scaleSmoothContinuous" xml:space="preserve">
+    <value>Наиболее точно для сцен, где объекты продолжаются за кадром, но немного размыто (намного меньше, чем у любой интерполяции) и видна сеточная структура
+
+Очень быстро - медленно, но Вы не можете обрабатывать одновременно несколько изображений без потери скорости</value>
+  </data>
+  <data name="ScaleSmoothContrast" xml:space="preserve">
+    <value>Очень гладко, после обратной корректировки - наиболее точно для любых сцен, но очень сильно размыто и контрастно и сеточная структура видна в некоторых местах
+
+Медленно, но Вы можете обрабатывать одновременно несколько изображений без потери скорости</value>
+  </data>
+  <data name="SecSpent" xml:space="preserve">
+    <value>секунд прошло</value>
+  </data>
+  <data name="SoundNotification" xml:space="preserve">
+    <value>Уведомить, что обработка закончена громким звуком</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Начать обработку с выбранными параметрами
+Будьте осторожны - процесс может быть очень долгим и его невозможно будет отменить, кроме как закрыть приложение или даже снять задачу через диспетчер задач</value>
+  </data>
+  <data name="Upscale" xml:space="preserve">
+    <value>Начать</value>
+  </data>
+  <data name="UseGPU" xml:space="preserve">
+    <value>Попробовать ускорить процесс за счёт видеокарты? 
+(Это может прервать другие несистемные процессы на видеокарте или наоборот уменьшить скорость)
+
+Квадрат - Aвтовыбор
+Галочка - Всегда
+Пусто - Никогда</value>
+  </data>
+  <data name="Wait" xml:space="preserve">
+    <value>Обработка...                         %</value>
+  </data>
+</root>

@@ -1,0 +1,293 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Accurate" xml:space="preserve">
+    <value>Accurate</value>
+  </data>
+  <data name="BetterVideocard" xml:space="preserve">
+    <value>Better videocard required! (Recommended NVIDIA GeForce 410+)</value>
+  </data>
+  <data name="boldScale" xml:space="preserve">
+    <value>Grid structure, little bit noisy and contrasty (for accuracy, subsequent reverse correction is desirable) and too small details may lost
+
+Very fast - Very very slow, but you can process multiple images at the same time without losing speed</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close program and cancel processing
+If this doesn't work, wait or kill process scaleSmooth from TaskManager (Ctrl+Shift+Esc)</value>
+  </data>
+  <data name="CloseButton" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="contrastBoldScale" xml:space="preserve">
+    <value>Perfect result, but too contrasty (for accuracy, subsequent reverse correction is required) and too small details are lost
+
+Very fast - Very very slow, but you can process multiple images at the same time without losing speed</value>
+  </data>
+  <data name="CopyStopwatch" xml:space="preserve">
+    <value>Click middle mouse button to copy stopwatch value</value>
+  </data>
+  <data name="Demo" xml:space="preserve">
+    <value>Example result of selected method</value>
+  </data>
+  <data name="DemoBilinear" xml:space="preserve">
+    <value>Example result of bilinear interpolation</value>
+  </data>
+  <data name="Fast" xml:space="preserve">
+    <value>Fast</value>
+  </data>
+  <data name="FastAccurate" xml:space="preserve">
+    <value>Select Fast (0) or Accurate (100) variant or something in between
+Space to default value (42)</value>
+  </data>
+  <data name="FormMoveInfo" xml:space="preserve">
+    <value>Win+D and click desktop to minimize window
+
+before Upscale:
+Drag to move window
+RMB x2 to fit window in screen</value>
+  </data>
+  <data name="GPUacceleration" xml:space="preserve">
+    <value>GPU Acceleration</value>
+  </data>
+  <data name="Gray" xml:space="preserve">
+    <value>Processing only 1 channel: Luma
+calculated as Y=0.299*R+0.587*G+0.114*B</value>
+  </data>
+  <data name="GrayImage" xml:space="preserve">
+    <value>Gray</value>
+  </data>
+  <data name="ImageBuffer" xml:space="preserve">
+    <value>Image buffer
+Shows input and output image
+Allows you to do several operations before saving total result</value>
+  </data>
+  <data name="Load" xml:space="preserve">
+    <value>Load raster image from file</value>
+  </data>
+  <data name="LoadButton" xml:space="preserve">
+    <value>Load          </value>
+  </data>
+  <data name="Method" xml:space="preserve">
+    <value>Select method for upscaling</value>
+  </data>
+  <data name="MoreVRAM" xml:space="preserve">
+    <value>Better video card required! (More VRAM required for this size)</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next method for upscaling</value>
+  </data>
+  <data name="Notification" xml:space="preserve">
+    <value>sound notification</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Previous method for upscaling</value>
+  </data>
+  <data name="RasterImages" xml:space="preserve">
+    <value>Raster images</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Discard changes and reload image</value>
+  </data>
+  <data name="RestoreButton" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="RGB" xml:space="preserve">
+    <value>Processing 3 channels: Red,Green,Blue</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save result as PNG file</value>
+  </data>
+  <data name="SaveButton" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Scale" xml:space="preserve">
+    <value>Scale:            x</value>
+  </data>
+  <data name="scaleBAContrast" xml:space="preserve">
+    <value>Defined grid structure, little contrasty and may be present Gibbs ringing artifacts
+
+Very very fast - Very slow, and you can't process multiple images at the same time without losing speed</value>
+  </data>
+  <data name="scaleBilinearApproximation" xml:space="preserve">
+    <value>A clearly defined grid structure and may be present Gibbs ringing artifacts, but it's better than nearest neighbour
+
+Very very fast - Very slow, and you can't process multiple images at the same time without losing speed</value>
+  </data>
+  <data name="ScaleFactor" xml:space="preserve">
+    <value>Write or select required scale factor by two axes (2x-128x)</value>
+  </data>
+  <data name="scaleFurry" xml:space="preserve">
+    <value>Beautiful and detailed result, but only if bigger version must be monochrome image (only pure black and white, or for color - only pure red, black, green, yellow, fuchsia, blue, cyan and white)
+
+Very slow - Very very slow, but you can process multiple images at the same time without losing speed</value>
+  </data>
+  <data name="scaleRough" xml:space="preserve">
+    <value>Typographic raster stylization, but if bigger version must be monochrome image it gives acceptable upscaling
+
+Very slow, but you can process multiple images at the same time without losing speed</value>
+  </data>
+  <data name="scaleSeparate" xml:space="preserve">
+    <value>Gives beatiful, but almost monochrome result and there are Gibbs ringing artifacts (to avoid you can try several times x2-x4)
+
+Very very fast - fast, but you can't process multiple images at the same time without losing speed</value>
+  </data>
+  <data name="ScaleSmooth" xml:space="preserve">
+    <value>Most accurate for scenes where objects are completely in the image, but little bit blurred (much less than any interpolation) and grid structure is still visible
+
+Very fast - Slow, and you can process multiple images at the same time without losing speed</value>
+  </data>
+  <data name="scaleSmoothContinuous" xml:space="preserve">
+    <value>Most accurate for scenes where objects extend beyond the boundaries of the image, but little bit blurred (much less than any interpolation) and grid structure is still visible
+
+Very fast - Slow, and you can process multiple images at the same time without losing speed</value>
+  </data>
+  <data name="ScaleSmoothContrast" xml:space="preserve">
+    <value>Very smooth, after reverse adjustment - most accurate for any scenes, but very contrast and grid structure is still visible
+
+Slow, but you can process multiple images at the same time without losing speed</value>
+  </data>
+  <data name="SecSpent" xml:space="preserve">
+    <value>seconds spent</value>
+  </data>
+  <data name="SoundNotification" xml:space="preserve">
+    <value>Notify that processing is done by loud sound</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start processing with selected parameters
+Be careful - the process can be very long and it will be impossible to cancel it except with the close button or through the task manager</value>
+  </data>
+  <data name="Upscale" xml:space="preserve">
+    <value>Upscale</value>
+  </data>
+  <data name="UseGPU" xml:space="preserve">
+    <value>Try increase perfomance by using your videocard? 
+(It may interrupt other non-system GPU processes or actually decrease perfomance)
+
+Square - Auto decide
+Check mark - Always
+Empty - Never</value>
+  </data>
+  <data name="Wait" xml:space="preserve">
+    <value>Calculating...                         %</value>
+  </data>
+</root>

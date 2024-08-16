@@ -25,7 +25,7 @@ namespace ScaleSmooth
         private void button1_Click(object sender, EventArgs e)
         {
             using OpenFileDialog openFileDialog = new(); //open raster image from DialodWindow
-            openFileDialog.Filter = "Raster image|*.png;*.jpg;*.bmp;*.gif;*.jpeg";
+            openFileDialog.Filter = Strings.RasterImages + "|*.png;*.jpg;*.bmp;*.gif;*.jpeg";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 lastfile = @openFileDialog.FileName;
@@ -205,7 +205,7 @@ namespace ScaleSmooth
             }
             stopWatch.Stop();
             TimeSpan ts = stopWatch.Elapsed;
-            StopWatchLabel.Text = String.Format("{0:0.000} seconds spent", ts.TotalSeconds);//stopwatch result
+            StopWatchLabel.Text = String.Format("{0:0.000} " + Strings.SecSpent, ts.TotalSeconds);//stopwatch result
             StopWatchLabel.Visible = true;
             ProgressText.Text = "100";
             pictureBox1.Refresh(); //update view of results
@@ -368,7 +368,7 @@ namespace ScaleSmooth
             ulong mem = (ulong)accelerator.Device.MemorySize;
             if (accelerator.AcceleratorType == AcceleratorType.CPU)
             {
-                label6.Text = "Better video card required! (Recommended NVIDIA GeForce 410+)";
+                label6.Text = Strings.BetterVideocard;
                 return new short[1, 1, 3];
             }
 #endif
@@ -401,7 +401,7 @@ namespace ScaleSmooth
                 ac = (int)(MathF.Sqrt((mem / nins) / (ulong)((oim * osm + 1) * 0.0001f)));
                 if (ac < 1)
                 {
-                    label6.Text = "Better video card required! (More VRAM required for this size)";
+                    label6.Text = Strings.MoreVRAM;
                     return new short[1, 1, 3];
                 }
                 rki = ki;
@@ -1170,7 +1170,7 @@ namespace ScaleSmooth
             ulong mem = (ulong)accelerator.Device.MemorySize;
             if (accelerator.AcceleratorType == AcceleratorType.CPU)
             {
-                label6.Text = "Better video card required! (Recommended NVIDIA GeForce 410+)";
+                label6.Text = Strings.BetterVideocard;
                 return new short[1, 1, 1];
             }
 #endif
@@ -1201,7 +1201,7 @@ namespace ScaleSmooth
                 ac = (int)(MathF.Sqrt((mem / nins) / (ulong)((oim * osm + 1) * 0.0001f)));
                 if (ac < 1)
                 {
-                    label6.Text = "Better video card required! (More VRAM required for this size)";
+                    label6.Text = Strings.MoreVRAM;
                     return new short[1, 1, 1];
                 }
                 rki = ki;
@@ -9466,28 +9466,28 @@ namespace ScaleSmooth
             trackBar1.Value = Settings.Default.accuracy;
             checkBox2.Checked = Settings.Default.sound;
 
-            toolTip1.SetToolTip(this, "Win+D and click desktop to minimize window\nDrag to move window\n\nbefore Upscale:\nRMB x2 to fit window in screen");
-            toolTip1.SetToolTip(button5, "Discard changes and reload image");
-            toolTip1.SetToolTip(button1, "Load raster image from file");
-            toolTip1.SetToolTip(button2, "Save result as PNG file");
-            toolTip1.SetToolTip(button3, "Start processing with selected parameters\nBe careful - the process can be very long and it will be impossible to cancel it except with the close button or through the task manager");
-            toolTip1.SetToolTip(button4, "Close program and cancel processing\nIf this doesn't work, wait or kill process scaleSmooth from TaskManager (Ctrl+Shift+Esc)");
-            toolTip1.SetToolTip(comboBox1, "Select method fo upscaling");
-            toolTip1.SetToolTip(pictureBox5, "Select previous method fo upscaling");
-            toolTip1.SetToolTip(pictureBox4, "Select next method fo upscaling");
-            toolTip1.SetToolTip(checkBox1, "Try increase perfomance by using your videocard? (It can interrupt other non-system GPU processes)\n\nSquare - Auto decide\nCheck mark - Always\nEmpty - Never");
-            toolTip1.SetToolTip(checkBox2, "Notify that processing is done by loud sound");
-            toolTip1.SetToolTip(label6, "before Upscale:\nDrag to move window\nRMB x2 to fit window in screen");
-            toolTip1.SetToolTip(pictureBox3, "Example of selected method\n\nbefore Upscale:\nDrag to move window\nRMB x2 to fit window in screen");
-            toolTip1.SetToolTip(pictureBox2, "Example of bilinear interpolation\n\nbefore Upscale:\nDrag to move window\nRMB x2 to fit window in screen");
-            toolTip1.SetToolTip(pictureBox1, "Image buffer\nShows input and output image\nAllows you to do several operations before saving total result\nWin+D and click desktop to minimize window\n\nbefore Upscale:\nDrag to move window\nRMB x2 to fit window in screen");
-            toolTip1.SetToolTip(label1, "before Upscale:\nDrag to move window\nRMB x2 to fit window in screen");
-            toolTip1.SetToolTip(numericUpDown1, "Write or select required scale factor by two axes");
-            toolTip1.SetToolTip(radioButton1, "Processing 1 channel: Luma\ncalculated as Y=0.299*R+0.587*G+0.114*B");
-            toolTip1.SetToolTip(radioButton2, "Processing 3 channels: R,G,B");
-            toolTip1.SetToolTip(trackBar1, "Select Fast or Accurate variant or something in between\nSpace to default value");
-            toolTip1.SetToolTip(label2, "Drag to move window\nRMB x2 to fit window in screen");
-            toolTip1.SetToolTip(StopWatchLabel, "MMB to copy stopwatch value\n\nbefore Upscale:\nDrag to move window\nRMB x2 to fit window in screen");
+            toolTip1.SetToolTip(this, Strings.FormMoveInfo);
+            toolTip1.SetToolTip(button5, Strings.Restore);
+            toolTip1.SetToolTip(button1, Strings.Load);
+            toolTip1.SetToolTip(button2, Strings.Save);
+            toolTip1.SetToolTip(button3, Strings.Start);
+            toolTip1.SetToolTip(button4, Strings.Close);
+            toolTip1.SetToolTip(comboBox1, Strings.Method);
+            toolTip1.SetToolTip(pictureBox5, Strings.Previous);
+            toolTip1.SetToolTip(pictureBox4, Strings.Next);
+            toolTip1.SetToolTip(checkBox1, Strings.UseGPU);
+            toolTip1.SetToolTip(checkBox2, Strings.SoundNotification);
+            toolTip1.SetToolTip(label6, Strings.FormMoveInfo);
+            toolTip1.SetToolTip(pictureBox3, Strings.Demo + "\n\n" + Strings.FormMoveInfo);
+            toolTip1.SetToolTip(pictureBox2, Strings.DemoBilinear + "\n\n" + Strings.FormMoveInfo);
+            toolTip1.SetToolTip(pictureBox1, Strings.ImageBuffer + "\n\n" + Strings.FormMoveInfo);
+            toolTip1.SetToolTip(label1, Strings.FormMoveInfo);
+            toolTip1.SetToolTip(numericUpDown1, Strings.ScaleFactor);
+            toolTip1.SetToolTip(radioButton1, Strings.Gray);
+            toolTip1.SetToolTip(radioButton2, Strings.RGB);
+            toolTip1.SetToolTip(trackBar1, Strings.FastAccurate);
+            toolTip1.SetToolTip(label2, Strings.FormMoveInfo);
+            toolTip1.SetToolTip(StopWatchLabel, Strings.CopyStopwatch + "\n\n" + Strings.FormMoveInfo);
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -9497,52 +9497,52 @@ namespace ScaleSmooth
             {
                 case "scaleSmooth"://afterALL, replace demo
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSmooth);
-                    label6.Text = "Most accurate for scenes where objects are completely in the image, but little bit blurred (much less than any interpolation) and grid structure is still visible\r\n\r\nVery fast - Slow, and you can process multiple images at the same time without losing speed";
+                    label6.Text = Strings.ScaleSmooth;
                     checkBox1.Visible = false;
                     break;
-                case "scaleSmoothContrast"://after optimization - result -> reverse -> Continuos?
+                case "scaleSmoothContrast"://after optimization - result -> reverse adjust -> Continuos???
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSmoothContr);
-                    label6.Text = "Very smooth, after reverse adjustment - most accurate for any scenes, but very contrast and grid structure is still visible\r\n\r\nSlow, but you can process multiple images at the same time without losing speed";
+                    label6.Text = Strings.ScaleSmoothContrast;
                     checkBox1.Visible = false;
                     break;
                 case "scaleSmoothContinuous":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSmoothContin);
-                    label6.Text = "Most accurate for scenes where objects extend beyond the boundaries of the image, but little bit blurred (much less than any interpolation) and grid structure is still visible\r\n\r\nVery fast - Slow, and you can process multiple images at the same time without losing speed";
+                    label6.Text = Strings.scaleSmoothContinuous;
                     checkBox1.Visible = false;
                     break;
                 case "boldScale":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortBold);
-                    label6.Text = "Grid structure, little bit noisy and contrasty (for accuracy, subsequent reverse correction is desirable) and too small details may lost\r\n\r\nVery fast - Very very slow, but you can process multiple images at the same time without losing speed";
+                    label6.Text = Strings.boldScale;
                     checkBox1.Visible = false;
                     break;
                 case "contrastBoldScale":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortContrast);
-                    label6.Text = "Perfect result, but too contrasty (for accuracy, subsequent reverse correction is required) and too small details are lost\r\n\r\nVery fast - Very very slow, but you can process multiple images at the same time without losing speed";
+                    label6.Text = Strings.contrastBoldScale;
                     checkBox1.Visible = false;
                     break;
                 case "scaleFurry":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortFurry);
-                    label6.Text = "Beautiful and detailed result, but only if bigger version must be monochrome image (only pure black and white, or for color - only pure red, black, green, yellow, fuchsia, blue, cyan and white)\r\n\r\nVery slow - Very very slow, but you can process multiple images at the same time without losing speed";
+                    label6.Text = Strings.scaleFurry;
                     checkBox1.Visible = false;
                     break;
                 case "scaleRough":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortRough);
-                    label6.Text = "Typographic raster stylization, but if bigger version must be monochrome image it gives acceptable upscaling\r\n\r\nVery slow, but you can process multiple images at the same time without losing speed";
+                    label6.Text = Strings.scaleRough;
                     checkBox1.Visible = false;
                     break;
                 case "scaleSeparate":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSeparate);//After all, translate github
-                    label6.Text = "Gives beatiful, but almost monochrome result and there are Gibbs ringing artifacts (to avoid you can try several times x2-x4)\r\n\r\nVery very fast - fast, but you can't process multiple images at the same time without losing speed";
+                    label6.Text = Strings.scaleSeparate;
                     checkBox1.Visible = false;
                     break;
                 case "scaleBilinearApproximation":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortBilApprox);
-                    label6.Text = "A clearly defined grid structure and may be present Gibbs ringing artifacts, but it's better than nearest neighbour\r\n\r\nVery very fast - Very slow, and you can't process multiple images at the same time without losing speed";
+                    label6.Text = Strings.scaleBilinearApproximation;
                     checkBox1.Visible = true;
                     break;
                 case "scaleBAContrast":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortBAcontrast);
-                    label6.Text = "Defined grid structure, little contrasty and may be present Gibbs ringing artifacts\r\n\r\nVery very fast - Very slow, and you can't process multiple images at the same time without losing speed";
+                    label6.Text = Strings.scaleBAContrast;
                     checkBox1.Visible = true;
                     break;
             }
@@ -9610,7 +9610,7 @@ namespace ScaleSmooth
         private void DefaultIs42(object sender, KeyPressEventArgs e)
         {
             trackBar1.Value = 42;
-            label2.Text = "Fast                       Accurate";
+            label2.Text = Strings.Fast + "                       " + Strings.Accurate;
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
@@ -9624,7 +9624,7 @@ namespace ScaleSmooth
             {
                 sp = (trackBar1.Value - 42) * 10 / 58 + 9;
             }
-            label2.Text = "Fast " + new String(' ', sp) + trackBar1.Value + new String(' ', 19 - sp) + " Accurate";
+            label2.Text = Strings.Fast+" " + new String(' ', sp) + trackBar1.Value + new String(' ', 19 - sp) + " "+ Strings.Accurate;
         }
     }
 
