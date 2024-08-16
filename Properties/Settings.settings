@@ -12,7 +12,7 @@
       <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="scale" Type="System.Byte" Scope="User">
-      <Value Profile="(Default)">2</Value>
+      <Value Profile="(Default)">8</Value>
     </Setting>
     <Setting Name="channels" Type="System.Byte" Scope="User">
       <Value Profile="(Default)">1</Value>
