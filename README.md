@@ -74,6 +74,10 @@ Very very fast - fast, but you can't process multiple images at the same time wi
 A clearly defined grid structure and may be present Gibbs ringing artifacts, but it's better than nearest neighbour<br>
 Very very fast - Very slow, and you can't process multiple images at the same time without losing speed<br><br>
 
+- **scaleBAContrast**<br>
+Defined grid structure, little contrasty and may be present Gibbs ringing artifacts\r\n\r\nVery very fast - Very slow, and you can't process multiple images at the same time without losing speed<br>
+Very very fast - Very slow, and you can't process multiple images at the same time without losing speed<br><br>
+
 You can increase speed instead of accuracy and vice versa<br><br>
 
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoSeparateApproximation.png"/>
