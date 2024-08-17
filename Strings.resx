@@ -228,6 +228,11 @@ Allows you to do several operations before saving total result</value>
 
 Very very fast - Very slow, and you can't process multiple images at the same time without losing speed</value>
   </data>
+  <data name="scaleBAmonochrome" xml:space="preserve">
+    <value>Smooth, curve and same time sharpness result, but monochrome (colors may be distorted)
+
+Very slow, and you can't process multiple images at the same time without losing speed</value>
+  </data>
   <data name="scaleBilinearApproximation" xml:space="preserve">
     <value>A clearly defined grid structure and may be present Gibbs ringing artifacts, but it's better than nearest neighbour
 

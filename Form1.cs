@@ -139,6 +139,20 @@ namespace ScaleSmooth
                                 break;
                         }
                         break;
+                    case "scaleBAMonochrome":
+                        switch (checkBox1.CheckState)//use GPU?
+                        {
+                            case CheckState.Checked:
+                                pictureBox1.Image = ScaleBAMonochromeGrayGPU(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                break;
+                            case CheckState.Unchecked:
+                                pictureBox1.Image = ScaleBAMonochromeGray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                break;
+                            default:
+                                pictureBox1.Image = ScaleBAMonochromeGrayAuto(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                break;
+                        }
+                        break;
                     case "neighborSubpixel":
                         for (int i = 0; i < 100; i++)
                             pictureBox1.Image = NeighborSubpixelGray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
@@ -198,6 +212,20 @@ namespace ScaleSmooth
                                 break;
                             default:
                                 pictureBox1.Image = ScaleBAContrastColorAuto(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                break;
+                        }
+                        break;
+                    case "scaleBAMonochrome":
+                        switch (checkBox1.CheckState)//use GPU?
+                        {
+                            case CheckState.Checked:
+                                pictureBox1.Image = ScaleBAMonochromeColorGPU(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                break;
+                            case CheckState.Unchecked:
+                                pictureBox1.Image = ScaleBAMonochromeColor(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                break;
+                            default:
+                                pictureBox1.Image = ScaleBAMonochromeColorAuto(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                 break;
                         }
                         break;
@@ -310,6 +338,57 @@ namespace ScaleSmooth
                 }
             }
         }
+
+        private Bitmap ScaleBAMonochromeGrayAuto(Image img, int x, int ac)
+        {
+            Context context = Context.Create(b => b.AllAccelerators());
+            Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
+            if (accelerator.AcceleratorType == AcceleratorType.CPU)
+            {
+                accelerator.Dispose();
+                context.Dispose();
+                return ScaleBAMonochromeGray(img, x, ac);
+            }
+            else
+            {
+                accelerator.Dispose();
+                context.Dispose();
+                if (ac < 22)
+                {
+                    return ScaleBAMonochromeGray(img, x, ac);
+                }
+                else
+                {
+                    return ScaleBAMonochromeGrayGPU(img, x, ac);
+                }
+            }
+        }
+        private Bitmap ScaleBAMonochromeColorAuto(Image img, int x, int ac)
+        {
+            Context context = Context.Create(b => b.AllAccelerators());
+            Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
+            if (accelerator.AcceleratorType == AcceleratorType.CPU)
+            {
+                accelerator.Dispose();
+                context.Dispose();
+                return ScaleBAMonochromeColor(img, x, ac);
+            }
+            else
+            {
+                accelerator.Dispose();
+                context.Dispose();
+                if (ac < 22)
+                {
+                    return ScaleBAMonochromeColor(img, x, ac);
+                }
+                else
+                {
+                    return ScaleBAMonochromeColorGPU(img, x, ac);
+                }
+            }
+        }
+
+
         private Bitmap ScaleBilinearApproximationGrayAuto(Image img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators());
@@ -357,6 +436,257 @@ namespace ScaleSmooth
             return BMPfromGray(rb, ni, ns);
         }
 
+        private Bitmap ScaleBAMonochromeGrayGPU(Image img, int x, int ac)
+        {
+            short[,,] ri = BilinearApproximationGrayGPU(img, x, ac);
+            int ni = ri.GetUpperBound(0) + 1;
+            int ns = ri.GetUpperBound(1) + 1;
+            byte[,] rb = new byte[ni, ns];
+
+            Parallel.For(0, ni, i =>
+            {
+                for (int s = 0; s < ns; s++)
+                {
+                    if (ri[i, s, 0] < 42)
+                    {
+                        ri[i, s, 0] = 0;
+                    }
+                    else if (ri[i, s, 0] > 213)
+                    {
+                        ri[i, s, 0] = 255;
+                    }
+                    else
+                    {
+                        ri[i, s, 0] = 123;
+                    }
+                }
+            });
+
+            Context context = Context.Create(b => b.AllAccelerators().EnableAlgorithms().Optimize(OptimizationLevel.O2).PageLocking(PageLockingMode.Aggressive));
+#if DEBUG
+            Accelerator accelerator = context.GetPreferredDevice(true).CreateAccelerator(context);//false for real GPU debug (less information)
+#else
+            Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
+#endif
+
+            var riG = accelerator.Allocate3DDenseXY<short>(ri);
+            var rfG = accelerator.Allocate2DDenseX<float>(new Index2D(ni, ns));
+            var intG = accelerator.Allocate1D<int>([ni, ns, 101 / (ac + 1)]);
+            ProgressText.Text = "50";
+
+            var lightInterpolation = accelerator.LoadAutoGroupedStreamKernel(
+                (Index2D ind, ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView2D<float, Stride2D.DenseX> rf, ArrayView<int> ints) =>
+                {
+                    if (ri[ind.X, ind.Y, 0] == 123)
+                    {
+                        float v = 0;
+                        float d = 0;
+                        float dt;
+
+                        for (int ii = 0; ii < ints[0]; ii += ints[2])
+                        {
+                            for (int ss = 0; ss < ints[1]; ss += ints[2])
+                            {
+                                if (ri[ii, ss, 0] == 255)
+                                {
+                                    dt = MathF.Pow(MathF.Pow(ii - ind.X, 2) + MathF.Pow(ss - ind.Y, 2), -0.5f);
+                                    v += dt;
+                                    d += dt;
+                                }
+                                else if (ri[ii, ss, 0] == 0)
+                                {
+                                    d += MathF.Pow(MathF.Pow(ii - ind.X, 2) + MathF.Pow(ss - ind.Y, 2), -0.5f);
+                                }
+                            }
+                        }
+                        rf[ind.X, ind.Y] = v * 255f / d;
+                    }
+                    else
+                    {
+                        rf[ind.X, ind.Y] = 1234;
+                    }
+                });
+
+            lightInterpolation((ni, ns), riG.View, rfG.View, intG.View);
+            accelerator.Synchronize();
+            ProgressText.Text = "75";
+            float[,] rf = rfG.GetAsArray2D();
+            accelerator.Dispose();
+            context.Dispose();
+
+            float min = 999;
+            float max = -999;
+            Parallel.For(0, ns, s =>
+            {
+                for (int i = 0; i < ni; i++)
+                {
+                    if (rf[i, s] != 1234)
+                    {
+                        if (min > rf[i, s])
+                        {
+                            min = rf[i, s];
+                        }
+                        if (max < rf[i, s])
+                        {
+                            max = rf[i, s];
+                        }
+                    }
+                    else
+                    {
+                        rf[i, s] = ri[i, s, 0];
+                    }
+                }
+            });
+            min = (max + min) / 2;
+
+            Parallel.For(0, ni, i =>
+            {
+                for (int s = 0; s < ns; s++)
+                {
+                    if (rf[i, s] < min - 2.5f)
+                        rb[i, s] = 0;
+                    else if (rf[i, s] > min + 2.5f)
+                        rb[i, s] = 255;
+                    else
+                        rb[i, s] = (byte)((rf[i, s] - min + 2.5f) * 50.6f + 1.5f);
+                }
+            });
+
+            return BMPfromGray(rb, ni, ns);
+        }
+
+        private Bitmap ScaleBAMonochromeColorGPU(Image img, int x, int ac)
+        {
+            short[,,] ri = BilinearApproximationColorGPU(img, x, ac);
+            int ni = ri.GetUpperBound(0) + 1;
+            int ns = ri.GetUpperBound(1) + 1;
+            byte[,,] rb = new byte[ni, ns, 3];
+
+            for (byte t = 0; t < 3; t++)
+            {
+                Parallel.For(0, ni, i =>
+                {
+                    for (int s = 0; s < ns; s++)
+                    {
+                        if (ri[i, s, t] < 42)
+                        {
+                            ri[i, s, t] = 0;
+                        }
+                        else if (ri[i, s, t] > 213)
+                        {
+                            ri[i, s, t] = 255;
+                        }
+                        else
+                        {
+                            ri[i, s, t] = 123;
+                        }
+                    }
+                });
+            }
+
+            Context context = Context.Create(b => b.AllAccelerators().EnableAlgorithms().Optimize(OptimizationLevel.O2).PageLocking(PageLockingMode.Aggressive));
+#if DEBUG
+            Accelerator accelerator = context.GetPreferredDevice(true).CreateAccelerator(context);//false for real GPU debug (less information)
+#else
+            Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
+#endif
+
+            var riG = accelerator.Allocate3DDenseXY<short>(ri);
+            var rfG = accelerator.Allocate3DDenseXY<float>(new Index3D(ni, ns, 3));
+            var intG = accelerator.Allocate1D<int>([ni, ns, 101 / (ac + 1)]);
+            ProgressText.Text = "50";//ac
+
+            var lightInterpolation = accelerator.LoadAutoGroupedStreamKernel(
+                (Index3D ind, ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> rf, ArrayView<int> ints) =>
+                {
+                    if (ri[ind.X, ind.Y, ind.Z] == 123)
+                    {
+                        float v = 0;
+                        float d = 0;
+                        float dt;
+
+                        for (int ii = 0; ii < ints[0]; ii += ints[2])
+                        {
+                            for (int ss = 0; ss < ints[1]; ss += ints[2])
+                            {
+                                if (ri[ii, ss, ind.Z] == 255)
+                                {
+                                    dt = MathF.Pow(MathF.Pow(ii - ind.X, 2) + MathF.Pow(ss - ind.Y, 2), -0.5f);
+                                    v += dt;
+                                    d += dt;
+                                }
+                                else if (ri[ii, ss, ind.Z] == 0)
+                                {
+                                    d += MathF.Pow(MathF.Pow(ii - ind.X, 2) + MathF.Pow(ss - ind.Y, 2), -0.5f);
+                                }
+                            }
+                        }
+                        rf[ind.X, ind.Y, ind.Z] = v * 255f / d;
+                    }
+                    else
+                    {
+                        rf[ind.X, ind.Y, ind.Z] = 1234;
+                    }
+                });
+
+            lightInterpolation((ni, ns, 3), riG.View, rfG.View, intG.View);
+            accelerator.Synchronize();
+            ProgressText.Text = "75";
+            float[,,] rf = rfG.GetAsArray3D();
+            accelerator.Dispose();
+            context.Dispose();
+
+            float[] min = [999, 999, 999];
+            float[] max = [-999, -999, -999];//wb 255gray?
+            Parallel.For(0, ns, s =>
+            {
+                for (byte t = 0; t < 3; t++)
+                {
+                    for (int i = 0; i < ni; i++)
+                    {
+                        if (rf[i, s, t] != 1234)
+                        {
+                            if (min[t] > rf[i, s, t])
+                            {
+                                min[t] = rf[i, s, t];
+                            }
+                            if (max[t] < rf[i, s, t])
+                            {
+                                max[t] = rf[i, s, t];
+                            }
+                        }
+                        else
+                        {
+                            rf[i, s, t] = ri[i, s, t];
+                        }
+                    }
+                }
+            });
+            min[0] = (max[0] + min[0]) / 2;
+            min[1] = (max[1] + min[1]) / 2;
+            min[2] = (max[2] + min[2]) / 2;
+
+
+            Parallel.For(0, ni, i =>
+            {
+                for (byte t = 0; t < 3; t++)
+                {
+                    for (int s = 0; s < ns; s++)
+                    {
+                        if (rf[i, s, t] < min[t] - 2.5f)
+                            rb[i, s, t] = 0;
+                        else if (rf[i, s, t] > min[t] + 2.5f)
+                            rb[i, s, t] = 255;
+                        else
+                            rb[i, s, t] = (byte)((rf[i, s, t] - min[t] + 2.5f) * 50.6f + 1.5f);
+                    }
+                }
+            });
+
+            return BMPfromRGB(rb, ni, ns);
+        }
+
+
         private short[,,] BilinearApproximationColorGPU(Image img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators().EnableAlgorithms().Optimize(OptimizationLevel.O2).PageLocking(PageLockingMode.Aggressive));
@@ -390,8 +720,8 @@ namespace ScaleSmooth
             short[,,] rB = new short[ni, ns, 1];
             byte[,,] sr = RGBfromBMP(img, 0, 0, 0, 0, oi, os);
 
-            int ki = (int)MathF.Ceiling(oim * ac / 100);
-            int ks = (int)MathF.Ceiling(osm * ac / 100);
+            int ki = (int)MathF.Ceiling(oim * ac * 0.01f);
+            int ks = (int)MathF.Ceiling(osm * ac * 0.01f);
             int kiks = ki * ks + 1;
             ulong nins = (ulong)ni * (ulong)ns * 10;
             int rki = 1;
@@ -411,7 +741,7 @@ namespace ScaleSmooth
                 kiks = ki * ks + 1;
 
             }
-            int oiki = (int)(oim / (float)ki + 0.5f);
+            int oiki = oim / ki;
             int ski = (oi - rki) / 2 / ki;
             int sks = (os - rki) / 2 / ks;
 
@@ -1190,8 +1520,8 @@ namespace ScaleSmooth
             short[,,] ri = new short[ni, ns, 1];
             byte[,] sr = GrayFromBMP(img, 0, 0, 0, 0, oi, os);
 
-            int ki = (int)MathF.Ceiling(oim * ac / 100);
-            int ks = (int)MathF.Ceiling(osm * ac / 100);
+            int ki = (int)MathF.Ceiling(oim * ac * 0.01f);
+            int ks = (int)MathF.Ceiling(osm * ac * 0.01f);
             int kiks = ki * ks + 1;
             ulong nins = (ulong)ni * (ulong)ns * 6;
             int rki = 1;
@@ -1210,7 +1540,7 @@ namespace ScaleSmooth
                 rki = (int)(rki / (float)ki + 0.5f);
                 kiks = ki * ks + 1;
             }
-            int oiki = (int)(oim / (float)ki + 0.5f);
+            int oiki = oim / ki;
             int ski = (oi - rki) / 2 / ki;
             int sks = (os - rki) / 2 / ks;
 
@@ -8713,34 +9043,18 @@ namespace ScaleSmooth
             int ns = ri.GetUpperBound(1) + 1;
 
             byte[,] rb = new byte[ni, ns];
-            /*Parallel.For(0, ni, i =>
-            {
-                for (int s = 0; s < ns; s++)
-                {
-                    if (ri[i, s] < 1)
-                        rb[i, s] = 0;
-                    else if (ri[i, s] > 254) //< 42 interp ? > 213 ??? 
-                        rb[i, s] = 255;//k=-8;k=4?*2??????? unite at 127.5
-                    else
-                        rb[i, s] = (byte)(ri[i, s]);
-                }
-            });*/
-            float avg = 0;
-            ulong cnt = 0;
+
             Parallel.For(0, ni, i =>
             {
                 for (int s = 0; s < ns; s++)
                 {
                     if (ri[i, s] < 42)
                     {
-                        cnt++;
                         ri[i, s] = 0;
                     }
                     else if (ri[i, s] > 213)
                     {
                         ri[i, s] = 255;
-                        avg++;
-                        cnt++;
                     }
                     else
                     {
@@ -8748,13 +9062,11 @@ namespace ScaleSmooth
                     }
                 }
             });
-            avg = avg / cnt * 255;
+
             float min = 999;
             float max = -999;
-
-
-            float dt = 0;
             float[,] rf = new float[ni, ns];
+            int step = 101 / (ac + 1);
             ProgressText.Text = "50";
             for (int i = 0; i < ni; i++)
             {
@@ -8764,11 +9076,13 @@ namespace ScaleSmooth
                     {
                         float v = 0;
                         float d = 0;
-                        for (int ii = 0; ii < ni; ii++)
+                        float dt;
+
+                        for (int ii = 0; ii < ni; ii += step)
                         {
-                            for (int ss = 0; ss < ns; ss++)
+                            for (int ss = 0; ss < ns; ss += step)
                             {
-                                if (ri[ii, ss] == 255) //MathF.Sqrt -> MathF.Reciprocal
+                                if (ri[ii, ss] == 255)
                                 {
                                     dt = MathF.Pow(MathF.Pow(ii - i, 2) + MathF.Pow(ss - s, 2), -0.5f);
                                     v += dt;
@@ -8815,6 +9129,110 @@ namespace ScaleSmooth
             return BMPfromGray(rb, ni, ns);
         }
 
+        private Bitmap ScaleBAMonochromeColor(Image img, int x, int ac)//after nupkg, application and project
+        {
+            short[,,] ri = BilinearApproximationColor(img, x, ac);
+            int ni = ri.GetUpperBound(0) + 1;
+            int ns = ri.GetUpperBound(1) + 1;
+            byte[,,] rb = new byte[ni, ns, 3];
+
+            for (byte t = 0; t < 3; t++)
+            {
+                Parallel.For(0, ni, i =>
+                {
+                    for (int s = 0; s < ns; s++)
+                    {
+                        if (ri[i, s, t] < 42)
+                        {
+                            ri[i, s, t] = 0;
+                        }
+                        else if (ri[i, s, t] > 213)
+                        {
+                            ri[i, s, t] = 255;
+                        }
+                        else
+                        {
+                            ri[i, s, t] = 123;
+                        }
+                    }
+                });
+            }
+
+            int step = 101 / (ac + 1);
+            float[] min = [999, 999, 999];
+            float[] max = [-999, -999, -999];
+            float[,,] rf = new float[ni, ns, 3];
+            ProgressText.Text = "50";
+            for (int i = 0; i < ni; i++)
+            {
+                Parallel.For(0, ns, s =>
+                {
+                    float dt;
+                    for (byte t = 0; t < 3; t++)
+                    {
+                        if (ri[i, s, t] == 123)
+                        {
+                            float v = 0;
+                            float d = 0;
+
+                            for (int ii = 0; ii < ni; ii += step)
+                            {
+                                for (int ss = 0; ss < ns; ss += step)
+                                {
+                                    if (ri[ii, ss, t] == 255)
+                                    {
+                                        dt = MathF.Pow(MathF.Pow(ii - i, 2) + MathF.Pow(ss - s, 2), -0.5f);
+                                        v += dt;
+                                        d += dt;
+                                    }
+                                    else if (ri[ii, ss, t] == 0)
+                                    {
+                                        d += MathF.Pow(MathF.Pow(ii - i, 2) + MathF.Pow(ss - s, 2), -0.5f);
+                                    }
+                                }
+                            }
+                            rf[i, s, t] = v * 255f / d;
+                            if (min[t] > rf[i, s, t])
+                            {
+                                min[t] = rf[i, s, t];
+                            }
+                            if (max[t] < rf[i, s, t])
+                            {
+                                max[t] = rf[i, s, t];
+                            }
+                        }
+                        else
+                        {
+                            rf[i, s, t] = ri[i, s, t];
+                        }
+                    }
+                });
+                ProgressText.Text = (50 * i / ni + 50).ToString();
+            }
+            min[0] = (max[0] + min[0]) / 2;
+            min[1] = (max[1] + min[1]) / 2;
+            min[2] = (max[2] + min[2]) / 2;
+
+            Parallel.For(0, ni, i =>
+            {
+                for (byte t = 0; t < 3; t++)
+                {
+                    for (int s = 0; s < ns; s++)
+                    {
+                        if (rf[i, s, t] < min[t] - 2.5f)
+                            rb[i, s, t] = 0;
+                        else if (rf[i, s, t] > min[t] + 2.5f)
+                            rb[i, s, t] = 255;
+                        else
+                            rb[i, s, t] = (byte)((rf[i, s, t] - min[t] + 2.5f) * 50.6f + 1.5f);
+                    }
+                }
+            });
+
+            return BMPfromRGB(rb, ni, ns);
+        }
+
+
         private Bitmap ScaleBilinearApproximationGray(Image img, int x, int ac)//after nupkg, application and project
         {
             short[,] ri = BilinearApproximationGray(img, x, ac);
@@ -8860,7 +9278,7 @@ namespace ScaleSmooth
             float xs = oim * 0.5f, ys = osm * 0.5f;
             float nxs = (ni - 1) * 0.5f, nys = (ns - 1) * 0.5f;
 
-            int ki = (int)MathF.Ceiling(oim * ac *0.01f);
+            int ki = (int)MathF.Ceiling(oim * ac * 0.01f);
             int ks = (int)MathF.Ceiling(osm * ac * 0.01f);
             int oiki = oim / ki;
 
@@ -9180,7 +9598,7 @@ namespace ScaleSmooth
             float[,] ris = new float[ni, ns];
             byte[,] sr = GrayFromBMP(img, 0, 0, 0, 0, oi, os);
 
-            int ki = (int)MathF.Ceiling(oim * ac *0.01f);
+            int ki = (int)MathF.Ceiling(oim * ac * 0.01f);
             int ks = (int)MathF.Ceiling(osm * ac * 0.01f);
             int oiki = oim / ki;
 
@@ -9652,6 +10070,11 @@ namespace ScaleSmooth
                 case "scaleBAContrast":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortBAcontrast);
                     label6.Text = Strings.scaleBAContrast;
+                    checkBox1.Visible = true;
+                    break;
+                case "scaleBAMonochrome"://numbers of original method to Github
+                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortBAmonochrome);
+                    label6.Text = Strings.scaleBAmonochrome;
                     checkBox1.Visible = true;
                     break;
             }

@@ -188,7 +188,7 @@
             label2.Name = "label2";
             label2.Size = new Size(183, 16);
             label2.TabIndex = 12;
-            label2.Text = "Fast                    Accurate";
+            label2.Text = Strings.Fast+"                         "+Strings.Accurate;
             label2.TextAlign = ContentAlignment.MiddleCenter;
             label2.MouseDoubleClick += ToScreen;
             label2.MouseDown += DragNDrop;
@@ -212,7 +212,7 @@
             label4.Name = "label4";
             label4.Size = new Size(161, 15);
             label4.TabIndex = 18;
-            label4.Text = Strings.Wait;
+            label4.Text = "Calculating...                         %";
             label4.Visible = false;
             // 
             // comboBox1
@@ -220,7 +220,7 @@
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox1.Font = new Font("Segoe UI", 10F);
             comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "scaleSmooth", "scaleSmoothContinuous", "scaleSmoothContrast", "boldScale", "contrastBoldScale", "scaleFurry", "scaleRough", "scaleSeparate", "scaleBilinearApproximation", "scaleBAContrast" });
+            comboBox1.Items.AddRange(new object[] { "scaleSmooth", "scaleSmoothContinuous", "scaleSmoothContrast", "boldScale", "contrastBoldScale", "scaleFurry", "scaleRough", "scaleSeparate", "scaleBilinearApproximation", "scaleBAContrast", "scaleBAMonochrome" });
             comboBox1.Location = new Point(6, 64);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(183, 25);
@@ -323,7 +323,10 @@
             // 
             // toolTip1
             // 
-            toolTip1.AutomaticDelay = 1500;
+            toolTip1.AutomaticDelay = 2000;
+            toolTip1.AutoPopDelay = 5000;
+            toolTip1.InitialDelay = 2000;
+            toolTip1.ReshowDelay = 2000;
             toolTip1.UseAnimation = false;
             toolTip1.UseFading = false;
             // 

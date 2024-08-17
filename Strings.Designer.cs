@@ -364,6 +364,17 @@ namespace ScaleSmooth {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Smooth, curve and same time sharpness result, but monochrome (colors may be distorted)
+        ///
+        ///Very slow, and you can&apos;t process multiple images at the same time without losing speed.
+        /// </summary>
+        internal static string scaleBAmonochrome {
+            get {
+                return ResourceManager.GetString("scaleBAmonochrome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на A clearly defined grid structure and may be present Gibbs ringing artifacts, but it&apos;s better than nearest neighbour
         ///
         ///Very very fast - Very slow, and you can&apos;t process multiple images at the same time without losing speed.

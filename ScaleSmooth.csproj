@@ -36,6 +36,7 @@
     <None Remove="Resources\arRight.png" />
     <None Remove="Resources\short13.png" />
     <None Remove="Resources\shortBAcontrast.png" />
+    <None Remove="Resources\shortBAmonochrome.png" />
     <None Remove="Resources\shortBil.png" />
     <None Remove="Resources\shortBilApprox.png" />
     <None Remove="Resources\shortBold.png" />
@@ -64,6 +65,7 @@
     <Resource Include="Resources\arRight.png" />
     <Resource Include="Resources\short13.png" />
     <Resource Include="Resources\shortBAcontrast.png" />
+    <Resource Include="Resources\shortBAmonochrome.png" />
     <Resource Include="Resources\shortBil.png" />
     <Resource Include="Resources\shortBilApprox.png" />
     <Resource Include="Resources\shortBold.png" />
