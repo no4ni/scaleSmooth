@@ -47,7 +47,7 @@ namespace ScaleSmooth
 
         private void button4_Click(object sender, EventArgs e) //save settings and close
         {
-            Settings.Default.method = comboBox1.SelectedIndex; //after optimization, translate to Russian
+            Settings.Default.method = comboBox1.SelectedIndex;
             switch (checkBox1.CheckState)
             {
                 case CheckState.Checked:
@@ -208,7 +208,7 @@ namespace ScaleSmooth
             StopWatchLabel.Text = String.Format("{0:0.000} " + Strings.SecSpent, ts.TotalSeconds);//stopwatch result
             StopWatchLabel.Visible = true;
             ProgressText.Text = "100";
-            pictureBox1.Refresh(); //update view of results
+            pictureBox1.Refresh(); //update image buffer view by result
             button3.Enabled = true;
             button5.Enabled = true;
             button2.Enabled = true;
@@ -335,7 +335,7 @@ namespace ScaleSmooth
             }
         }
 
-        private Bitmap ScaleBilinearApproximationGrayGPU(Image img, int x, int ac) //After new methods, update demo
+        private Bitmap ScaleBilinearApproximationGrayGPU(Image img, int x, int ac)
         {
             short[,,] ri = BilinearApproximationGrayGPU(img, x, ac);
             int ni = ri.GetUpperBound(0) + 1;
@@ -346,8 +346,8 @@ namespace ScaleSmooth
                 for (int s = 0; s < ns; s++)
                 {
                     if (ri[i, s, 0] <= 0)
-                        rb[i, s] = 0; //AFTER ALL (and release) 0&&0=0  //contrast??? 0x1 - not gray //sobel? 
-                    else if (ri[i, s, 0] >= 255) //AFTER ALL, AverageBilinear(parabola)
+                        rb[i, s] = 0; //0&&0=0  //0&1 - interpolate 
+                    else if (ri[i, s, 0] >= 255) //AverageBilinear(parabola)
                         rb[i, s] = 255;
                     else
                         rb[i, s] = (byte)(ri[i, s, 0]);
@@ -8706,6 +8706,115 @@ namespace ScaleSmooth
         }
 
 
+        private Bitmap ScaleBAMonochromeGray(Image img, int x, int ac)//after nupkg, application and project
+        {
+            short[,] ri = BilinearApproximationGray(img, x, ac);
+            int ni = ri.GetUpperBound(0) + 1;
+            int ns = ri.GetUpperBound(1) + 1;
+
+            byte[,] rb = new byte[ni, ns];
+            /*Parallel.For(0, ni, i =>
+            {
+                for (int s = 0; s < ns; s++)
+                {
+                    if (ri[i, s] < 1)
+                        rb[i, s] = 0;
+                    else if (ri[i, s] > 254) //< 42 interp ? > 213 ??? 
+                        rb[i, s] = 255;//k=-8;k=4?*2??????? unite at 127.5
+                    else
+                        rb[i, s] = (byte)(ri[i, s]);
+                }
+            });*/
+            float avg = 0;
+            ulong cnt = 0;
+            Parallel.For(0, ni, i =>
+            {
+                for (int s = 0; s < ns; s++)
+                {
+                    if (ri[i, s] < 42)
+                    {
+                        cnt++;
+                        ri[i, s] = 0;
+                    }
+                    else if (ri[i, s] > 213)
+                    {
+                        ri[i, s] = 255;
+                        avg++;
+                        cnt++;
+                    }
+                    else
+                    {
+                        ri[i, s] = 123;
+                    }
+                }
+            });
+            avg = avg / cnt * 255;
+            float min = 999;
+            float max = -999;
+
+
+            float dt = 0;
+            float[,] rf = new float[ni, ns];
+            ProgressText.Text = "50";
+            for (int i = 0; i < ni; i++)
+            {
+                Parallel.For(0, ns, s =>
+                {
+                    if (ri[i, s] == 123)
+                    {
+                        float v = 0;
+                        float d = 0;
+                        for (int ii = 0; ii < ni; ii++)
+                        {
+                            for (int ss = 0; ss < ns; ss++)
+                            {
+                                if (ri[ii, ss] == 255) //MathF.Sqrt -> MathF.Reciprocal
+                                {
+                                    dt = MathF.Pow(MathF.Pow(ii - i, 2) + MathF.Pow(ss - s, 2), -0.5f);
+                                    v += dt;
+                                    d += dt;
+                                }
+                                else if (ri[ii, ss] == 0)
+                                {
+                                    d += MathF.Pow(MathF.Pow(ii - i, 2) + MathF.Pow(ss - s, 2), -0.5f);
+                                }
+                            }
+                        }
+                        rf[i, s] = v * 255f / d;
+                        if (min > rf[i, s])
+                        {
+                            min = rf[i, s];
+                        }
+                        if (max < rf[i, s])
+                        {
+                            max = rf[i, s];
+                        }
+                    }
+                    else
+                    {
+                        rf[i, s] = ri[i, s];
+                    }
+                });
+                ProgressText.Text = (50 * i / ni + 50).ToString();
+            }
+            min = (max + min) / 2;
+
+            Parallel.For(0, ni, i =>
+            {
+                for (int s = 0; s < ns; s++)
+                {
+                    if (rf[i, s] < min - 2.5f)
+                        rb[i, s] = 0;
+                    else if (rf[i, s] > min + 2.5f)
+                        rb[i, s] = 255;//k=-8;k=4?*2??????? unite at 127.5
+                    else
+                        rb[i, s] = (byte)((rf[i, s] - min + 2.5f) * 50.6f + 1.5f);
+                }
+            });
+
+            return BMPfromGray(rb, ni, ns);
+        }
+
         private Bitmap ScaleBilinearApproximationGray(Image img, int x, int ac)//after nupkg, application and project
         {
             short[,] ri = BilinearApproximationGray(img, x, ac);
@@ -8717,12 +8826,12 @@ namespace ScaleSmooth
             {
                 for (int s = 0; s < ns; s++)
                 {
-                    if (ri[i, s] < 0.5f)
+                    if (ri[i, s] < 1)
                         rb[i, s] = 0;
-                    else if (ri[i, s] > 254.5) //after optimization, < 25 interp ? > 172 ??? 
-                        rb[i, s] = 255;//after optimization, k=-8;k=4?*2??????? unite at 127.5
+                    else if (ri[i, s] > 254) //< 42 interp ? > 213 ??? 
+                        rb[i, s] = 255;//k=-8;k=4?*2??????? unite at 127.5
                     else
-                        rb[i, s] = (byte)(ri[i, s] + 0.5f);
+                        rb[i, s] = (byte)(ri[i, s]);
                 }
             });
 
@@ -8751,9 +8860,9 @@ namespace ScaleSmooth
             float xs = oim * 0.5f, ys = osm * 0.5f;
             float nxs = (ni - 1) * 0.5f, nys = (ns - 1) * 0.5f;
 
-            int ki = (int)MathF.Ceiling(oim * ac / 100);
-            int ks = (int)MathF.Ceiling(osm * ac / 100);
-            int oiki = (int)(oim / (float)ki + 0.5f);
+            int ki = (int)MathF.Ceiling(oim * ac *0.01f);
+            int ks = (int)MathF.Ceiling(osm * ac * 0.01f);
+            int oiki = oim / ki;
 
             for (int kki = 0; kki < ki * oiki; kki += oiki)
             {
@@ -9071,9 +9180,9 @@ namespace ScaleSmooth
             float[,] ris = new float[ni, ns];
             byte[,] sr = GrayFromBMP(img, 0, 0, 0, 0, oi, os);
 
-            int ki = (int)MathF.Ceiling(oim * ac / 100);
-            int ks = (int)MathF.Ceiling(osm * ac / 100);
-            int oiki = (int)(oim / (float)ki + 0.5f);
+            int ki = (int)MathF.Ceiling(oim * ac *0.01f);
+            int ks = (int)MathF.Ceiling(osm * ac * 0.01f);
+            int oiki = oim / ki;
 
             const float k = -4f; //+8 - only Gibbs ringing, 0 - save derivative with Gibbs ringing; -8 - save mean value 
             for (int kki = 0; kki < ki * oiki; kki += oiki)//after ALL, -4 sub +8/2??? as clear Gibbs ringing???
@@ -9321,7 +9430,7 @@ namespace ScaleSmooth
                 for (int s = 0; s < ns; s++)
                 {
                     if (ri[i, s] < 42)
-                        rb[i, s] = 0; //0&&0=0  0x1 - not gray //sobel? 
+                        rb[i, s] = 0;
                     else if (ri[i, s] > 213)
                         rb[i, s] = 255;
                     else
@@ -9624,7 +9733,7 @@ namespace ScaleSmooth
             {
                 sp = (trackBar1.Value - 42) * 10 / 58 + 9;
             }
-            label2.Text = Strings.Fast+" " + new String(' ', sp) + trackBar1.Value + new String(' ', 19 - sp) + " "+ Strings.Accurate;
+            label2.Text = Strings.Fast + " " + new String(' ', sp) + trackBar1.Value + new String(' ', 19 - sp) + " " + Strings.Accurate;
         }
     }
 
