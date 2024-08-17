@@ -78,7 +78,7 @@ Very very fast - Very slow, and you can't process multiple images at the same ti
 
 - **scaleBAmonochrome**<br>
 Smooth, curve and same time sharpness result, but monochrome (colors may be distorted)<br>
-Very slow, and you can't process multiple images at the same time without losing speed<br>
+Very slow, and you can't process multiple images at the same time without losing speed<br><br>
 You can increase speed instead of accuracy and vice versa<br><br>
 
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoSeparateApproximation.png"/>
