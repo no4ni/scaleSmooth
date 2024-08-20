@@ -228,6 +228,11 @@ Allows you to do several operations before saving total result</value>
 
 Very very fast - Very slow, and you can't process multiple images at the same time without losing speed</value>
   </data>
+  <data name="scaleBAExtremum" xml:space="preserve">
+    <value>Sharpen edges, but contrasty (for accuracy required reverse adjustment) and many Gibbs ringing artifacts
+
+Very very fast - Very slow, and you can't process multiple images at the same time without losing speed</value>
+  </data>
   <data name="scaleBAmonochrome" xml:space="preserve">
     <value>Smooth, curve and same time sharpness result, but monochrome (colors may be distorted)
 
@@ -286,7 +291,7 @@ Be careful - the process can be very long and it will be impossible to cancel it
   </data>
   <data name="UseGPU" xml:space="preserve">
     <value>Try increase perfomance by using your videocard? 
-(It may interrupt other non-system GPU processes or actually decrease perfomance)
+(It may interrupt other non-system GPU processes or actually decrease perfomance, results of CPU and GPU versions may differ slightly)
 
 Square - Auto decide
 Check mark - Always

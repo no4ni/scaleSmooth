@@ -364,6 +364,17 @@ namespace ScaleSmooth {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Sharpen edges, but contrasty (for accuracy required reverse adjustment) and many Gibbs ringing artifacts
+        ///
+        ///Very very fast - Very slow, and you can&apos;t process multiple images at the same time without losing speed.
+        /// </summary>
+        internal static string scaleBAExtremum {
+            get {
+                return ResourceManager.GetString("scaleBAExtremum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Smooth, curve and same time sharpness result, but monochrome (colors may be distorted)
         ///
         ///Very slow, and you can&apos;t process multiple images at the same time without losing speed.
@@ -499,7 +510,7 @@ namespace ScaleSmooth {
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Try increase perfomance by using your videocard? 
-        ///(It may interrupt other non-system GPU processes or actually decrease perfomance)
+        ///(It may interrupt other non-system GPU processes or actually decrease perfomance, results of CPU and GPU versions may differ slightly)
         ///
         ///Square - Auto decide
         ///Check mark - Always

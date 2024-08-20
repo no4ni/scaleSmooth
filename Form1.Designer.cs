@@ -188,7 +188,7 @@
             label2.Name = "label2";
             label2.Size = new Size(183, 16);
             label2.TabIndex = 12;
-            label2.Text = Strings.Fast+"                         "+Strings.Accurate;
+            label2.Text = "Fast                         Accurate";
             label2.TextAlign = ContentAlignment.MiddleCenter;
             label2.MouseDoubleClick += ToScreen;
             label2.MouseDown += DragNDrop;
@@ -220,7 +220,7 @@
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox1.Font = new Font("Segoe UI", 10F);
             comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "scaleSmooth", "scaleSmoothContinuous", "scaleSmoothContrast", "boldScale", "contrastBoldScale", "scaleFurry", "scaleRough", "scaleSeparate", "scaleBilinearApproximation", "scaleBAContrast", "scaleBAMonochrome" });
+            comboBox1.Items.AddRange(new object[] { "scaleSmooth", "scaleSmoothContinuous", "scaleSmoothContrast", "boldScale", "contrastBoldScale", "scaleFurry", "scaleRough", "scaleSeparate", "scaleBilinearApproximation", "scaleBAContrast", "scaleBAMonochrome", "scaleBAExtremum" });
             comboBox1.Location = new Point(6, 64);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(183, 25);
@@ -279,6 +279,7 @@
             label6.TabIndex = 26;
             label6.Text = resources.GetString("label6.Text");
             label6.TextAlign = ContentAlignment.MiddleCenter;
+            label6.TextChanged += Warning;
             label6.MouseDoubleClick += ToScreen;
             label6.MouseDown += DragNDrop;
             // 
