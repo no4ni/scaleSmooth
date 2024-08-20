@@ -4763,7 +4763,7 @@ namespace ScaleSmooth
             {
                 for (int s = 0; s < ns; s++)
                 {
-                    dd[i, s] = Contrast80(d[i, s]);
+                    dd[i, s] = Contrast80(d[i, s]);//different for color?
                 }
             }
 
@@ -10661,7 +10661,7 @@ namespace ScaleSmooth
             {
                 for (int s = 0; s < ns; s++)
                 {
-                    if (ri[i, s] < 42)
+                    if (ri[i, s] < 42) 
                     {
                         ri[i, s] = 0;
                     }
@@ -10755,7 +10755,7 @@ namespace ScaleSmooth
                 {
                     for (int s = 0; s < ns; s++)
                     {
-                        if (ri[i, s, t] < 42)
+                        if (ri[i, s, t] < 42)//all color? ALL BA
                         {
                             ri[i, s, t] = 0;
                         }

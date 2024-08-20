@@ -120,7 +120,7 @@
             label1.Name = "label1";
             label1.Size = new Size(190, 21);
             label1.TabIndex = 5;
-            label1.Text = "Scale:            x";
+            label1.Text = Strings.Scale;
             label1.TextAlign = ContentAlignment.MiddleCenter;
             label1.MouseDoubleClick += ToScreen;
             label1.MouseDown += DragNDrop;
@@ -188,7 +188,7 @@
             label2.Name = "label2";
             label2.Size = new Size(183, 16);
             label2.TabIndex = 12;
-            label2.Text = "Fast                         Accurate";
+            label2.Text = Strings.Fast+"                       "+Strings.Accurate;
             label2.TextAlign = ContentAlignment.MiddleCenter;
             label2.MouseDoubleClick += ToScreen;
             label2.MouseDown += DragNDrop;
@@ -212,7 +212,7 @@
             label4.Name = "label4";
             label4.Size = new Size(161, 15);
             label4.TabIndex = 18;
-            label4.Text = "Calculating...                         %";
+            label4.Text = Strings.Wait;
             label4.Visible = false;
             // 
             // comboBox1
