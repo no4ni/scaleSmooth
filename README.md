@@ -79,7 +79,14 @@ Very very fast - Very slow, and you can't process multiple images at the same ti
 - **scaleBAmonochrome**<br>
 Smooth, curve and same time sharpness result, but monochrome (colors may be distorted)<br>
 Very slow, and you can't process multiple images at the same time without losing speed<br><br>
+
+- **scaleBAExtremum**<br>
+Sharpen edges, but contrasty (for accuracy required reverse adjustment) and many Gibbs ringing artifacts<br>
+Very very fast - Very slow, and you can't process multiple images at the same time without losing speed<br><br>
+
 You can increase speed instead of accuracy and vice versa<br><br>
+
+
 
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoSeparateApproximation.png"/>
 <br id="russian">
@@ -149,5 +156,9 @@ scaleSmooth это приложение Windows на .NET 8.0 на Visual Studio
 - **scaleBAmonochrome**<br>
 Гладкий, криволинейный и в то же время чёткий результат, но монохромный (вследствие чего цвета могут искажаться)<br>
 Очень медленно, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
+
+- **scaleBAExtremum**<br>
+Чёткие края, но контрастно (для точности необходима обратная корректировка) и присутствует большой звон<br>
+Очень очень быстро - Очень медленно, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
 
 Можно увеличить скорость за счёт точности и наоборот
