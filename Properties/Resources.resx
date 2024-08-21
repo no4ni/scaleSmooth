@@ -172,4 +172,10 @@
   <data name="shortBAExtremum" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\shortBAExtremum.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="shortBAmonochrome2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\shortBAmonochrome2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="shortBASmoothContrast" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\shortBASmoothContrast.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

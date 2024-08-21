@@ -386,6 +386,28 @@ namespace ScaleSmooth {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Sharpness edges, but colors may be distorted
+        ///
+        ///Very slow, and you can&apos;t process multiple images at the same time without losing speed.
+        /// </summary>
+        internal static string scaleBAmonochrome2 {
+            get {
+                return ResourceManager.GetString("scaleBAmonochrome2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Сontrasty and may be present grid structure
+        ///
+        ///Very very fast - Very slow, and you can&apos;t process multiple images at the same time without losing speed.
+        /// </summary>
+        internal static string scaleBASmoothContrast {
+            get {
+                return ResourceManager.GetString("scaleBASmoothContrast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на A clearly defined grid structure and may be present Gibbs ringing artifacts, but it&apos;s better than nearest neighbour
         ///
         ///Very very fast - Very slow, and you can&apos;t process multiple images at the same time without losing speed.

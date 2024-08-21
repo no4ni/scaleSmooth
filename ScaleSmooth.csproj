@@ -38,6 +38,8 @@
     <None Remove="Resources\shortBAcontrast.png" />
     <None Remove="Resources\shortBAExtremum.png" />
     <None Remove="Resources\shortBAmonochrome.png" />
+    <None Remove="Resources\shortBAmonochrome2.png" />
+    <None Remove="Resources\shortBASmoothContrast.png" />
     <None Remove="Resources\shortBil.png" />
     <None Remove="Resources\shortBilApprox.png" />
     <None Remove="Resources\shortBold.png" />
@@ -68,6 +70,8 @@
     <Resource Include="Resources\shortBAcontrast.png" />
     <Resource Include="Resources\shortBAExtremum.png" />
     <Resource Include="Resources\shortBAmonochrome.png" />
+    <Resource Include="Resources\shortBAmonochrome2.png" />
+    <Resource Include="Resources\shortBASmoothContrast.png" />
     <Resource Include="Resources\shortBil.png" />
     <Resource Include="Resources\shortBilApprox.png" />
     <Resource Include="Resources\shortBold.png" />

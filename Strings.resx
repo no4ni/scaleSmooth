@@ -228,6 +228,11 @@ Allows you to do several operations before saving total result</value>
 
 Very very fast - Very slow, and you can't process multiple images at the same time without losing speed</value>
   </data>
+  <data name="scaleBASmoothContrast" xml:space="preserve">
+    <value>Сontrasty and may be present grid structure
+
+Very very fast - Very slow, and you can't process multiple images at the same time without losing speed</value>
+  </data>
   <data name="scaleBAExtremum" xml:space="preserve">
     <value>Sharpen edges, but contrasty (for accuracy required reverse adjustment) and many Gibbs ringing artifacts
 
@@ -235,6 +240,11 @@ Very very fast - Very slow, and you can't process multiple images at the same ti
   </data>
   <data name="scaleBAmonochrome" xml:space="preserve">
     <value>Smooth, curve and same time sharpness result, but monochrome (colors may be distorted)
+
+Very slow, and you can't process multiple images at the same time without losing speed</value>
+  </data>
+  <data name="scaleBAmonochrome2" xml:space="preserve">
+    <value>Sharpness edges, but colors may be distorted
 
 Very slow, and you can't process multiple images at the same time without losing speed</value>
   </data>
