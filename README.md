@@ -73,11 +73,19 @@ A clearly defined grid structure and may be present Gibbs ringing artifacts, but
 Very very fast - Very slow, and you can't process multiple images at the same time without losing speed<br><br>
 
 - **scaleBAContrast**<br>
-Defined grid structure, little contrasty and may be present Gibbs ringing artifacts\r\n\r\nVery very fast - Very slow, and you can't process multiple images at the same time without losing speed<br>
+Defined grid structure, little contrasty and may be present Gibbs ringing artifacts<br>
+Very very fast - Very slow, and you can't process multiple images at the same time without losing speed<br><br>
+
+- **scaleBASmoothContrast**<br>
+Сontrasty and may be present grid structure<br>
 Very very fast - Very slow, and you can't process multiple images at the same time without losing speed<br><br>
 
 - **scaleBAmonochrome**<br>
 Smooth, curve and same time sharpness result, but monochrome (colors may be distorted)<br>
+Very slow, and you can't process multiple images at the same time without losing speed<br><br>
+
+- **scaleBAmonochrome2**<br>
+Sharpness edges, but colors may be distorted<br>
 Very slow, and you can't process multiple images at the same time without losing speed<br><br>
 
 - **scaleBAExtremum**<br>
@@ -110,9 +118,9 @@ scaleSmooth это приложение Windows на .NET 8.0 на Visual Studio
 🛠 Использование в ваших проектах<br>
 1. Просто скопируйте необходимую функцию и ее подфункции (например, **ScaleSmoothGray** / **ScaleSmoothColor** / **ScaleRoughGray** и S255 / **ScaleRoughColor** и S255 / **ScaleFurryGray** и S255 / **ScaleFurryColor** и S255 / **ContrastBoldScaleGray** и S255f / **ContrastBoldScaleColor** и S255f / **BoldScaleGray** и S255f / **BoldScaleColor** и S255f / **ScaleSeparateGray**, Quadrilateral и Bilinear / **ScaleSeparateColor**, Quadrilateral и Bilinear / **ScaleBilinearApproximationGray**[GPU/Auto], Dist4 и Bilinear / **ScaleBilinearApproximationColor**[GPU/Auto], Dist4 и Bilinear) (для использования версии для видеокарт установите nuget пакеты ILGPU и ILGPU.Algorithms) (вы можете безвредно удалить ProgressText из кода)<br>
 2. Вызовите функцию с параметрами (Image изображение, int масштаб, int точность - где 0 - быстро, 100 - точно)<br>
-3. Функция вернёт Вам новое изображение (с повышенным разрешением) как тип Image<br>
+3. Функция вернёт Вам новое изображение (с повышенным разрешением) как тип Image<br><br>
 
-ℹ️ Описание методов<br><br>
+ℹ️ Описание методов<br>
 - **scaleSmooth**<br>
 Наиболее точный метод для сцен, где объекты полностью находятся на изображении, но результат немного размыт (гораздо меньше, чем при любой интерполяции) и структура сетки все еще видна<br>
 Очень быстро - Медленно, и вы можете обрабатывать несколько изображений одновременно, не теряя скорости (просто запустите функцию в другом потоке или запустите .exe еще раз)<br><br>
@@ -153,8 +161,16 @@ scaleSmooth это приложение Windows на .NET 8.0 на Visual Studio
 Видна сеточная структура, немного контрастно и могут присутствовать артефакты звона<br>
 Очень очень быстро - Очень медленно, и Вы не можете обрабатывать несколько изображений одновременно без потери скорости<br><br>
 
+- **scaleBASmoothContrast**<br>
+Контрастно и может быть видна сеточная структура<br>
+Очень очень быстро - Очень медленно, и Вы не можете обрабатывать несколько изображений одновременно без потери скорости<br><br>
+
 - **scaleBAmonochrome**<br>
 Гладкий, криволинейный и в то же время чёткий результат, но монохромный (вследствие чего цвета могут искажаться)<br>
+Очень медленно, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
+
+- **scaleBAmonochrome2**<br>
+Чёткие границы, но цвета могут искажаться<br>
 Очень медленно, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
 
 - **scaleBAExtremum**<br>
