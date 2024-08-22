@@ -3,11 +3,11 @@
 Algorithms for most-accurate upscaling images ****without AI and neural network****<br><br>
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoSmooth.png"/><br>
 <a href="#russian">Русский язык</a>
-(gray or color/ smooth, rough, furry, separate, approximation, bold or contrastBold / fast or accuracy variants available)<br>
+(gray or color / smooth, sharpness, semi-sharpness, monochrome or bold / fast or accuracy variants available)<br>
 <br>
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoContrastBold.png"/><br><br>
 <b>Free and Open Source Image Upscaler</b><br><br>
-<b>scaleSmooth</b> lets you enlarge and enhance low-resolution images using only math.<br>
+<b>scaleSmooth</b> lets you enlarge and enhance low-resolution images (up to 234 megapixels, e.g. 20420x11486 for 16:9) using only math.<br>
 Enlarge images and get more quality without losing accuracy (in some cases, reverse adjustment is required) and hallucinations. It's just math!<br><br>
 
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoRoughFurry.png"/>
@@ -98,12 +98,13 @@ You can increase speed instead of accuracy and vice versa<br><br>
 
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoSeparateApproximation.png"/>
 <br id="russian">
-Алгоритмы для максимально точного масштабирования изображений без ИИ и нейронных сетей<br><br>
+**Алгоритмы для максимально точного масштабирования изображений без ИИ и нейронных сетей**<br>
+Доступно множество различных вариантов (серый или цветной / гладкий, резкий, полурезкий, монохромный или жирный / быстрый или точный)<br><br>
 <a href="https://dzen.ru/suite/b70ea5e2-65bd-49ea-b0e4-49fc31e96df6">Мои эксперименты с изображениями</a><br>
 Объяснение принипа работы, визуализация и больше примеров и сравнений в видео FullHD: <a href="https://dzen.ru/video/watch/6633aca1aef1ff543f59646e">#1</a>, <a href="https://dzen.ru/video/watch/66655d8129a5762762127928">#2</a><br>
 Теория и объяснение в тексте и картинках: <a href="https://habr.com/ru/articles/812619/">#1</a>, <a href="https://habr.com/ru/articles/821309/">#2</a><br><br>
 Бесплатный и открытый исходный код для масштабирования изображений<br><br>
-scaleSmooth позволяет увеличивать и улучшать изображения с низким разрешением, используя только математику.<br>
+scaleSmooth позволяет увеличивать и улучшать изображения с низким разрешением вплоть до 234 мегапикселей (например, 20420х11486 для 16:9), используя только математику.<br>
 Увеличивайте изображения и получайте больше качества без потери точности (в некоторых случаях требуется обратная <a href="https://dzen.ru/video/watch/6633aca1aef1ff543f59646e">корректировка</a>) и галлюцинаций. Это просто математика!<br><br>
 scaleSmooth это приложение Windows на .NET 8.0 на Visual Studio C#, но мы будем рады, если вы создадите свой репозиторий для других платформ и языков (напишите мне, и я прикреплю ссылку на ваш репозиторий) или закоммитите здесь обновления для переводов на другие языки, оптимизации, пакетной обработки, интерфейса или большей точности. Если вы хотите что-то улучшить, мы будем рады pull request, а если вы с чем-то не согласны, смело делайте fork в свой собственный репозиторий<br><br>
 
