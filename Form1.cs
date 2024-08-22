@@ -905,17 +905,21 @@ namespace ScaleSmooth
             });
             min = (max + min) / 2;
 
+            float mindeviant = 40.266f / x;
+            float maxdeviant = min + mindeviant;
+            mindeviant = min - mindeviant;
+            float piX = MathF.PI * x;
             Parallel.For(0, ni, i =>
             {
                 for (int s = 0; s < ns; s++)
                 {
-                    if (rf[i, s] < min - 40.266f / x)
+                    if (rf[i, s] < mindeviant)
                         rb[i, s] = 0;
-                    else if (rf[i, s] > min + 40.266f / x)//precalc
+                    else if (rf[i, s] > maxdeviant)
                         rb[i, s] = 255;
                     else
                     {
-                        rb[i, s] = (byte)((rf[i, s] - min + 40.266f / x) * MathF.PI * x + 1.5f); //for 8bits 
+                        rb[i, s] = (byte)((rf[i, s] - mindeviant) * piX + 1.5f); 
                     }
                 }
             });
@@ -1199,6 +1203,15 @@ namespace ScaleSmooth
             min[1] = (max[1] + min[1]) / 2;
             min[2] = (max[2] + min[2]) / 2;
 
+            float deviant = 40.266f / x;
+            float[] maxdeviant = new float[3];
+            float[] mindeviant = new float[3];
+            for (byte t = 0; t < 3; t++)
+            {
+                maxdeviant[t] = min[t] + deviant;
+                mindeviant[t] = min[t] - deviant;
+            }
+            float piX = MathF.PI * x;
 
             Parallel.For(0, ni, i =>
             {
@@ -1206,13 +1219,13 @@ namespace ScaleSmooth
                 {
                     for (int s = 0; s < ns; s++)
                     {
-                        if (rf[i, s, t] < min[t] - 40.266f / x)
+                        if (rf[i, s, t] < mindeviant[t])
                             rb[i, s, t] = 0;
-                        else if (rf[i, s, t] > min[t] + 40.266f / x)//precalc
+                        else if (rf[i, s, t] > maxdeviant[t])
                             rb[i, s, t] = 255;//k=-8;k=4?*2??????? unite at 127.5
                         else
                         {
-                            rb[i, s, t] = (byte)((rf[i, s, t] - min[t] + 40.266f / x) * MathF.PI * x + 1.5f);
+                            rb[i, s, t] = (byte)((rf[i, s, t] - mindeviant[t]) * piX + 1.5f);
                         }
                     }
                 }
@@ -12707,17 +12720,21 @@ namespace ScaleSmooth
             }
             min = (max + min) / 2;
 
+            float mindeviant = 40.266f / x;
+            float maxdeviant = min + mindeviant;
+            mindeviant = min - mindeviant;
+            float piX = MathF.PI * x;
             Parallel.For(0, ni, i =>
             {
                 for (int s = 0; s < ns; s++)
                 {
-                    if (rf[i, s] < min - 40.266f / x)
+                    if (rf[i, s] < mindeviant)
                         rb[i, s] = 0;
-                    else if (rf[i, s] > min + 40.266f / x)//precalc
-                        rb[i, s] = 255;//k=-8;k=4?*2??????? unite at 127.5
+                    else if (rf[i, s] > maxdeviant)
+                        rb[i, s] = 255;
                     else
                     {
-                        rb[i, s] = (byte)((rf[i, s] - min + 40.266f / x) * MathF.PI * x + 1.5f); //for 8bits 
+                        rb[i, s] = (byte)((rf[i, s] - mindeviant) * piX + 1.5f);
                     }
                 }
             });
@@ -12913,19 +12930,29 @@ namespace ScaleSmooth
             min[1] = (max[1] + min[1]) / 2;
             min[2] = (max[2] + min[2]) / 2;
 
+            float deviant = 40.266f / x;
+            float[] maxdeviant = new float[3];
+            float[] mindeviant = new float[3];
+            for (byte t = 0; t < 3; t++)
+            {
+                maxdeviant[t] = min[t] + deviant;
+                mindeviant[t] = min[t] - deviant;
+            }
+            float piX = MathF.PI * x;
+
             Parallel.For(0, ni, i =>
             {
                 for (byte t = 0; t < 3; t++)
                 {
                     for (int s = 0; s < ns; s++)
                     {
-                        if (rf[i, s, t] < min[t] - 40.266f / x)
+                        if (rf[i, s, t] < mindeviant[t])
                             rb[i, s, t] = 0;
-                        else if (rf[i, s, t] > min[t] + 40.266f / x)//precalc
+                        else if (rf[i, s, t] > maxdeviant[t])
                             rb[i, s, t] = 255;//k=-8;k=4?*2??????? unite at 127.5
                         else
                         {
-                            rb[i, s, t] = (byte)((rf[i, s, t] - min[t] + 40.266f / x) * MathF.PI * x + 1.5f);
+                            rb[i, s, t] = (byte)((rf[i, s, t] - mindeviant[t]) * piX + 1.5f);
                         }
                     }
                 }
