@@ -97,8 +97,8 @@ You can increase speed instead of accuracy and vice versa<br><br>
 
 
 <img src="https://raw.githubusercontent.com/no4ni/scaleSmooth/main/examples/demoSeparateApproximation.png"/>
-<br id="russian">
-**Алгоритмы для максимально точного масштабирования изображений без ИИ и нейронных сетей**<br>
+<br id="russian"></br>
+<b>Алгоритмы для максимально точного масштабирования изображений без ИИ и нейронных сетей</b><br>
 Доступно множество различных вариантов (серый или цветной / гладкий, резкий, полурезкий, монохромный или жирный / быстрый или точный)<br><br>
 <a href="https://dzen.ru/suite/b70ea5e2-65bd-49ea-b0e4-49fc31e96df6">Мои эксперименты с изображениями</a><br>
 Объяснение принипа работы, визуализация и больше примеров и сравнений в видео FullHD: <a href="https://dzen.ru/video/watch/6633aca1aef1ff543f59646e">#1</a>, <a href="https://dzen.ru/video/watch/66655d8129a5762762127928">#2</a><br>
