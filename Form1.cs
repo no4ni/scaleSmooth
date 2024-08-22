@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 
 namespace ScaleSmooth
 {
-    public partial class Form1 : Form //afterAll-cmd-version
+    public partial class Form1 : Form //afterAll, cmd-version
     {
         [DllImport("user32", CharSet = CharSet.Auto)]
         internal extern static bool PostMessage(IntPtr hWnd, uint Msg, uint WParam, uint LParam);
@@ -75,6 +75,7 @@ namespace ScaleSmooth
 
         private void button3_Click(object sender, EventArgs e) //upscale with selected method and parameters
         {
+            numericUpDown1.Value = PossibiltyScale(pictureBox1.Image.Width, pictureBox1.Image.Height, (int)numericUpDown1.Value);
             toolTip1.Active = false;
             button2.Enabled = false;
             button5.Enabled = false;
@@ -348,11 +349,21 @@ namespace ScaleSmooth
             toolTip1.Active = true;
         }
 
+        private decimal PossibiltyScale(int width, int height, int scale)
+        {
+            ulong pixelsIn = (ulong)width * (ulong)height;
+            if (pixelsIn * (ulong)scale * (ulong)scale > 234567899)
+            {
+                scale = (int)MathF.Sqrt(234567899 / pixelsIn);
+            }
+            return scale;
+        }
+
         private Bitmap ScaleBAContrastGrayAuto(Image img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators());
             Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
-            if (accelerator.AcceleratorType == AcceleratorType.CPU)// || VRAM<
+            if (accelerator.AcceleratorType == AcceleratorType.CPU)
             {
                 accelerator.Dispose();
                 context.Dispose();
@@ -362,7 +373,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (img.Height < 25)
+                if (img.Height < 25 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
                 {
                     return ScaleBAContrastGray(img, x, ac);
                 }
@@ -387,7 +398,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (img.Height < 25)
+                if (img.Height < 25 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
                 {
                     return ScaleBAExtremumGray(img, x, ac);
                 }
@@ -412,7 +423,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (img.Height < 25)
+                if (img.Height < 25 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
                 {
                     return ScaleBASmoothContrastGray(img, x, ac);
                 }
@@ -438,7 +449,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (ac < 22)
+                if (ac < 22 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 20)
                 {
                     return ScaleBilinearApproximationColor(img, x, ac);
                 }
@@ -463,7 +474,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (ac < 22)
+                if (ac < 22 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 20)
                 {
                     return ScaleBAContrastColor(img, x, ac);
                 }
@@ -488,7 +499,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (ac < 22)
+                if (ac < 22 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
                 {
                     return ScaleBAMonochromeGray(img, x, ac);
                 }
@@ -513,7 +524,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (ac < 22)
+                if (ac < 22 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
                 {
                     return ScaleBAMonochrome2Gray(img, x, ac);
                 }
@@ -538,7 +549,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (ac < 22)
+                if (ac < 22 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 20)
                 {
                     return ScaleBAMonochromeColor(img, x, ac);
                 }
@@ -588,7 +599,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (ac < 22) //after new methods, review
+                if (ac < 22 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 20) //after new methods, review
                 {
                     return ScaleBAMonochrome2Color(img, x, ac);
                 }
@@ -603,6 +614,7 @@ namespace ScaleSmooth
         {
             Context context = Context.Create(b => b.AllAccelerators());
             Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
+
             if (accelerator.AcceleratorType == AcceleratorType.CPU)
             {
                 accelerator.Dispose();
@@ -613,7 +625,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (ac < 22) //after new methods, review
+                if (ac < 22 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 20) //after new methods, review
                 {
                     return ScaleBASmoothContrastColor(img, x, ac);
                 }
@@ -638,7 +650,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (img.Height < 25)
+                if (img.Height < 25 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
                 {
                     return ScaleBilinearApproximationGray(img, x, ac);
                 }
@@ -2015,7 +2027,7 @@ namespace ScaleSmooth
         {
             Context context = Context.Create(b => b.AllAccelerators().EnableAlgorithms().Optimize(OptimizationLevel.O2).PageLocking(PageLockingMode.Aggressive));
 #if DEBUG
-            Accelerator accelerator = context.GetPreferredDevice(true).CreateAccelerator(context);
+            Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);//false for Debug on real GPU (less information)
             ulong mem = 4 * (ulong)MathF.Pow(2, 30);//4GB VRAM for debug
 #else
             Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);

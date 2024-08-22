@@ -106,7 +106,7 @@
             // 
             numericUpDown1.Location = new Point(87, 383);
             numericUpDown1.Maximum = new decimal(new int[] { 128, 0, 0, 0 });
-            numericUpDown1.Minimum = new decimal(new int[] { 2, 0, 0, 0 });
+            numericUpDown1.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown1.Name = "numericUpDown1";
             numericUpDown1.Size = new Size(43, 23);
             numericUpDown1.TabIndex = 4;
