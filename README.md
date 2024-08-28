@@ -92,6 +92,10 @@ Very slow, and you can't process multiple images at the same time without losing
 Sharpen edges, but contrasty (for accuracy required reverse adjustment) and many Gibbs ringing artifacts<br>
 Very very fast - Very slow, and you can't process multiple images at the same time without losing speed<br><br>
 
+- **scale255BA**<br>
+Vaguely, but not blurry, may need back(reverse) adjustment<br>
+Very very slow and you can't process multiple images at once<br><br>
+
 You can increase speed instead of accuracy and vice versa<br><br>
 
 
@@ -177,5 +181,9 @@ You can increase speed instead of accuracy and vice versa<br><br>
 - **scaleBAExtremum**<br>
 Чёткие края, но контрастно (для точности необходима обратная корректировка) и присутствует большой звон<br>
 Очень очень быстро - Очень медленно, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
+
+- **scale255BA**<br>
+Расплывчато, но не размыто, возможно будет нужна обратная корректировка<br>
+Очень очень медленно, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
 
 Можно увеличить скорость за счёт точности и наоборот
