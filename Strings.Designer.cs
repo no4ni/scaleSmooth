@@ -156,6 +156,15 @@ namespace ScaleSmooth {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на ETA.
+        /// </summary>
+        internal static string ETA {
+            get {
+                return ResourceManager.GetString("ETA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Fast.
         /// </summary>
         internal static string Fast {
@@ -227,6 +236,15 @@ namespace ScaleSmooth {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Mimimal resoulution of Image is 2x2.
+        /// </summary>
+        internal static string ImageMinRes {
+            get {
+                return ResourceManager.GetString("ImageMinRes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Load raster image from file.
         /// </summary>
         internal static string Load {
@@ -254,7 +272,7 @@ namespace ScaleSmooth {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Better video card required! (More VRAM required for this size).
+        ///   Ищет локализованную строку, похожую на Better video card required! (More VRAM required for this size and/or accuracy).
         /// </summary>
         internal static string MoreVRAM {
             get {
@@ -295,6 +313,15 @@ namespace ScaleSmooth {
         internal static string RasterImages {
             get {
                 return ResourceManager.GetString("RasterImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Resolution of image buffer.
+        /// </summary>
+        internal static string Resolution {
+            get {
+                return ResourceManager.GetString("Resolution", resourceCulture);
             }
         }
         
@@ -349,6 +376,17 @@ namespace ScaleSmooth {
         internal static string Scale {
             get {
                 return ResourceManager.GetString("Scale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Vaguely, but not blurry, may need back adjustment
+        ///
+        ///Very very slow and you can&apos;t process multiple images at once.
+        /// </summary>
+        internal static string scale255BA {
+            get {
+                return ResourceManager.GetString("scale255BA", resourceCulture);
             }
         }
         
@@ -532,7 +570,7 @@ namespace ScaleSmooth {
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Try increase perfomance by using your videocard? 
-        ///(It may interrupt other non-system GPU processes or actually decrease perfomance, results of CPU and GPU versions may differ slightly)
+        ///(It may interrupt other non-system GPU processes or actually decrease perfomance, results of CPU and GPU versions may differ slightly, GPU version may sometimes crashes)
         ///
         ///Square - Auto decide
         ///Check mark - Always

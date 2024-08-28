@@ -191,7 +191,7 @@ Allows you to do several operations before saving total result</value>
     <value>Select method for upscaling</value>
   </data>
   <data name="MoreVRAM" xml:space="preserve">
-    <value>Better video card required! (More VRAM required for this size)</value>
+    <value>Better video card required! (More VRAM required for this size and/or accuracy)</value>
   </data>
   <data name="Next" xml:space="preserve">
     <value>Next method for upscaling</value>
@@ -227,6 +227,11 @@ Allows you to do several operations before saving total result</value>
     <value>Defined grid structure, little contrasty and may be present Gibbs ringing artifacts
 
 Very very fast - Very slow, and you can't process multiple images at the same time without losing speed</value>
+  </data>
+  <data name="scale255BA" xml:space="preserve">
+    <value>Vaguely, but not blurry, may need back adjustment
+
+Very very slow and you can't process multiple images at once</value>
   </data>
   <data name="scaleBASmoothContrast" xml:space="preserve">
     <value>Сontrasty and may be present grid structure
@@ -301,7 +306,7 @@ Be careful - the process can be very long and it will be impossible to cancel it
   </data>
   <data name="UseGPU" xml:space="preserve">
     <value>Try increase perfomance by using your videocard? 
-(It may interrupt other non-system GPU processes or actually decrease perfomance, results of CPU and GPU versions may differ slightly)
+(It may interrupt other non-system GPU processes or actually decrease perfomance, results of CPU and GPU versions may differ slightly, GPU version may sometimes crashes)
 
 Square - Auto decide
 Check mark - Always
@@ -309,5 +314,14 @@ Empty - Never</value>
   </data>
   <data name="Wait" xml:space="preserve">
     <value>Calculating...                         %</value>
+  </data>
+  <data name="Resolution" xml:space="preserve">
+    <value>Resolution of image buffer</value>
+  </data>
+  <data name="ETA" xml:space="preserve">
+    <value>ETA</value>
+  </data>
+  <data name="ImageMinRes" xml:space="preserve">
+    <value>Mimimal resoulution of Image is 2x2</value>
   </data>
 </root>

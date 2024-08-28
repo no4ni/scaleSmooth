@@ -55,6 +55,7 @@
             toolTip1 = new ToolTip(components);
             checkBox2 = new CheckBox();
             label3 = new Label();
+            ETA = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
@@ -94,7 +95,7 @@
             // 
             button2.Enabled = false;
             button2.Font = new Font("Segoe UI", 12F);
-            button2.Location = new Point(6, 585);
+            button2.Location = new Point(6, 596);
             button2.Name = "button2";
             button2.Size = new Size(185, 54);
             button2.TabIndex = 2;
@@ -139,7 +140,7 @@
             // button4
             // 
             button4.Font = new Font("Segoe UI", 12F);
-            button4.Location = new Point(5, 656);
+            button4.Location = new Point(5, 665);
             button4.Name = "button4";
             button4.Size = new Size(185, 54);
             button4.TabIndex = 7;
@@ -188,13 +189,13 @@
             label2.Name = "label2";
             label2.Size = new Size(183, 16);
             label2.TabIndex = 12;
-            label2.Text = Strings.Fast+"                       "+Strings.Accurate;
+            label2.Text = "Fast                       Accurate";
             label2.TextAlign = ContentAlignment.MiddleCenter;
             label2.MouseDoubleClick += ToScreen;
             label2.MouseDown += DragNDrop;
             // 
             // ProgressText
-            //  
+            // 
             ProgressText.Location = new Point(139, 561);
             ProgressText.Margin = new Padding(0);
             ProgressText.Name = "ProgressText";
@@ -220,7 +221,7 @@
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox1.Font = new Font("Segoe UI", 10F);
             comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "scaleSmooth", "scaleSmoothContinuous", "scaleSmoothContrast", "boldScale", "contrastBoldScale", "scaleFurry", "scaleRough", "scaleSeparate", "scaleBilinearApproximation", "scaleBAContrast", "scaleBASmoothContrast", "scaleBAMonochrome", "scaleBAMonochrome2", "scaleBAExtremum"});
+            comboBox1.Items.AddRange(new object[] { "scaleSmooth", "scaleSmoothContinuous", "scaleSmoothContrast", "boldScale", "contrastBoldScale", "scaleFurry", "scaleRough", "scaleSeparate", "scaleBilinearApproximation", "scaleBAContrast", "scaleBASmoothContrast", "scaleBAMonochrome", "scaleBAMonochrome2", "scaleBAExtremum", "scale255BA" });
             comboBox1.Location = new Point(6, 64);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(183, 25);
@@ -277,7 +278,6 @@
             label6.Name = "label6";
             label6.Size = new Size(194, 171);
             label6.TabIndex = 26;
-            label6.Text = "";
             label6.TextAlign = ContentAlignment.MiddleCenter;
             label6.TextChanged += Warning;
             label6.MouseDoubleClick += ToScreen;
@@ -353,11 +353,25 @@
             label3.TabIndex = 31;
             label3.Text = "10x8";
             // 
+            // ETA
+            // 
+            ETA.Location = new Point(8, 578);
+            ETA.Name = "ETA";
+            ETA.Size = new Size(181, 15);
+            ETA.TabIndex = 32;
+            ETA.Text = "ETA: 0:00:20:35";
+            ETA.TextAlign = ContentAlignment.MiddleCenter;
+            ETA.Visible = false;
+            // 
             // Form1
             // 
+        label1.Text = Strings.Scale;
+        label2.Text = Strings.Fast + "                       " + Strings.Accurate;
+        label4.Text = Strings.Wait;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(963, 768);
+            Controls.Add(ETA);
             Controls.Add(label3);
             Controls.Add(checkBox2);
             Controls.Add(StopWatchLabel);
@@ -428,5 +442,6 @@
         private ToolTip toolTip1;
         private CheckBox checkBox2;
         private Label label3;
+        private Label ETA;
     }
 }
