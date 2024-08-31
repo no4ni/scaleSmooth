@@ -96,6 +96,10 @@ Very very fast - Very slow, and you can't process multiple images at the same ti
 Vaguely, but not blurry, may need back(reverse) adjustment<br>
 Very very slow and you can't process multiple images at once<br><br>
 
+- **scaleThin255BA**<br>
+Makes objects thinner and more colorful<br>
+Very slow and you can't process multiple images at once<br><br>
+
 You can increase speed instead of accuracy and vice versa<br><br>
 
 
@@ -185,5 +189,9 @@ You can increase speed instead of accuracy and vice versa<br><br>
 - **scale255BA**<br>
 Расплывчато, но не размыто, возможно будет нужна обратная корректировка<br>
 Очень очень медленно, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
+
+- **scaleThin255BA**<br>
+Утоньшает объекты и делает их красочнее<br>
+Очень медленно, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
 
 Можно увеличить скорость за счёт точности и наоборот
