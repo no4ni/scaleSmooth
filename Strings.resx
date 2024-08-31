@@ -233,6 +233,11 @@ Very very fast - Very slow, and you can't process multiple images at the same ti
 
 Very very slow and you can't process multiple images at once</value>
   </data>
+  <data name="scaleThin255BA" xml:space="preserve">
+    <value>Makes objects thinner and more colorful
+
+Very slow and you can't process multiple images at once</value>
+  </data>
   <data name="scaleBASmoothContrast" xml:space="preserve">
     <value>Сontrasty and may be present grid structure
 

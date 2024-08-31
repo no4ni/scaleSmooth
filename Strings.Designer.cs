@@ -532,6 +532,17 @@ namespace ScaleSmooth {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Makes objects thinner and more colorful
+        ///
+        ///Very slow and you can&apos;t process multiple images at once.
+        /// </summary>
+        internal static string scaleThin255BA {
+            get {
+                return ResourceManager.GetString("scaleThin255BA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на seconds spent.
         /// </summary>
         internal static string SecSpent {

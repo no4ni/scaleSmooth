@@ -52,6 +52,7 @@
     <None Remove="Resources\shortSmoothCont.png" />
     <None Remove="Resources\shortSmoothContin.png" />
     <None Remove="Resources\shortSmoothContr.png" />
+    <None Remove="Resources\shortThin255BA.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -84,6 +85,7 @@
     <Resource Include="Resources\shortSmooth.png" />
     <Resource Include="Resources\shortSmoothContin.png" />
     <Resource Include="Resources\shortSmoothContr.png" />
+    <Resource Include="Resources\shortThin255BA.png" />
   </ItemGroup>
 
   <ItemGroup>
