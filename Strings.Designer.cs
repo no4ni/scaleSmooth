@@ -197,6 +197,17 @@ namespace ScaleSmooth {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Smooth, clear, a little contrasty and the grid structure is visible, but accurate even without reverse correction
+        ///
+        ///Fast, and you can process multiple images at the same time without losing speed.
+        /// </summary>
+        internal static string GPTsolution {
+            get {
+                return ResourceManager.GetString("GPTsolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на GPU Acceleration.
         /// </summary>
         internal static string GPUacceleration {
@@ -453,6 +464,17 @@ namespace ScaleSmooth {
         internal static string scaleBilinearApproximation {
             get {
                 return ResourceManager.GetString("scaleBilinearApproximation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Much Gibb&apos;s ring afrtifacts in the grid structure, contrasty but sharp edges
+        ///
+        ///Very fast - Very slow and you can&apos;t process multiple images at once.
+        /// </summary>
+        internal static string scaleDerivativeBA {
+            get {
+                return ResourceManager.GetString("scaleDerivativeBA", resourceCulture);
             }
         }
         

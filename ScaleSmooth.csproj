@@ -45,7 +45,9 @@
     <None Remove="Resources\shortBilApprox.png" />
     <None Remove="Resources\shortBold.png" />
     <None Remove="Resources\shortContrast.png" />
+    <None Remove="Resources\shortDerivativeBA.png" />
     <None Remove="Resources\shortFurry.png" />
+    <None Remove="Resources\shortGPT.png" />
     <None Remove="Resources\shortRough.png" />
     <None Remove="Resources\shortSeparate.png" />
     <None Remove="Resources\shortSmooth.png" />
@@ -79,7 +81,9 @@
     <Resource Include="Resources\shortBilApprox.png" />
     <Resource Include="Resources\shortBold.png" />
     <Resource Include="Resources\shortContrast.png" />
+    <Resource Include="Resources\shortDerivativeBA.png" />
     <Resource Include="Resources\shortFurry.png" />
+    <Resource Include="Resources\shortGPT.png" />
     <Resource Include="Resources\shortRough.png" />
     <Resource Include="Resources\shortSeparate.png" />
     <Resource Include="Resources\shortSmooth.png" />

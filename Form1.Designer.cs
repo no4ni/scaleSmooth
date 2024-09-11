@@ -221,7 +221,7 @@
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox1.Font = new Font("Segoe UI", 10F);
             comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "scaleSmooth", "scaleSmoothContinuous", "scaleSmoothContrast", "boldScale", "contrastBoldScale", "scaleFurry", "scaleRough", "scaleSeparate", "scaleBilinearApproximation", "scaleBAContrast", "scaleBASmoothContrast", "scaleBAMonochrome", "scaleBAMonochrome2", "scaleBAExtremum", "scale255BA", "scaleThin255BA" });
+            comboBox1.Items.AddRange(new object[] { "scaleSmooth", "scaleSmoothContinuous", "scaleSmoothContrast", "boldScale", "contrastBoldScale", "scaleFurry", "scaleRough", "scaleSeparate", "scaleBilinearApproximation", "scaleBAContrast", "scaleBASmoothContrast", "scaleBAMonochrome", "scaleBAMonochrome2", "scaleBAExtremum", "scale255BA", "scaleThin255BA", "scaleDerivativeBA", "GPT-Solution" });
             comboBox1.Location = new Point(6, 64);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(183, 25);

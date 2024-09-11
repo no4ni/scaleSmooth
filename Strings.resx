@@ -263,6 +263,11 @@ Very slow, and you can't process multiple images at the same time without losing
 
 Very very fast - Very slow, and you can't process multiple images at the same time without losing speed</value>
   </data>
+  <data name="scaleDerivativeBA" xml:space="preserve">
+    <value>Much Gibb's ring afrtifacts in the grid structure, contrasty but sharp edges
+
+Very fast - Very slow and you can't process multiple images at once</value>
+  </data>
   <data name="ScaleFactor" xml:space="preserve">
     <value>Write or select required scale factor by two axes (2x-128x)</value>
   </data>
@@ -295,6 +300,11 @@ Very fast - Slow, and you can process multiple images at the same time without l
     <value>Very smooth, after reverse adjustment - most accurate for any scenes, but very contrast and grid structure is still visible
 
 Slow, but you can process multiple images at the same time without losing speed</value>
+  </data>
+  <data name="GPTsolution" xml:space="preserve">
+    <value>Smooth, clear, a little contrasty and the grid structure is visible, but accurate even without reverse correction
+
+Fast, and you can process multiple images at the same time without losing speed</value>
   </data>
   <data name="SecSpent" xml:space="preserve">
     <value>seconds spent</value>
