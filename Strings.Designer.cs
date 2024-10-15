@@ -70,6 +70,17 @@ namespace ScaleSmooth {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Sharp and there is no grid structure, but a bit noisy and a halo may be present
+        ///
+        ///Slow and you can&apos;t process multiple images at once.
+        /// </summary>
+        internal static string AntiBicubic {
+            get {
+                return ResourceManager.GetString("AntiBicubic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Better videocard required! (Recommended NVIDIA GeForce 410+).
         /// </summary>
         internal static string BetterVideocard {
@@ -193,17 +204,6 @@ namespace ScaleSmooth {
         internal static string FormMoveInfo {
             get {
                 return ResourceManager.GetString("FormMoveInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Smooth, clear, a little contrasty and the grid structure is visible, but accurate even without reverse correction
-        ///
-        ///Fast, and you can process multiple images at the same time without losing speed.
-        /// </summary>
-        internal static string GPTsolution {
-            get {
-                return ResourceManager.GetString("GPTsolution", resourceCulture);
             }
         }
         
@@ -468,7 +468,7 @@ namespace ScaleSmooth {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Much Gibb&apos;s ring afrtifacts in the grid structure, contrasty but sharp edges
+        ///   Ищет локализованную строку, похожую на Much Gibbs ring afrtifacts in the grid structure, contrasty but sharp edges
         ///
         ///Very fast - Very slow and you can&apos;t process multiple images at once.
         /// </summary>
@@ -570,6 +570,17 @@ namespace ScaleSmooth {
         internal static string SecSpent {
             get {
                 return ResourceManager.GetString("SecSpent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Smooth, clear, a little contrasty and the grid structure is visible, but accurate even without reverse correction
+        ///
+        ///Fast, and you can process multiple images at the same time without losing speed.
+        /// </summary>
+        internal static string SmoothCAS {
+            get {
+                return ResourceManager.GetString("SmoothCAS", resourceCulture);
             }
         }
         

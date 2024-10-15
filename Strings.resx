@@ -264,7 +264,7 @@ Very slow, and you can't process multiple images at the same time without losing
 Very very fast - Very slow, and you can't process multiple images at the same time without losing speed</value>
   </data>
   <data name="scaleDerivativeBA" xml:space="preserve">
-    <value>Much Gibb's ring afrtifacts in the grid structure, contrasty but sharp edges
+    <value>Much Gibbs ring afrtifacts in the grid structure, contrasty but sharp edges
 
 Very fast - Very slow and you can't process multiple images at once</value>
   </data>
@@ -301,10 +301,15 @@ Very fast - Slow, and you can process multiple images at the same time without l
 
 Slow, but you can process multiple images at the same time without losing speed</value>
   </data>
-  <data name="GPTsolution" xml:space="preserve">
+  <data name="SmoothCAS" xml:space="preserve">
     <value>Smooth, clear, a little contrasty and the grid structure is visible, but accurate even without reverse correction
 
 Fast, and you can process multiple images at the same time without losing speed</value>
+  </data>
+  <data name="AntiBicubic" xml:space="preserve">
+    <value>Sharp and there is no grid structure, but a bit noisy and a halo may be present
+
+Slow and you can't process multiple images at once</value>
   </data>
   <data name="SecSpent" xml:space="preserve">
     <value>seconds spent</value>

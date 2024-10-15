@@ -123,6 +123,16 @@ namespace ScaleSmooth.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap shortAntiBicubic {
+            get {
+                object obj = ResourceManager.GetObject("shortAntiBicubic", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap shortBAcontrast {
             get {
                 object obj = ResourceManager.GetObject("shortBAcontrast", resourceCulture);
@@ -233,7 +243,7 @@ namespace ScaleSmooth.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap shortGPT {
+        internal static System.Drawing.Bitmap shortSmoothCAS {
             get {
                 object obj = ResourceManager.GetObject("shortGPT", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));

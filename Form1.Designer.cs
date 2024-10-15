@@ -121,7 +121,7 @@
             label1.Name = "label1";
             label1.Size = new Size(190, 21);
             label1.TabIndex = 5;
-            label1.Text = Strings.Scale;
+            label1.Text = "Scale:            x";
             label1.TextAlign = ContentAlignment.MiddleCenter;
             label1.MouseDoubleClick += ToScreen;
             label1.MouseDown += DragNDrop;
@@ -213,7 +213,7 @@
             label4.Name = "label4";
             label4.Size = new Size(161, 15);
             label4.TabIndex = 18;
-            label4.Text = Strings.Wait;
+            label4.Text = "Calculating...                         %";
             label4.Visible = false;
             // 
             // comboBox1
@@ -221,7 +221,7 @@
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox1.Font = new Font("Segoe UI", 10F);
             comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "scaleSmooth", "scaleSmoothContinuous", "scaleSmoothContrast", "boldScale", "contrastBoldScale", "scaleFurry", "scaleRough", "scaleSeparate", "scaleBilinearApproximation", "scaleBAContrast", "scaleBASmoothContrast", "scaleBAMonochrome", "scaleBAMonochrome2", "scaleBAExtremum", "scale255BA", "scaleThin255BA", "scaleDerivativeBA", "GPT-Solution" });
+            comboBox1.Items.AddRange(new object[] { "Smooth", "SmoothContinuous", "SmoothContrast", "Bold", "ContrastBold", "Furry", "Rough", "Separate", "BA", "BAContrast", "BASmoothContrast", "BAMonochrome", "BAMonochrome2", "BAExtremum", "255BA", "Thin255BA", "DerivativeBA", "SmoothCAS", "AntiBicubic" });
             comboBox1.Location = new Point(6, 64);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(183, 25);
@@ -325,7 +325,7 @@
             // toolTip1
             // 
             toolTip1.AutomaticDelay = 2000;
-            toolTip1.AutoPopDelay = 5000;
+            toolTip1.AutoPopDelay = 3000;
             toolTip1.InitialDelay = 2000;
             toolTip1.ReshowDelay = 2000;
             toolTip1.UseAnimation = false;
@@ -365,9 +365,6 @@
             // 
             // Form1
             // 
-        label1.Text = Strings.Scale;
-        label2.Text = Strings.Fast + "                       " + Strings.Accurate;
-        label4.Text = Strings.Wait;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(963, 768);
@@ -411,6 +408,9 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
+            label1.Text = Strings.Scale;
+            label2.Text = Strings.Fast + "                       " + Strings.Accurate;
+            label4.Text = Strings.Wait;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -444,4 +444,5 @@
         private Label label3;
         private Label ETA;
     }
+    
 }

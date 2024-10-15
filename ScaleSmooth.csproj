@@ -36,6 +36,7 @@
     <None Remove="Resources\arRight.png" />
     <None Remove="Resources\short13.png" />
     <None Remove="Resources\short255BA.png" />
+    <None Remove="Resources\shortAntiBicubic.png" />
     <None Remove="Resources\shortBAcontrast.png" />
     <None Remove="Resources\shortBAExtremum.png" />
     <None Remove="Resources\shortBAmonochrome.png" />
@@ -72,6 +73,7 @@
     <Resource Include="Resources\arRight.png" />
     <Resource Include="Resources\short13.png" />
     <Resource Include="Resources\short255BA.png" />
+    <Resource Include="Resources\shortAntiBicubic.png" />
     <Resource Include="Resources\shortBAcontrast.png" />
     <Resource Include="Resources\shortBAExtremum.png" />
     <Resource Include="Resources\shortBAmonochrome.png" />

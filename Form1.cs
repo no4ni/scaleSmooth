@@ -2,6 +2,8 @@
 using ILGPU.Runtime;
 using ScaleSmooth.Properties;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Numerics;
 using System.Runtime.InteropServices;
 
@@ -93,31 +95,31 @@ namespace ScaleSmooth
                 {
                     switch (comboBox1.SelectedItem)
                     {
-                        case "scaleSmooth":
+                        case "Smooth":
                             pictureBox1.Image = ScaleSmoothGray(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
-                        case "scaleSmoothContinuous":
+                        case "SmoothContinuous":
                             pictureBox1.Image = ScaleSmoothContinuousGray(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
-                        case "scaleSmoothContrast":
+                        case "SmoothContrast":
                             pictureBox1.Image = ScaleSmoothContrastGray(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
-                        case "scaleFurry":
+                        case "Furry":
                             pictureBox1.Image = ScaleFurryGray(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
-                        case "scaleRough":
+                        case "Rough":
                             pictureBox1.Image = ScaleRoughGray(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
-                        case "contrastBoldScale":
+                        case "ContrastBold":
                             pictureBox1.Image = ContrastBoldScaleGray(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
-                        case "boldScale":
+                        case "Bold":
                             pictureBox1.Image = BoldScaleGray(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
-                        case "scaleSeparate":
+                        case "Separate":
                             pictureBox1.Image = ScaleSeparateGray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                             break;
-                        case "scaleBilinearApproximation":
+                        case "BA":
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
@@ -131,7 +133,7 @@ namespace ScaleSmooth
                                     break;
                             }
                             break;
-                        case "scaleBAContrast":
+                        case "BAContrast":
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
@@ -145,7 +147,7 @@ namespace ScaleSmooth
                                     break;
                             }
                             break;
-                        case "scaleBAMonochrome":
+                        case "BAMonochrome":
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
@@ -159,7 +161,7 @@ namespace ScaleSmooth
                                     break;
                             }
                             break;
-                        case "scaleBAExtremum":
+                        case "BAExtremum":
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
@@ -173,7 +175,7 @@ namespace ScaleSmooth
                                     break;
                             }
                             break;
-                        case "scaleBASmoothContrast":
+                        case "BASmoothContrast":
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
@@ -187,7 +189,7 @@ namespace ScaleSmooth
                                     break;
                             }
                             break;
-                        case "scaleBAMonochrome2":
+                        case "BAMonochrome2":
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
@@ -201,7 +203,7 @@ namespace ScaleSmooth
                                     break;
                             }
                             break;
-                        case "scale255BA":
+                        case "255BA":
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
@@ -215,7 +217,7 @@ namespace ScaleSmooth
                                     break;
                             }
                             break;
-                        case "scaleThin255BA":
+                        case "Thin255BA":
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
@@ -229,7 +231,7 @@ namespace ScaleSmooth
                                     break;
                             }
                             break;
-                        case "scaleDerivativeBA":
+                        case "DerivativeBA":
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
@@ -243,8 +245,11 @@ namespace ScaleSmooth
                                     break;
                             }
                             break;
-                        case "GPT-Solution":
-                            pictureBox1.Image = GPTSolutionGray((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                        case "SmoothCAS":
+                            pictureBox1.Image = SmoothCASgray((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                            break;
+                        case "AntiBicubic":
+                            pictureBox1.Image = AntiBicubucGray((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                             break;
                         case "neighborSubpixel":
                             for (int i = 0; i < 100; i++)
@@ -256,31 +261,31 @@ namespace ScaleSmooth
                 {
                     switch (comboBox1.SelectedItem)
                     {
-                        case "scaleSmooth":
+                        case "Smooth":
                             pictureBox1.Image = ScaleSmoothColor(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
-                        case "scaleSmoothContinuous":
+                        case "SmoothContinuous":
                             pictureBox1.Image = ScaleSmoothContinuousColor(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
-                        case "scaleSmoothContrast"://after new methods, update shorts x16 ALL and time descr and accur descr
+                        case "SmoothContrast"://after new methods, update shorts x16 ALL and time descr and accur descr
                             pictureBox1.Image = ScaleSmoothContrastColor(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
-                        case "scaleFurry":
+                        case "Furry":
                             pictureBox1.Image = ScaleFurryColor(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
-                        case "scaleRough":
+                        case "Rough":
                             pictureBox1.Image = ScaleRoughColor(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
-                        case "contrastBoldScale":
+                        case "ContrastBold":
                             pictureBox1.Image = ContrastBoldScaleColor(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
-                        case "boldScale":
+                        case "Bold":
                             pictureBox1.Image = BoldScaleColor(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
-                        case "scaleSeparate":
+                        case "Separate":
                             pictureBox1.Image = ScaleSeparateColor(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                             break;
-                        case "scaleBilinearApproximation":
+                        case "BA":
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
@@ -294,7 +299,7 @@ namespace ScaleSmooth
                                     break;
                             }
                             break;
-                        case "scaleBAContrast":
+                        case "BAContrast":
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
@@ -308,7 +313,7 @@ namespace ScaleSmooth
                                     break;
                             }
                             break;
-                        case "scaleBAMonochrome":
+                        case "BAMonochrome":
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
@@ -322,7 +327,7 @@ namespace ScaleSmooth
                                     break;
                             }
                             break;
-                        case "scaleBAExtremum":
+                        case "BAExtremum":
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
@@ -336,7 +341,7 @@ namespace ScaleSmooth
                                     break;
                             }
                             break;
-                        case "scaleBASmoothContrast":
+                        case "BASmoothContrast":
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
@@ -350,7 +355,7 @@ namespace ScaleSmooth
                                     break;
                             }
                             break;
-                        case "scaleBAMonochrome2":
+                        case "BAMonochrome2":
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
@@ -364,7 +369,7 @@ namespace ScaleSmooth
                                     break;
                             }
                             break;
-                        case "scale255BA":
+                        case "255BA":
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
@@ -378,7 +383,7 @@ namespace ScaleSmooth
                                     break;
                             }
                             break;
-                        case "scaleThin255BA":
+                        case "Thin255BA":
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
@@ -392,7 +397,7 @@ namespace ScaleSmooth
                                     break;
                             }
                             break;
-                        case "scaleDerivativeBA":
+                        case "DerivativeBA":
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
@@ -406,8 +411,11 @@ namespace ScaleSmooth
                                     break;
                             }
                             break;
-                        case "GPT-Solution":
-                            pictureBox1.Image = GPTSolutionColor((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                        case "SmoothCAS":
+                            pictureBox1.Image = SmoothCAScolor((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);//gpu?
+                            break;
+                        case "AntiBicubic":
+                            pictureBox1.Image = AntiBicubucColor((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                             break;
                     }
                 }
@@ -956,7 +964,7 @@ namespace ScaleSmooth
                         ri[i, s, 0] = 255;
                     }
                     else
-                    {//AFTER ALL, float x???
+                    {
                         ri[i, s, 0] = 123;
                     }
                 }
@@ -1216,7 +1224,7 @@ namespace ScaleSmooth
 
         private Bitmap ScaleBAMonochromeColorGPU(Image img, int x, int ac)
         {
-            short[,,] ri = BilinearApproximationColorGPU(img, x, ac);//k=-8;k=4?*2??????? unite at 127.5
+            short[,,] ri = BilinearApproximationColorGPU(img, x, ac);
             int ni = ri.GetUpperBound(0) + 1;
             int ns = ri.GetUpperBound(1) + 1;
             byte[,,] rb = new byte[ni, ns, 3];
@@ -1850,7 +1858,7 @@ namespace ScaleSmooth
                             float q4B = (riB[ixsx, sxxm, kkikks] + riB[ixsxp, sxxm, kkikks]) / 2;
                             float q3B = (riB[ixsxpi, sxxm, kkikks] + riB[ixsxpp, sxxm, kkikks]) / 2;
                             ry21 = (sxxm - s) / dbls[2];
-                            ry12 = (s - dsxxm) / dbls[2]; //After ALL, 1bit channel! 192thresold ||to2bits
+                            ry12 = (s - dsxxm) / dbls[2];
                             rx21 = (xsx + ints[0] - i);
                             rx12 = (i - xsx);
                             riR[i, s, kkikks] = (short)(ry21 * (rx21 * sr[kki, sx, 0] + rx12 * sr[xsp, sx, 0]) + ry12 * (rx21 * q4R + rx12 * q3R) + 0.5f);
@@ -2260,12 +2268,12 @@ namespace ScaleSmooth
                     leftbottom(Stream3, kc, riRG.View, riGG.View, riBG.View, risG.View, intG.View, dblG.View, srG.View);
                     righttop(Stream4, kc, riRG.View, riGG.View, riBG.View, risG.View, intG.View, dblG.View, srG.View);
                     progress += step8;
-                    ProgressText.Text = ((int)progress).ToString();//After all, oi/ki or center? accuracy analyze
-                    accelerator.Synchronize();//After ALL, BilinearApprox2bit -> Smooth?
+                    ProgressText.Text = ((int)progress).ToString();
+                    accelerator.Synchronize();
 
-                    progress += step89; //After ALL, contrast +80contrast?
+                    progress += step89;
                     ttl(new Index2D(ni, ns), riRG.View, riGG.View, riBG.View, risG.View, intG.View);
-                    ProgressText.Text = ((int)progress).ToString();//After ALL, contrast+80/thin sobel->Furry/Smooth
+                    ProgressText.Text = ((int)progress).ToString();
                     accelerator.Synchronize();
                 }
             }
@@ -2636,7 +2644,7 @@ namespace ScaleSmooth
                             float q4B = (riB[ixsx, sxxm, kkikks] + riB[ixsxp, sxxm, kkikks]) / 2;
                             float q3B = (riB[ixsxpi, sxxm, kkikks] + riB[ixsxpp, sxxm, kkikks]) / 2;
                             ry21 = (sxxm - s) / dbls[2];
-                            ry12 = (s - dsxxm) / dbls[2]; //After ALL, 1bit channel! 192thresold ||to2bits
+                            ry12 = (s - dsxxm) / dbls[2];
                             rx21 = (xsx + ints[0] - i);
                             rx12 = (i - xsx);
                             riR[i, s, kkikks] = (short)(ry21 * (rx21 * sr[kki, sx, 0] + rx12 * sr[xsp, sx, 0]) + ry12 * (rx21 * q4R + rx12 * q3R) + 0.5f);
@@ -2925,7 +2933,7 @@ namespace ScaleSmooth
                         float q1G = (riG[ixxm, sxx, kkikks] + riG[ixxm, isxx, kkikks]) / 2;
                         float q3G = (riG[ixx, dsxx, kkikks] + riG[iixx, dsxx, kkikks]) / 2;
                         float q1B = (riB[ixxm, sxx, kkikks] + riB[ixxm, isxx, kkikks]) / 2;
-                        float q3B = (riB[ixx, dsxx, kkikks] + riB[iixx, dsxx, kkikks]) / 2;//Hewston ALL
+                        float q3B = (riB[ixx, dsxx, kkikks] + riB[iixx, dsxx, kkikks]) / 2;
                         ry21 = (dsxx - s) / dbls[3];
                         ry12 = (s - sxx - dbls[0]) / dbls[3];
                         rx21 = ixx + dbls[0] - i;
@@ -3025,12 +3033,12 @@ namespace ScaleSmooth
                     leftbottom(Stream3, kc, riRG.View, riGG.View, riBG.View, intG.View, dblG.View, srG.View);
                     righttop(Stream4, kc, riRG.View, riGG.View, riBG.View, intG.View, dblG.View, srG.View);
                     progress += step8;
-                    ProgressText.Text = ((int)progress).ToString();//After all, oi/ki or center? accuracy analyze
-                    accelerator.Synchronize();//After ALL, BilinearApprox2bit -> Smooth?
+                    ProgressText.Text = ((int)progress).ToString();
+                    accelerator.Synchronize();
 
-                    progress += step89; //After ALL, contrast +80contrast?
+                    progress += step89;
                     ttl(new Index2D(ni, ns), riRG.View, riGG.View, riBG.View, risG.View, intG.View);
-                    ProgressText.Text = ((int)progress).ToString();//After ALL, contrast+80/thin sobel->Furry/Smooth
+                    ProgressText.Text = ((int)progress).ToString();
                     accelerator.Synchronize();
                 }
             }
@@ -3418,7 +3426,7 @@ namespace ScaleSmooth
                             float q4B = (riB[ixsx, sxxm, kkikks] + riB[ixsxp, sxxm, kkikks]) / 2;
                             float q3B = (riB[ixsxpi, sxxm, kkikks] + riB[ixsxpp, sxxm, kkikks]) / 2;
                             ry21 = (sxxm - s) / dbls[2];
-                            ry12 = (s - dsxxm) / dbls[2]; //After ALL, 1bit channel! 192thresold ||to2bits
+                            ry12 = (s - dsxxm) / dbls[2];
                             rx21 = (xsx + ints[0] - i);
                             rx12 = (i - xsx);
                             riR[i, s, kkikks] = (short)(ry21 * (rx21 * sr[kki, sx, 0] + rx12 * sr[xsp, sx, 0]) + ry12 * (rx21 * q4R + rx12 * q3R) + 0.5f);
@@ -3829,12 +3837,12 @@ namespace ScaleSmooth
                     leftbottom(Stream3, kc, riRG.View, riGG.View, riBG.View, risG.View, intG.View, dblG.View, srG.View);
                     righttop(Stream4, kc, riRG.View, riGG.View, riBG.View, risG.View, intG.View, dblG.View, srG.View);
                     progress += step8;
-                    ProgressText.Text = ((int)progress).ToString();//After all, oi/ki or center? accuracy analyze
-                    accelerator.Synchronize();//After ALL, BilinearApprox2bit -> Smooth?
+                    ProgressText.Text = ((int)progress).ToString();
+                    accelerator.Synchronize();
 
-                    progress += step89; //After ALL, contrast +80contrast?
+                    progress += step89;
                     ttl(new Index2D(ni, ns), riRG.View, riGG.View, riBG.View, risG.View, intG.View);
-                    ProgressText.Text = ((int)progress).ToString();//After ALL, contrast+80/thin sobel->Furry/Smooth
+                    ProgressText.Text = ((int)progress).ToString();
                     accelerator.Synchronize();
                 }
             }
@@ -3921,14 +3929,14 @@ namespace ScaleSmooth
                     return new byte[1, 1, 3];
                 }
                 rki = ki;
-                ki = (int)MathF.Ceiling(oim * ac / 100);//10000f Ceiling?
+                ki = (int)MathF.Ceiling(oim * ac / 100);
                 ks = (int)MathF.Ceiling(osm * ac / 100);
                 rki = (int)(rki / (float)ki + 0.5f);
                 kiks = ki * ks + 1;
 
             }
             int oiki = oim / ki;
-            int ski = (oi - rki) / 2 / ki;//whatisthis?
+            int ski = (oi - rki) / 2 / ki;
             int sks = (os - rki * os / oi) / 2 / ks;
 
             var riRG = accelerator.Allocate3DDenseXY<short>(new Index3D(ni, ns, kiks));
@@ -4236,7 +4244,7 @@ namespace ScaleSmooth
                             float q4B = (riB[ixsx, sxxm, kkikks] + riB[ixsxp, sxxm, kkikks]) / 2;
                             float q3B = (riB[ixsxpi, sxxm, kkikks] + riB[ixsxpp, sxxm, kkikks]) / 2;
                             ry21 = (sxxm - s) / dbls[2];
-                            ry12 = (s - dsxxm) / dbls[2]; //After ALL, 1bit channel! 192thresold ||to2bits
+                            ry12 = (s - dsxxm) / dbls[2];
                             rx21 = (xsx + ints[0] - i);
                             rx12 = (i - xsx);
                             riR[i, s, kkikks] = (short)(ry21 * (rx21 * sr[kki, sx, 0] + rx12 * sr[xsp, sx, 0]) + ry12 * (rx21 * q4R + rx12 * q3R) + 0.5f);
@@ -4672,12 +4680,12 @@ namespace ScaleSmooth
                     leftbottom(Stream3, kc, riRG.View, riGG.View, riBG.View, risG.View, intG.View, dblG.View, srG.View);
                     righttop(Stream4, kc, riRG.View, riGG.View, riBG.View, risG.View, intG.View, dblG.View, srG.View);
                     progress += step8;
-                    ProgressText.Text = ((int)progress).ToString();//After all, oi/ki or center? accuracy analyze
-                    accelerator.Synchronize();//After ALL, BilinearApprox2bit -> Smooth?
+                    ProgressText.Text = ((int)progress).ToString();
+                    accelerator.Synchronize();
 
-                    progress += step89; //After ALL, contrast +80contrast?
+                    progress += step89;
                     ttl(new Index2D(ni, ns), riRG.View, riGG.View, riBG.View, risG.View, intG.View, rextrG.View);
-                    ProgressText.Text = ((int)progress).ToString();//After ALL, contrast+80/thin sobel->Furry/Smooth
+                    ProgressText.Text = ((int)progress).ToString();
                     accelerator.Synchronize();
                 }
             }
@@ -4794,15 +4802,15 @@ namespace ScaleSmooth
             int ski = (oi - rki) / 2 / ki;
             int sks = (os - rki * os / oi) / 2 / ks;
 
-            var riG = accelerator.Allocate3DDenseXY<short>(new Index3D(ni, ns, kiks)); //Использовать явный тип вместо var ALL
+            var riG = accelerator.Allocate3DDenseXY<short>(new Index3D(ni, ns, kiks));
             var risG = accelerator.Allocate3DDenseXY<float>(new Index3D(ni, ns, kiks));
-            var srG = accelerator.Allocate2DDenseX<byte>(sr);
+            var srG = accelerator.Allocate2DDenseX<byte>(sr);//after ExactMean, ALL methods sev (2x+blurGauss), ExactMean
             float halfx = x * 0.5f;
             float x2p = halfx + 0.5f;
             float sqeq = 1 / (1f + 2 * x + xx);
 
             var center = accelerator.LoadStreamKernel(
-                (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
+                static (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
                 {
                     int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
                     int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
@@ -4824,7 +4832,7 @@ namespace ScaleSmooth
                 });
 
             var right = accelerator.LoadKernel(
-                (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
+                static (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
                 {
                     int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
                     int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
@@ -4838,14 +4846,15 @@ namespace ScaleSmooth
                         int iysxpp = iysxpi + ints[1];
                         float cx = kki * ints[0] + dbls[1];
 
+                        int s = iysx + Grid.GlobalIndex.X % ints[6];
+                        float r12, r21;
                         for (int ix = kki + 2; ix < ints[2]; ix++)
                         {
                             int dixxm = ix * ints[0];
                             int ixxm = dixxm - 1;
 
                             int i = dixxm + Grid.GlobalIndex.X / ints[6];
-                            int s = iysx + Grid.GlobalIndex.X % ints[6];//precalc ALL
-                            float r12, r21;
+
                             float q1 = (ri[ixxm, iysx, kkikks] + ri[ixxm, iysxp, kkikks]) / 2;
                             float q4 = (ri[ixxm, iysxpi, kkikks] + ri[ixxm, iysxpp, kkikks]) / 2;
                             r21 = dixxm + dbls[0] - i;
@@ -4854,31 +4863,27 @@ namespace ScaleSmooth
                             ris[i, s, kkikks] = MathF.Pow(Dist2Right(i, s, cx, iysxp + 0.5f, dbls[4]), -4);
 
                             i = ixxm + ints[0];
-                            s = iysx;//-assign ALL
                             q1 = dbls[8] * sr[ix, kks] + dbls[7] * q1;
                             q4 = dbls[8] * sr[ix, kks + 1] + dbls[7] * q4;
                             float r12q4 = dbls[0] * q4;
                             float r12q1 = dbls[0] * q1;
-                            ri[i, s, kkikks] = (short)(dbls[5] * q1 - r12q4 + 0.5f);
-                            ris[i, s, kkikks] = MathF.Pow(i - cx - 0.5f, -4);
+                            ri[i, iysx, kkikks] = (short)(dbls[5] * q1 - r12q4 + 0.5f);
+                            ris[i, iysx, kkikks] = MathF.Pow(i - cx - 0.5f, -4);
 
-                            s = iysxp;
-                            ri[i, s, kkikks] = (short)(dbls[6] * q1 + r12q4 + 0.5f);
-                            ris[i, s, kkikks] = ris[i, iysx, kkikks];
+                            ri[i, iysxp, kkikks] = (short)(dbls[6] * q1 + r12q4 + 0.5f);
+                            ris[i, iysxp, kkikks] = ris[i, iysx, kkikks];
 
-                            s = iysxpi;
-                            ri[i, s, kkikks] = (short)(dbls[6] * q4 + r12q1 + 0.5f);
-                            ris[i, s, kkikks] = ris[i, iysx, kkikks];
+                            ri[i, iysxpi, kkikks] = (short)(dbls[6] * q4 + r12q1 + 0.5f);
+                            ris[i, iysxpi, kkikks] = ris[i, iysx, kkikks];
 
-                            s = iysxpp;
-                            ri[i, s, kkikks] = (short)(dbls[5] * q4 - r12q1 + 0.5f);
-                            ris[i, s, kkikks] = ris[i, iysx, kkikks];
+                            ri[i, iysxpp, kkikks] = (short)(dbls[5] * q4 - r12q1 + 0.5f);
+                            ris[i, iysxpp, kkikks] = ris[i, iysx, kkikks];
                         }
                     }
                 });
 
             var left = accelerator.LoadKernel(
-                (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
+                static (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
                 {
                     int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
                     int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
@@ -4893,6 +4898,8 @@ namespace ScaleSmooth
                         int iysxpp = iysxpi + ints[1];
 
                         float cx = kki * ints[0] + dbls[1];
+                        int s = iysx + Grid.GlobalIndex.X % ints[6];
+                        float r12, r21;
 
                         for (int ix = kki - 1; ix > -1; ix--)
                         {
@@ -4900,8 +4907,7 @@ namespace ScaleSmooth
                             int dixxp = dixx + ints[0];
 
                             int i = dixx + Grid.GlobalIndex.X / ints[6];
-                            int s = iysx + Grid.GlobalIndex.X % ints[6];
-                            float r12, r21;
+
                             float q2 = (ri[dixxp, iysx, kkikks] + ri[dixxp, iysxp, kkikks]) / 2;
                             float q3 = (ri[dixxp, iysxpi, kkikks] + ri[dixxp, iysxpp, kkikks]) / 2;
                             r21 = dixxp - i;
@@ -4909,32 +4915,27 @@ namespace ScaleSmooth
                             ri[i, s, kkikks] = (short)(((ysx + ints[0] - s) * (r21 * sr[ix, kks] + r12 * q2) + (s - ysx) * (r21 * sr[ix, kks + 1] + r12 * q3)) * dbls[2] + 0.5f);
                             ris[i, s, kkikks] = MathF.Pow(Dist2Left(i, s, cx, iysxp + 0.5f, dbls[4]), -4);
 
-                            i = dixx;
-                            s = iysx;
                             q2 = dbls[8] * sr[ix, kks] + dbls[7] * q2;
                             q3 = dbls[8] * sr[ix, kks + 1] + dbls[7] * q3;
                             float r12q3 = dbls[0] * q3;
                             float r12q2 = dbls[0] * q2;
-                            ri[i, s, kkikks] = (short)(dbls[5] * q2 - r12q3 + 0.5f);
-                            ris[i, s, kkikks] = MathF.Pow(cx - i - 0.5f, -4);
+                            ri[dixx, iysx, kkikks] = (short)(dbls[5] * q2 - r12q3 + 0.5f);
+                            ris[dixx, iysx, kkikks] = MathF.Pow(cx - dixx - 0.5f, -4);
 
-                            s = iysxp;
-                            ri[i, s, kkikks] = (short)(dbls[6] * q2 + r12q3 + 0.5f);
-                            ris[i, s, kkikks] = ris[i, iysx, kkikks];
+                            ri[dixx, iysxp, kkikks] = (short)(dbls[6] * q2 + r12q3 + 0.5f);
+                            ris[dixx, iysxp, kkikks] = ris[dixx, iysx, kkikks];
 
-                            s = iysxpi;
-                            ri[i, s, kkikks] = (short)(r12q2 + dbls[6] * q3 + 0.5f);
-                            ris[i, s, kkikks] = ris[i, iysx, kkikks];
+                            ri[dixx, iysxpi, kkikks] = (short)(r12q2 + dbls[6] * q3 + 0.5f);
+                            ris[dixx, iysxpi, kkikks] = ris[dixx, iysx, kkikks];
 
-                            s = iysxpp;
-                            ri[i, s, kkikks] = (short)(dbls[5] * q3 - r12q2 + 0.5f);
-                            ris[i, s, kkikks] = ris[i, iysx, kkikks];
+                            ri[dixx, iysxpp, kkikks] = (short)(dbls[5] * q3 - r12q2 + 0.5f);
+                            ris[dixx, iysxpp, kkikks] = ris[dixx, iysx, kkikks];
                         }
                     }
                 });
 
             var bottom = accelerator.LoadKernel(
-                (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
+                static (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
                 {
                     int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
                     int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
@@ -4949,54 +4950,49 @@ namespace ScaleSmooth
                         float cy = kks * ints[0] + dbls[1];
                         int ixsxpp = ixsxpi + ints[1];
 
+                        int i = ixsx + Grid.GlobalIndex.X % ints[6];
+                        float rx12, rx21, ry12, ry21;
+                        rx21 = xsx + ints[0] - i;
+                        rx12 = i - xsx;
+
                         for (int sx = kks + 2; sx < ints[3]; sx++)
                         {
                             int dsxxm = sx * ints[0];
                             int sxxm = dsxxm - 1;
                             float dsxxp = dsxxm + dbls[0];
 
-                            int i = ixsx + Grid.GlobalIndex.X % ints[6];
                             int s = dsxxm + Grid.GlobalIndex.X / ints[6];
-                            float rx12, rx21, ry12, ry21;
+
                             float q1 = (ri[ixsx, sxxm, kkikks] + ri[ixsxp, sxxm, kkikks]) / 2;
                             float q2 = (ri[ixsxpi, sxxm, kkikks] + ri[ixsxpp, sxxm, kkikks]) / 2;
                             ry21 = dsxxp - s;
                             ry12 = s - sxxm;
-                            rx21 = xsx + ints[0] - i;//to top ALL
-                            rx12 = i - xsx;
+
                             ri[i, s, kkikks] = (short)((ry21 * (rx21 * q1 + rx12 * q2) + ry12 * (rx21 * sr[kki, sx] + rx12 * sr[kki + 1, sx])) * dbls[2] + 0.5f);
                             ris[i, s, kkikks] = MathF.Pow(Dist2Bottom(i, s, ixsxp + 0.5f, cy, dbls[4]), -4);
 
                             s = sxxm + ints[0];
-                            i = ixsx;
-                            rx21 = dbls[5];
-                            rx12 = dbls[0];
-                            float rx12q2 = rx12 * q2;
-                            float rx12srkki1 = rx12 * sr[kki + 1, sx];
+                            float rx12q2 = dbls[0] * q2;
+                            float rx12srkki1 = dbls[0] * sr[kki + 1, sx];
                             ry21 = dbls[7];
                             ry12 = dbls[8];
-                            ri[i, s, kkikks] = (short)(ry21 * (rx21 * q1 - rx12q2) + ry12 * (rx21 * sr[kki, sx] - rx12srkki1) + 0.5f);
-                            ris[i, s, kkikks] = MathF.Pow(s - cy - 0.5f, -4);
+                            ri[ixsx, s, kkikks] = (short)(ry21 * (dbls[5] * q1 - rx12q2) + ry12 * (dbls[5] * sr[kki, sx] - rx12srkki1) + 0.5f);
+                            ris[ixsx, s, kkikks] = MathF.Pow(s - cy - 0.5f, -4);
 
-                            i = ixsxp;
-                            rx21 = dbls[6];
-                            ri[i, s, kkikks] = (short)(ry21 * (rx21 * q1 + rx12q2) + ry12 * (rx21 * sr[kki, sx] + rx12srkki1) + 0.5f);
-                            ris[i, s, kkikks] = ris[ixsx, s, kkikks];
+                            ri[ixsxp, s, kkikks] = (short)(ry21 * (dbls[6] * q1 + rx12q2) + ry12 * (dbls[6] * sr[kki, sx] + rx12srkki1) + 0.5f);
+                            ris[ixsxp, s, kkikks] = ris[ixsx, s, kkikks];
 
-                            i = ixsxpi;
-                            ri[i, s, kkikks] = (short)(ry21 * (rx21 * q2 + rx12 * q1) + ry12 * (dbls[0] * sr[kki, sx] + rx21 * sr[kki + 1, sx]) + 0.5f);
-                            ris[i, s, kkikks] = ris[ixsx, s, kkikks];
+                            ri[ixsxpi, s, kkikks] = (short)(ry21 * (dbls[6] * q2 + dbls[0] * q1) + ry12 * (dbls[0] * sr[kki, sx] + dbls[6] * sr[kki + 1, sx]) + 0.5f);
+                            ris[ixsxpi, s, kkikks] = ris[ixsx, s, kkikks];
 
-                            i = ixsxpp;
-                            rx12 = dbls[5];
-                            ri[i, s, kkikks] = (short)(ry21 * (rx12 * q2 - dbls[0] * q1) + ry12 * (rx12 * sr[kki + 1, sx] - dbls[0] * sr[kki, sx]) + 0.5f);
-                            ris[i, s, kkikks] = ris[ixsx, s, kkikks];
+                            ri[ixsxpp, s, kkikks] = (short)(ry21 * (dbls[5] * q2 - dbls[0] * q1) + ry12 * (dbls[5] * sr[kki + 1, sx] - dbls[0] * sr[kki, sx]) + 0.5f);
+                            ris[ixsxpp, s, kkikks] = ris[ixsx, s, kkikks];
                         }
                     }
                 });
 
             var top = accelerator.LoadKernel(
-                (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
+                static (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
                 {
                     int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
                     int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
@@ -5012,76 +5008,71 @@ namespace ScaleSmooth
                         int ixsxpp = ixsxpi + ints[1];
                         int xsp = kki + 1;
 
+                        int i = ixsx + Grid.GlobalIndex.X % ints[6];
+                        float rx12, rx21, ry12, ry21;
+                        rx21 = (xsx + ints[0] - i);
+                        rx12 = (i - xsx);
+
                         for (int sx = kks - 1; sx > -1; sx--)
                         {
                             int dsxx = sx * ints[0];
                             int sxxm = dsxx + ints[0];
                             float dsxxm = dsxx + dbls[0];
-                            int i = ixsx + Grid.GlobalIndex.X % ints[6];
+
                             int s = dsxx + Grid.GlobalIndex.X / ints[6];
-                            float rx12, rx21, ry12, ry21;
                             float q4 = (ri[ixsx, sxxm, kkikks] + ri[ixsxp, sxxm, kkikks]) / 2;
                             float q3 = (ri[ixsxpi, sxxm, kkikks] + ri[ixsxpp, sxxm, kkikks]) / 2;
                             ry21 = (sxxm - s);
                             ry12 = (s - dsxxm);
-                            rx21 = (xsx + ints[0] - i);
-                            rx12 = (i - xsx);
+
                             ri[i, s, kkikks] = (short)((ry21 * (rx21 * sr[kki, sx] + rx12 * sr[xsp, sx]) + ry12 * (rx21 * q4 + rx12 * q3)) * dbls[2] + 0.5f);
                             ris[i, s, kkikks] = MathF.Pow(Dist2Top(i, s, ixsxp + 0.5f, cy, dbls[4]), -4);
 
-                            s = dsxx;
-                            i = ixsx;
                             ry21 = dbls[8];
                             ry12 = dbls[7];
-                            rx21 = dbls[5];
-                            rx12 = dbls[0];
-                            float rx12srxsp = rx12 * sr[xsp, sx];
-                            float rx12q3 = rx12 * q3;
-                            ri[i, s, kkikks] = (short)(ry21 * (rx21 * sr[kki, sx] - rx12srxsp) + ry12 * (rx21 * q4 - rx12q3) + 0.5f);
-                            ris[i, s, kkikks] = MathF.Pow(cy - s - 0.5f, -4);
+                            float rx12srxsp = dbls[0] * sr[xsp, sx];
+                            float rx12q3 = dbls[0] * q3;
+                            ri[ixsx, dsxx, kkikks] = (short)(ry21 * (dbls[5] * sr[kki, sx] - rx12srxsp) + ry12 * (dbls[5] * q4 - rx12q3) + 0.5f);
+                            ris[ixsx, dsxx, kkikks] = MathF.Pow(cy - dsxx - 0.5f, -4);
 
-                            i = ixsxp;
                             rx21 = dbls[6];
-                            ri[i, s, kkikks] = (short)(ry21 * (rx21 * sr[kki, sx] + rx12srxsp) + ry12 * (rx21 * q4 + rx12q3) + 0.5f);
-                            ris[i, s, kkikks] = ris[ixsx, s, kkikks];
+                            ri[ixsxp, dsxx, kkikks] = (short)(ry21 * (rx21 * sr[kki, sx] + rx12srxsp) + ry12 * (rx21 * q4 + rx12q3) + 0.5f);
+                            ris[ixsxp, dsxx, kkikks] = ris[ixsx, dsxx, kkikks];
 
-                            i = ixsxpi;
-                            ri[i, s, kkikks] = (short)(ry21 * (rx12 * sr[kki, sx] + rx21 * sr[xsp, sx]) + ry12 * (rx12 * q4 + rx21 * q3) + 0.5f);
-                            ris[i, s, kkikks] = ris[ixsx, s, kkikks];
+                            ri[ixsxpi, dsxx, kkikks] = (short)(ry21 * (dbls[0] * sr[kki, sx] + rx21 * sr[xsp, sx]) + ry12 * (dbls[0] * q4 + rx21 * q3) + 0.5f);
+                            ris[ixsxpi, dsxx, kkikks] = ris[ixsx, dsxx, kkikks];
 
-                            i = ixsxpp;
-                            rx12 = dbls[5];
-                            ri[i, s, kkikks] = (short)(ry21 * (rx12 * sr[xsp, sx] - dbls[0] * sr[kki, sx]) + ry12 * (rx12 * q3 - dbls[0] * q4) + 0.5f);
-                            ris[i, s, kkikks] = ris[ixsx, s, kkikks];
+                            ri[ixsxpp, dsxx, kkikks] = (short)(ry21 * (dbls[5] * sr[xsp, sx] - dbls[0] * sr[kki, sx]) + ry12 * (dbls[5] * q3 - dbls[0] * q4) + 0.5f);
+                            ris[ixsxpp, dsxx, kkikks] = ris[ixsx, dsxx, kkikks];
                         }
                     }
                 });
 
             var rightbottom = accelerator.LoadKernel(
-        (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
+        static (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
         {
             int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
             int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
             if (kki < ints[2] && kks < ints[3] && Grid.GlobalIndex.X < ints[11])
             {
                 int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
-
+                float rx12, rx21;
                 float cxcyx = (kki + kks + 3) * ints[0] - 1;
                 for (int sx = kks + 2; sx < ints[3]; sx++)
                 {
+                    int dsxxm = sx * ints[0];
+                    int dsxx = (sx + 1) * ints[0];
+                    int sxxm = dsxxm - 1;
+                    int isxx = dsxx - 1;
+                    int s = dsxxm + Grid.GlobalIndex.X / ints[0];
                     for (int ix = kki + 2; ix < ints[2]; ix++)
                     {
-                        int dsxxm = sx * ints[0];
-                        int sxxm = dsxxm - 1;
-                        int dsxx = (sx + 1) * ints[0];
-                        int isxx = dsxx - 1;
                         int dixxm = ix * ints[0];
                         int ixxm = dixxm - 1;
                         int iixx = (ix + 1) * ints[0] - 1;
 
                         int i = dixxm + Grid.GlobalIndex.X % ints[0];
-                        int s = dsxxm + Grid.GlobalIndex.X / ints[0];
-                        float rx12, rx21;
+
                         float q2 = (ri[dixxm, sxxm, kkikks] + ri[iixx, sxxm, kkikks]) / 2;
                         float q4 = (ri[ixxm, dsxxm, kkikks] + ri[ixxm, isxx, kkikks]) / 2;
                         rx21 = dixxm + dbls[0] - i;
@@ -5089,144 +5080,129 @@ namespace ScaleSmooth
                         ri[i, s, kkikks] = (short)(((dsxxm + dbls[0] - s) * (rx21 * ri[ixxm, sxxm, kkikks] + rx12 * q2) + (s - sxxm) * (rx21 * q4 + rx12 * sr[ix, sx])) * dbls[3] + 0.5f);
                         ris[i, s, kkikks] = MathF.Pow(i - cxcyx + s, -4);
 
-                        s = isxx;
-                        i = dixxm;
                         float dbls0q4 = dbls[0] * q4;
                         float dbls0riixxm = dbls[0] * ri[ixxm, sxxm, kkikks];
-                        ri[i, s, kkikks] = (short)(dbls[9] * (dbls0riixxm + q2) + dbls[10] * (dbls0q4 + sr[ix, sx]) + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(i - cxcyx + s, -4);
+                        ri[dixxm, isxx, kkikks] = (short)(dbls[9] * (dbls0riixxm + q2) + dbls[10] * (dbls0q4 + sr[ix, sx]) + 0.5f);
+                        ris[dixxm, isxx, kkikks] = MathF.Pow(dixxm - cxcyx + isxx, -4);
 
-                        i = iixx;
                         q2 = dbls[9] * (ints[0] * q2 - dbls0riixxm);
                         q4 = (ints[0] * sr[ix, sx] - dbls0q4);
-                        ri[i, s, kkikks] = (short)(q2 + dbls[10] * q4 + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(i - cxcyx + s, -4);
+                        ri[iixx, isxx, kkikks] = (short)(q2 + dbls[10] * q4 + 0.5f);
+                        ris[iixx, isxx, kkikks] = MathF.Pow(iixx - cxcyx + isxx, -4);
 
-                        s = dsxxm;
-                        ri[i, s, kkikks] = (short)(q4 * dbls[11] - q2 + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(i - cxcyx + s, -4);
+                        ri[iixx, dsxxm, kkikks] = (short)(q4 * dbls[11] - q2 + 0.5f);
+                        ris[iixx, dsxxm, kkikks] = MathF.Pow(iixx - cxcyx + dsxxm, -4);
                     }
                 }
             }
         });
 
             var lefttop = accelerator.LoadKernel(
-        (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
+        static (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
         {
             int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
             int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
             int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
             if (kki < ints[4] && kks < ints[14] && Grid.GlobalIndex.X < ints[11] && kkikks < ints[5])
             {
+                float rx12, rx21, ry12, ry21;
                 float cxcyx = (kki + kks + 1) * ints[0] - 1;
                 for (int sx = kks - 1; sx > -1; sx--)
                 {
+                    int dsxxm = sx * ints[0];
+                    int sxxm = (sx + 1) * ints[0];
+                    int isxx = sxxm - 1;
+                    int s = dsxxm + Grid.GlobalIndex.X / ints[0];
+                    ry21 = sxxm - s;
+                    ry12 = s - dsxxm - dbls[0];
                     for (int ix = kki - 1; ix > -1; ix--)
                     {
-                        int dsxxm = sx * ints[0];
-                        int sxxm = (sx + 1) * ints[0];
-                        int isxx = sxxm - 1;
                         int dixxm = ix * ints[0];
                         int ixxm = (ix + 1) * ints[0];
                         int iixx = ixxm - 1;
 
                         int i = dixxm + Grid.GlobalIndex.X % ints[0];
-                        int s = dsxxm + Grid.GlobalIndex.X / ints[0];
-                        float rx12, rx21, ry12, ry21;
+
                         float q2 = (ri[ixxm, dsxxm, kkikks] + ri[ixxm, isxx, kkikks]) / 2;
                         float q4 = (ri[dixxm, sxxm, kkikks] + ri[iixx, sxxm, kkikks]) / 2;
-                        ry21 = sxxm - s;
-                        ry12 = s - dsxxm - dbls[0];
+
                         rx21 = ixxm - i;
                         rx12 = i - dixxm - dbls[0];
                         ri[i, s, kkikks] = (short)((ry21 * (rx21 * sr[ix, sx] + rx12 * q2) + ry12 * (rx21 * q4 + rx12 * ri[ixxm, sxxm, kkikks])) * dbls[3] + 0.5f);
                         ris[i, s, kkikks] = MathF.Pow(cxcyx - i - s, -4);
 
-                        i = dixxm;
-                        s = isxx;
-                        ry12 = dbls[0];
                         rx21 = ints[0];
-                        rx12 = -ry12 * ri[ixxm, sxxm, kkikks];
-                        q2 = -ry12 * q2;
+                        rx12 = -dbls[0] * ri[ixxm, sxxm, kkikks];
+                        q2 = -dbls[0] * q2;
                         float rx21srq2 = rx21 * sr[ix, sx] + q2;
                         float rx21q4rx12 = rx21 * q4 + rx12;
-                        ri[i, s, kkikks] = (short)((rx21srq2 + ry12 * rx21q4rx12) * dbls[11] + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(cxcyx - i - s, -4);
+                        ri[dixxm, isxx, kkikks] = (short)((rx21srq2 + dbls[0] * rx21q4rx12) * dbls[11] + 0.5f);
+                        ris[dixxm, isxx, kkikks] = MathF.Pow(cxcyx - dixxm - isxx, -4);
 
-                        s = dsxxm;
-                        ry21 = dbls[10];
-                        ry12 = dbls[9];
-                        ri[i, s, kkikks] = (short)(ry21 * rx21srq2 + ry12 * rx21q4rx12 + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(cxcyx - i - s, -4);
+                        ri[dixxm, dsxxm, kkikks] = (short)(dbls[10] * rx21srq2 + dbls[9] * rx21q4rx12 + 0.5f);
+                        ris[dixxm, dsxxm, kkikks] = MathF.Pow(cxcyx - dixxm - dsxxm, -4);
 
-                        i = iixx;
-                        ri[i, s, kkikks] = (short)(ry21 * (sr[ix, sx] - q2) + ry12 * (q4 - rx12) + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(cxcyx - i - s, -4);
+                        ri[iixx, dsxxm, kkikks] = (short)(dbls[10] * (sr[ix, sx] - q2) + dbls[9] * (q4 - rx12) + 0.5f);
+                        ris[iixx, dsxxm, kkikks] = MathF.Pow(cxcyx - iixx - dsxxm, -4);
                     }
                 }
             }
         });
 
             var leftbottom = accelerator.LoadKernel(
-        (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
+        static (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
         {
             int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
             int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
             if (kki < ints[2] && kks < ints[3] && Grid.GlobalIndex.X < ints[11])
             {
                 int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
-
+                float rx12, rx21, ry12, ry21;
                 float cxcyx = (kki - kks - 1) * ints[0];
                 for (int sx = kks + 2; sx < ints[3]; sx++)
                 {
+                    int sxx = sx * ints[0];
+                    int isxxm = sxx - 1;
+                    int isxx = (sx + 1) * ints[0] - 1;
+                    int s = sxx + Grid.GlobalIndex.X / ints[0];
+                    ry21 = sxx + dbls[0] - s;
+                    ry12 = s - isxxm;
                     for (int ix = kki - 1; ix > -1; ix--)
                     {
-                        int sxx = sx * ints[0];
-                        int isxxm = sxx - 1;
-                        int isxx = (sx + 1) * ints[0] - 1;
                         int dixxm = ix * ints[0];
                         int dixx = dixxm + ints[0];
                         int iixx = dixx - 1;
 
                         int i = dixxm + Grid.GlobalIndex.X % ints[0];
-                        int s = sxx + Grid.GlobalIndex.X / ints[0];
-                        float rx12, rx21, ry12, ry21;
+
                         float q1 = (ri[dixxm, isxxm, kkikks] + ri[iixx, isxxm, kkikks]) / 2;
                         float q3 = (ri[dixx, isxx, kkikks] + ri[dixx, sxx, kkikks]) / 2;
-                        ry21 = sxx + dbls[0] - s;
-                        ry12 = s - isxxm;
+
                         rx21 = dixx - i;
                         rx12 = i - dixxm - dbls[0];
                         ri[i, s, kkikks] = (short)((ry21 * (rx21 * q1 + rx12 * ri[dixx, isxxm, kkikks]) + ry12 * (rx21 * sr[ix, sx] + rx12 * q3)) * dbls[3] + 0.5f);
                         ris[i, s, kkikks] = MathF.Pow(cxcyx - i + s, -4);
 
-                        i = dixxm;
-                        s = sxx;
-                        ry21 = dbls[9];
-                        ry12 = dbls[11];
                         rx12 = -dbls[0];
                         q3 = rx12 * q3;
                         float rxri = rx12 * ri[dixx, isxxm, kkikks];
                         float q1rx = ints[0] * q1 + rxri;
                         float xsr = ints[0] * sr[ix, sx];
-                        ri[i, s, kkikks] = (short)(ry12 * (xsr + q3) - ry21 * q1rx + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(cxcyx - i + s, -4);
+                        ri[dixxm, sxx, kkikks] = (short)(dbls[11] * (xsr + q3) - dbls[9] * q1rx + 0.5f);
+                        ris[dixxm, sxx, kkikks] = MathF.Pow(cxcyx - dixxm + sxx, -4);
 
-                        s = isxx;
-                        ry12 = dbls[10];
-                        ri[i, s, kkikks] = (short)(ry21 * q1rx + ry12 * (xsr + q3) + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(cxcyx - i + s, -4);
+                        ri[dixxm, isxx, kkikks] = (short)(dbls[9] * q1rx + dbls[10] * (xsr + q3) + 0.5f);
+                        ris[dixxm, isxx, kkikks] = MathF.Pow(cxcyx - dixxm + isxx, -4);
 
-                        i = iixx;
-                        ri[i, s, kkikks] = (short)(ry21 * (q1 - rxri) + ry12 * (sr[ix, sx] - q3) + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(cxcyx - i + s, -4);
+                        ri[iixx, isxx, kkikks] = (short)(dbls[9] * (q1 - rxri) + dbls[10] * (sr[ix, sx] - q3) + 0.5f);
+                        ris[iixx, isxx, kkikks] = MathF.Pow(cxcyx - iixx + isxx, -4);
                     }
                 }
             }
         });
 
             var righttop = accelerator.LoadKernel(
-        (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
+        static (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView3D<float, Stride3D.DenseXY> ris, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
         {
             int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
             int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
@@ -5234,50 +5210,44 @@ namespace ScaleSmooth
             if (kki < ints[4] && kks < ints[14] && Grid.GlobalIndex.X < ints[11] && kkikks < ints[5])
             {
                 float cxcyx = (kks - kki - 1) * ints[0];
-
+                float rx12, rx21, ry12, ry21;
                 for (int sx = kks - 1; sx > -1; sx--)
                 {
+                    int sxx = sx * ints[0];
+                    int dsxx = sxx + ints[0];
+                    int isxx = dsxx - 1;
+                    int s = sxx + Grid.GlobalIndex.X / ints[0];
+                    ry21 = dsxx - s;
+                    ry12 = s - sxx - dbls[0];
                     for (int ix = kki + 2; ix < ints[2]; ix++)
                     {
-                        int sxx = sx * ints[0];
-                        int dsxx = sxx + ints[0];
-                        int isxx = dsxx - 1;
                         int ixx = ix * ints[0];
                         int ixxm = ixx - 1;
                         int iixx = ixx + ints[1];
 
                         int i = ixx + Grid.GlobalIndex.X % ints[0];
-                        int s = sxx + Grid.GlobalIndex.X / ints[0];
-                        float rx12, rx21, ry12, ry21;
+
                         float q1 = (ri[ixxm, sxx, kkikks] + ri[ixxm, isxx, kkikks]) / 2;
                         float q3 = (ri[ixx, dsxx, kkikks] + ri[iixx, dsxx, kkikks]) / 2;
-                        ry21 = dsxx - s;
-                        ry12 = s - sxx - dbls[0];
+
                         rx21 = ixx + dbls[0] - i;
                         rx12 = i - ixxm;
                         ri[i, s, kkikks] = (short)((ry21 * (rx21 * q1 + rx12 * sr[ix, sx]) + ry12 * (rx21 * ri[ixxm, dsxx, kkikks] + rx12 * q3)) * dbls[3] + 0.5f);
                         ris[i, s, kkikks] = MathF.Pow(i + cxcyx - s, -4);
 
-                        i = iixx;
-                        s = sxx;
-                        ry21 = dbls[10];
-                        ry12 = dbls[9];
                         rx21 = dbls[0];
                         rx12 = ints[0];
                         q1 = rx21 * q1;
                         float rxsr = rx12 * sr[ix, sx] - q1;
-                        float ryrx = ry12 * (rx12 * q3 - rx21 * ri[ixxm, dsxx, kkikks]);
-                        ri[i, s, kkikks] = (short)(ry21 * rxsr + ryrx + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(i + cxcyx - s, -4);
+                        float ryrx = dbls[9] * (rx12 * q3 - rx21 * ri[ixxm, dsxx, kkikks]);
+                        ri[iixx, sxx, kkikks] = (short)(dbls[10] * rxsr + ryrx + 0.5f);
+                        ris[iixx, sxx, kkikks] = MathF.Pow(iixx + cxcyx - sxx, -4);
 
-                        s = isxx;
-                        ry21 = dbls[11];
-                        ri[i, s, kkikks] = (short)(ry21 * rxsr - ryrx + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(i + cxcyx - s, -4);
+                        ri[iixx, isxx, kkikks] = (short)(dbls[11] * rxsr - ryrx + 0.5f);
+                        ris[iixx, isxx, kkikks] = MathF.Pow(iixx + cxcyx - isxx, -4);
 
-                        i = ixx;
-                        ri[i, s, kkikks] = (short)(ry21 * (sr[ix, sx] + q1) - ry12 * (q3 + rx21 * ri[ixxm, dsxx, kkikks]) + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(i + cxcyx - s, -4);
+                        ri[ixx, isxx, kkikks] = (short)(dbls[11] * (sr[ix, sx] + q1) - dbls[9] * (q3 + rx21 * ri[ixxm, dsxx, kkikks]) + 0.5f);
+                        ris[ixx, isxx, kkikks] = MathF.Pow(ixx + cxcyx - isxx, -4);
                     }
                 }
             }
@@ -5301,7 +5271,7 @@ namespace ScaleSmooth
             float step = 0.98f / rki2;
             float step8 = 7.84f / rki2;
             float step89 = 87.22f / rki2;
-            var dblG = accelerator.Allocate1D<float>([halfx - 0.5f, x - 0.5f, 1f / (x2p * x), 1f / (x2p * x2p), halfx, x * 1.5f - 0.5f, x2p, (1f - x) / (x + xx), 2f / (1 + x), (2f - 2 * x) * sqeq, 4f * x * sqeq, 4f * sqeq]);//dbls[2] 1f/ ALL?
+            var dblG = accelerator.Allocate1D<float>([halfx - 0.5f, x - 0.5f, 1f / (x2p * x), 1f / (x2p * x2p), halfx, x * 1.5f - 0.5f, x2p, (1f - x) / (x + xx), 2f / (1 + x), (2f - 2 * x) * sqeq, 4f * x * sqeq, 4f * sqeq]);
             var intG = accelerator.Allocate1D<int>(17);
 
             for (int irk = 0; irk < rki; irk++)
@@ -5355,12 +5325,13 @@ namespace ScaleSmooth
             return ri;
         }
 
+
         private short[,,] BilinearApproximationDerivativeGrayGPU(Image img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators().EnableAlgorithms().Optimize(OptimizationLevel.O2).PageLocking(PageLockingMode.Aggressive));
 #if DEBUG
             Accelerator accelerator = context.GetPreferredDevice(true).CreateAccelerator(context);//false for real GPU debug (less information)
-            ulong mem = 4 * (ulong)MathF.Pow(2, 30);//4GB VRAM for debug
+            ulong mem = 4 * (ulong)MathF.Pow(2, 30);//4GB -VRAM for debug
 #else
             Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
             ulong mem = (ulong)accelerator.Device.MemorySize;
@@ -5410,7 +5381,7 @@ namespace ScaleSmooth
             int ski = (oi - rki) / 2 / ki;
             int sks = (os - rki * os / oi) / 2 / ks;
 
-            var riG = accelerator.Allocate3DDenseXY<short>(new Index3D(ni, ns, kiks)); //Использовать явный тип вместо var ALL
+            var riG = accelerator.Allocate3DDenseXY<short>(new Index3D(ni, ns, kiks));
             var risG = accelerator.Allocate2DDenseX<float>(new Index2D(ni, ns));
             var srG = accelerator.Allocate2DDenseX<byte>(sr);
             float halfx = x * 0.5f;
@@ -5418,7 +5389,7 @@ namespace ScaleSmooth
             float sqeq = 1 / (1f + 2 * x + xx);
 
             var center = accelerator.LoadStreamKernel(
-                (ArrayView3D<short, Stride3D.DenseXY> ri,  ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
+                (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
                 {
                     int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
                     int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
@@ -5439,7 +5410,7 @@ namespace ScaleSmooth
                 });
 
             var right = accelerator.LoadKernel(
-                (ArrayView3D<short, Stride3D.DenseXY> ri,  ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
+                (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
                 {
                     int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
                     int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
@@ -5459,7 +5430,7 @@ namespace ScaleSmooth
                             int ixxm = dixxm - 1;
 
                             int i = dixxm + Grid.GlobalIndex.X / ints[6];
-                            int s = iysx + Grid.GlobalIndex.X % ints[6];//precalc ALL
+                            int s = iysx + Grid.GlobalIndex.X % ints[6];
                             float r12, r21;
                             float q1 = (ri[ixxm, iysx, kkikks] + ri[ixxm, iysxp, kkikks]) / 2;
                             float q4 = (ri[ixxm, iysxpi, kkikks] + ri[ixxm, iysxpp, kkikks]) / 2;
@@ -5468,27 +5439,23 @@ namespace ScaleSmooth
                             ri[i, s, kkikks] = (short)(((ysx + ints[0] - s) * (r21 * q1 + r12 * sr[ix, kks]) + (s - ysx) * (r21 * q4 + r12 * sr[ix, kks + 1])) * dbls[2] + 0.5f);
 
                             i = ixxm + ints[0];
-                            s = iysx;//-assign ALL
                             q1 = dbls[8] * sr[ix, kks] + dbls[7] * q1;
                             q4 = dbls[8] * sr[ix, kks + 1] + dbls[7] * q4;
                             float r12q4 = dbls[0] * q4;
                             float r12q1 = dbls[0] * q1;
-                            ri[i, s, kkikks] = (short)(dbls[5] * q1 - r12q4 + 0.5f);
+                            ri[i, iysx, kkikks] = (short)(dbls[5] * q1 - r12q4 + 0.5f);
 
-                            s = iysxp;
-                            ri[i, s, kkikks] = (short)(dbls[6] * q1 + r12q4 + 0.5f);
+                            ri[i, iysxp, kkikks] = (short)(dbls[6] * q1 + r12q4 + 0.5f);
 
-                            s = iysxpi;
-                            ri[i, s, kkikks] = (short)(dbls[6] * q4 + r12q1 + 0.5f);
+                            ri[i, iysxpi, kkikks] = (short)(dbls[6] * q4 + r12q1 + 0.5f);
 
-                            s = iysxpp;
-                            ri[i, s, kkikks] = (short)(dbls[5] * q4 - r12q1 + 0.5f);
+                            ri[i, iysxpp, kkikks] = (short)(dbls[5] * q4 - r12q1 + 0.5f);
                         }
                     }
                 });
 
             var left = accelerator.LoadKernel(
-                (ArrayView3D<short, Stride3D.DenseXY> ri,  ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
+                (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
                 {
                     int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
                     int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
@@ -5503,6 +5470,8 @@ namespace ScaleSmooth
                         int iysxpp = iysxpi + ints[1];
 
                         float cx = kki * ints[0] + dbls[1];
+                        int s = iysx + Grid.GlobalIndex.X % ints[6];
+                        float r12, r21;
 
                         for (int ix = kki - 1; ix > -1; ix--)
                         {
@@ -5510,36 +5479,30 @@ namespace ScaleSmooth
                             int dixxp = dixx + ints[0];
 
                             int i = dixx + Grid.GlobalIndex.X / ints[6];
-                            int s = iysx + Grid.GlobalIndex.X % ints[6];
-                            float r12, r21;
+
                             float q2 = (ri[dixxp, iysx, kkikks] + ri[dixxp, iysxp, kkikks]) / 2;
                             float q3 = (ri[dixxp, iysxpi, kkikks] + ri[dixxp, iysxpp, kkikks]) / 2;
                             r21 = dixxp - i;
                             r12 = i - dixx - dbls[0];
                             ri[i, s, kkikks] = (short)(((ysx + ints[0] - s) * (r21 * sr[ix, kks] + r12 * q2) + (s - ysx) * (r21 * sr[ix, kks + 1] + r12 * q3)) * dbls[2] + 0.5f);
 
-                            i = dixx;
-                            s = iysx;
                             q2 = dbls[8] * sr[ix, kks] + dbls[7] * q2;
                             q3 = dbls[8] * sr[ix, kks + 1] + dbls[7] * q3;
                             float r12q3 = dbls[0] * q3;
                             float r12q2 = dbls[0] * q2;
-                            ri[i, s, kkikks] = (short)(dbls[5] * q2 - r12q3 + 0.5f);
+                            ri[dixx, iysx, kkikks] = (short)(dbls[5] * q2 - r12q3 + 0.5f);
 
-                            s = iysxp;
-                            ri[i, s, kkikks] = (short)(dbls[6] * q2 + r12q3 + 0.5f);
+                            ri[dixx, iysxp, kkikks] = (short)(dbls[6] * q2 + r12q3 + 0.5f);
 
-                            s = iysxpi;
-                            ri[i, s, kkikks] = (short)(r12q2 + dbls[6] * q3 + 0.5f);
+                            ri[dixx, iysxpi, kkikks] = (short)(r12q2 + dbls[6] * q3 + 0.5f);
 
-                            s = iysxpp;
-                            ri[i, s, kkikks] = (short)(dbls[5] * q3 - r12q2 + 0.5f);
+                            ri[dixx, iysxpp, kkikks] = (short)(dbls[5] * q3 - r12q2 + 0.5f);
                         }
                     }
                 });
 
             var bottom = accelerator.LoadKernel(
-                (ArrayView3D<short, Stride3D.DenseXY> ri,  ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
+                (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
                 {
                     int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
                     int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
@@ -5553,6 +5516,10 @@ namespace ScaleSmooth
                         int ixsxpi = ixsxp + 1;
                         float cy = kks * ints[0] + dbls[1];
                         int ixsxpp = ixsxpi + ints[1];
+                        int i = ixsx + Grid.GlobalIndex.X % ints[6];
+                        float rx12, rx21, ry12, ry21;
+                        rx21 = xsx + ints[0] - i;
+                        rx12 = i - xsx;
 
                         for (int sx = kks + 2; sx < ints[3]; sx++)
                         {
@@ -5560,43 +5527,32 @@ namespace ScaleSmooth
                             int sxxm = dsxxm - 1;
                             float dsxxp = dsxxm + dbls[0];
 
-                            int i = ixsx + Grid.GlobalIndex.X % ints[6];
                             int s = dsxxm + Grid.GlobalIndex.X / ints[6];
-                            float rx12, rx21, ry12, ry21;
+
                             float q1 = (ri[ixsx, sxxm, kkikks] + ri[ixsxp, sxxm, kkikks]) / 2;
                             float q2 = (ri[ixsxpi, sxxm, kkikks] + ri[ixsxpp, sxxm, kkikks]) / 2;
                             ry21 = dsxxp - s;
                             ry12 = s - sxxm;
-                            rx21 = xsx + ints[0] - i;//to top ALL
-                            rx12 = i - xsx;
                             ri[i, s, kkikks] = (short)((ry21 * (rx21 * q1 + rx12 * q2) + ry12 * (rx21 * sr[kki, sx] + rx12 * sr[kki + 1, sx])) * dbls[2] + 0.5f);
 
                             s = sxxm + ints[0];
-                            i = ixsx;
-                            rx21 = dbls[5];
-                            rx12 = dbls[0];
-                            float rx12q2 = rx12 * q2;
-                            float rx12srkki1 = rx12 * sr[kki + 1, sx];
+                            float rx12q2 = dbls[0] * q2;
+                            float rx12srkki1 = dbls[0] * sr[kki + 1, sx];
                             ry21 = dbls[7];
                             ry12 = dbls[8];
-                            ri[i, s, kkikks] = (short)(ry21 * (rx21 * q1 - rx12q2) + ry12 * (rx21 * sr[kki, sx] - rx12srkki1) + 0.5f);
+                            ri[ixsx, s, kkikks] = (short)(ry21 * (dbls[5] * q1 - rx12q2) + ry12 * (dbls[5] * sr[kki, sx] - rx12srkki1) + 0.5f);
 
-                            i = ixsxp;
-                            rx21 = dbls[6];
-                            ri[i, s, kkikks] = (short)(ry21 * (rx21 * q1 + rx12q2) + ry12 * (rx21 * sr[kki, sx] + rx12srkki1) + 0.5f);
+                            ri[ixsxp, s, kkikks] = (short)(ry21 * (dbls[6] * q1 + rx12q2) + ry12 * (dbls[6] * sr[kki, sx] + rx12srkki1) + 0.5f);
 
-                            i = ixsxpi;
-                            ri[i, s, kkikks] = (short)(ry21 * (rx21 * q2 + rx12 * q1) + ry12 * (dbls[0] * sr[kki, sx] + rx21 * sr[kki + 1, sx]) + 0.5f);
+                            ri[ixsxpi, s, kkikks] = (short)(ry21 * (dbls[6] * q2 + dbls[0] * q1) + ry12 * (dbls[0] * sr[kki, sx] + dbls[6] * sr[kki + 1, sx]) + 0.5f);
 
-                            i = ixsxpp;
-                            rx12 = dbls[5];
-                            ri[i, s, kkikks] = (short)(ry21 * (rx12 * q2 - dbls[0] * q1) + ry12 * (rx12 * sr[kki + 1, sx] - dbls[0] * sr[kki, sx]) + 0.5f);
+                            ri[ixsxpp, s, kkikks] = (short)(ry21 * (dbls[5] * q2 - dbls[0] * q1) + ry12 * (dbls[5] * sr[kki + 1, sx] - dbls[0] * sr[kki, sx]) + 0.5f);
                         }
                     }
                 });
 
             var top = accelerator.LoadKernel(
-                (ArrayView3D<short, Stride3D.DenseXY> ri,  ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
+                (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
                 {
                     int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
                     int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
@@ -5611,49 +5567,40 @@ namespace ScaleSmooth
                         float cy = kks * ints[0] + dbls[1];
                         int ixsxpp = ixsxpi + ints[1];
                         int xsp = kki + 1;
-
+                        int i = ixsx + Grid.GlobalIndex.X % ints[6];
+                        float rx12, rx21, ry12, ry21;
+                        rx21 = (xsx + ints[0] - i);
+                        rx12 = (i - xsx);
                         for (int sx = kks - 1; sx > -1; sx--)
                         {
                             int dsxx = sx * ints[0];
                             int sxxm = dsxx + ints[0];
                             float dsxxm = dsxx + dbls[0];
-                            int i = ixsx + Grid.GlobalIndex.X % ints[6];
+
                             int s = dsxx + Grid.GlobalIndex.X / ints[6];
-                            float rx12, rx21, ry12, ry21;
                             float q4 = (ri[ixsx, sxxm, kkikks] + ri[ixsxp, sxxm, kkikks]) / 2;
                             float q3 = (ri[ixsxpi, sxxm, kkikks] + ri[ixsxpp, sxxm, kkikks]) / 2;
                             ry21 = (sxxm - s);
                             ry12 = (s - dsxxm);
-                            rx21 = (xsx + ints[0] - i);
-                            rx12 = (i - xsx);
                             ri[i, s, kkikks] = (short)((ry21 * (rx21 * sr[kki, sx] + rx12 * sr[xsp, sx]) + ry12 * (rx21 * q4 + rx12 * q3)) * dbls[2] + 0.5f);
 
-                            s = dsxx;
-                            i = ixsx;
                             ry21 = dbls[8];
                             ry12 = dbls[7];
-                            rx21 = dbls[5];
-                            rx12 = dbls[0];
-                            float rx12srxsp = rx12 * sr[xsp, sx];
-                            float rx12q3 = rx12 * q3;
-                            ri[i, s, kkikks] = (short)(ry21 * (rx21 * sr[kki, sx] - rx12srxsp) + ry12 * (rx21 * q4 - rx12q3) + 0.5f);
+                            float rx12srxsp = dbls[0] * sr[xsp, sx];
+                            float rx12q3 = dbls[0] * q3;
+                            ri[ixsx, dsxx, kkikks] = (short)(ry21 * (dbls[5] * sr[kki, sx] - rx12srxsp) + ry12 * (dbls[5] * q4 - rx12q3) + 0.5f);
 
-                            i = ixsxp;
-                            rx21 = dbls[6];
-                            ri[i, s, kkikks] = (short)(ry21 * (rx21 * sr[kki, sx] + rx12srxsp) + ry12 * (rx21 * q4 + rx12q3) + 0.5f);
+                            ri[ixsxp, dsxx, kkikks] = (short)(ry21 * (dbls[6] * sr[kki, sx] + rx12srxsp) + ry12 * (dbls[6] * q4 + rx12q3) + 0.5f);
 
-                            i = ixsxpi;
-                            ri[i, s, kkikks] = (short)(ry21 * (rx12 * sr[kki, sx] + rx21 * sr[xsp, sx]) + ry12 * (rx12 * q4 + rx21 * q3) + 0.5f);
+                            ri[ixsxpi, dsxx, kkikks] = (short)(ry21 * (dbls[0] * sr[kki, sx] + dbls[6] * sr[xsp, sx]) + ry12 * (dbls[0] * q4 + dbls[6] * q3) + 0.5f);
 
-                            i = ixsxpp;
-                            rx12 = dbls[5];
-                            ri[i, s, kkikks] = (short)(ry21 * (rx12 * sr[xsp, sx] - dbls[0] * sr[kki, sx]) + ry12 * (rx12 * q3 - dbls[0] * q4) + 0.5f);
+                            ri[ixsxpp, dsxx, kkikks] = (short)(ry21 * (dbls[5] * sr[xsp, sx] - dbls[0] * sr[kki, sx]) + ry12 * (dbls[5] * q3 - dbls[0] * q4) + 0.5f);
                         }
                     }
                 });
 
             var rightbottom = accelerator.LoadKernel(
-        (ArrayView3D<short, Stride3D.DenseXY> ri,  ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
+        (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
         {
             int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
             int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
@@ -5683,26 +5630,22 @@ namespace ScaleSmooth
                         rx12 = i - ixxm;
                         ri[i, s, kkikks] = (short)(((dsxxm + dbls[0] - s) * (rx21 * ri[ixxm, sxxm, kkikks] + rx12 * q2) + (s - sxxm) * (rx21 * q4 + rx12 * sr[ix, sx])) * dbls[3] + 0.5f);
 
-                        s = isxx;
-                        i = dixxm;
                         float dbls0q4 = dbls[0] * q4;
                         float dbls0riixxm = dbls[0] * ri[ixxm, sxxm, kkikks];
-                        ri[i, s, kkikks] = (short)(dbls[9] * (dbls0riixxm + q2) + dbls[10] * (dbls0q4 + sr[ix, sx]) + 0.5f);
+                        ri[dixxm, isxx, kkikks] = (short)(dbls[9] * (dbls0riixxm + q2) + dbls[10] * (dbls0q4 + sr[ix, sx]) + 0.5f);
 
-                        i = iixx;
                         q2 = dbls[9] * (ints[0] * q2 - dbls0riixxm);
                         q4 = (ints[0] * sr[ix, sx] - dbls0q4);
-                        ri[i, s, kkikks] = (short)(q2 + dbls[10] * q4 + 0.5f);
+                        ri[iixx, isxx, kkikks] = (short)(q2 + dbls[10] * q4 + 0.5f);
 
-                        s = dsxxm;
-                        ri[i, s, kkikks] = (short)(q4 * dbls[11] - q2 + 0.5f);
+                        ri[iixx, dsxxm, kkikks] = (short)(q4 * dbls[11] - q2 + 0.5f);
                     }
                 }
             }
         });
 
             var lefttop = accelerator.LoadKernel(
-        (ArrayView3D<short, Stride3D.DenseXY> ri,  ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
+        (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
         {
             int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
             int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
@@ -5755,7 +5698,7 @@ namespace ScaleSmooth
         });
 
             var leftbottom = accelerator.LoadKernel(
-        (ArrayView3D<short, Stride3D.DenseXY> ri,  ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
+        (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
         {
             int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
             int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
@@ -5809,7 +5752,7 @@ namespace ScaleSmooth
         });
 
             var righttop = accelerator.LoadKernel(
-        (ArrayView3D<short, Stride3D.DenseXY> ri,  ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
+        (ArrayView3D<short, Stride3D.DenseXY> ri, ArrayView<int> ints, ArrayView<float> dbls, ArrayView2D<byte, Stride2D.DenseX> sr) =>
         {
             int kki = Grid.GlobalIndex.Y * ints[12] + ints[13] + ints[17];
             int kks = Grid.GlobalIndex.Z * ints[12] + ints[15] + ints[18];
@@ -5880,7 +5823,7 @@ namespace ScaleSmooth
             float step = 0.98f / rki2;
             float step8 = 7.84f / rki2;
             float step89 = 87.22f / rki2;
-            var dblG = accelerator.Allocate1D<float>([halfx - 0.5f, x - 0.5f, 1f / (x2p * x), 1f / (x2p * x2p), halfx, x * 1.5f - 0.5f, x2p, (1f - x) / (x + xx), 2f / (1 + x), (2f - 2 * x) * sqeq, 4f * x * sqeq, 4f * sqeq]);//dbls[2] 1f/ ALL?
+            var dblG = accelerator.Allocate1D<float>([halfx - 0.5f, x - 0.5f, 1f / (x2p * x), 1f / (x2p * x2p), halfx, x * 1.5f - 0.5f, x2p, (1f - x) / (x + xx), 2f / (1 + x), (2f - 2 * x) * sqeq, 4f * x * sqeq, 4f * sqeq]);
             var intG = accelerator.Allocate1D<int>(17);
 
             for (int irk = 0; irk < rki; irk++)
@@ -6026,7 +5969,7 @@ namespace ScaleSmooth
                             ri[i, s, kkikks255 + c] = (short)((ry21 * (r21 * sr[kki, kks, c] + r12 * sr[xsp, kks, c]) + ry12 * (r21 * sr[kki, ysp, c] + r12 * sr[xsp, ysp, c])) * dbls[12] + 0.5f);
                         }
 
-                        ris[i, s, kkikks] = MathF.Pow(Dist4(i, s, ixsx + dbls[1], iysx + dbls[1], dbls[4]), -3);//-3f
+                        ris[i, s, kkikks] = MathF.Pow(Dist4(i, s, ixsx + dbls[1], iysx + dbls[1], dbls[4]), -3f);
                     }
                 });
 
@@ -6058,7 +6001,7 @@ namespace ScaleSmooth
 
                             r21 = dixxm + dbls[0] - i;
                             r12 = i - ixxm;
-                            ris[i, ss, kkikks] = MathF.Pow(Dist2Right(i, ss, cx, iysxp + 0.5f, dbls[4]), -3);
+                            ris[i, ss, kkikks] = MathF.Pow(Dist2Right(i, ss, cx, iysxp + 0.5f, dbls[4]), -3f);
                             int ii = i;
 
                             for (int c = 0; c < ints[19]; c++)
@@ -6083,7 +6026,7 @@ namespace ScaleSmooth
                             }
 
                             i = ixxm + ints[0];
-                            ris[i, iysx, kkikks] = MathF.Pow(i - cx - 0.5f, -3);
+                            ris[i, iysx, kkikks] = MathF.Pow(i - cx - 0.5f, -3f);
 
                             ris[i, iysxp, kkikks] = ris[i, iysx, kkikks];
 
@@ -6122,7 +6065,7 @@ namespace ScaleSmooth
                             float r12, r21;
                             r21 = dixxp - i;
                             r12 = i - dixx - dbls[0];
-                            ris[i, ss, kkikks] = MathF.Pow(Dist2Left(i, ss, cx, iysxp + 0.5f, dbls[4]), -3);
+                            ris[i, ss, kkikks] = MathF.Pow(Dist2Left(i, ss, cx, iysxp + 0.5f, dbls[4]), -3f);
                             int ii = i;
                             for (int c = 0; c < ints[19]; c++)
                             {
@@ -6143,7 +6086,7 @@ namespace ScaleSmooth
                                 ri[dixx, iysxpp, kkikks255 + c] = (short)(dbls[5] * q3 - r12q2 + 0.5f);
                             }
 
-                            ris[dixx, iysx, kkikks] = MathF.Pow(cx - dixx - 0.5f, -3);
+                            ris[dixx, iysx, kkikks] = MathF.Pow(cx - dixx - 0.5f, -3f);
 
                             ris[dixx, iysxp, kkikks] = ris[dixx, iysx, kkikks];
 
@@ -6184,7 +6127,7 @@ namespace ScaleSmooth
                             float ry21 = dsxxp - ss;
                             float ry12 = ss - sxxm;
 
-                            ris[ii, ss, kkikks] = MathF.Pow(Dist2Bottom(ii, ss, ixsxp + 0.5f, cy, dbls[4]), -3);
+                            ris[ii, ss, kkikks] = MathF.Pow(Dist2Bottom(ii, ss, ixsxp + 0.5f, cy, dbls[4]), -3f);
                             int s = sxxm + ints[0];
                             for (int c = 0; c < ints[19]; c++)
                             {
@@ -6202,7 +6145,7 @@ namespace ScaleSmooth
 
                                 ri[ixsxpp, s, kkikks255 + c] = (short)(dbls[7] * (dbls[5] * q2 - dbls[0] * q1) + dbls[8] * (dbls[5] * sr[kki + 1, sx, c] - dbls[0] * sr[kki, sx, c]) + 0.5f);
                             }
-                            ris[ixsx, s, kkikks] = MathF.Pow(s - cy - 0.5f, -3);
+                            ris[ixsx, s, kkikks] = MathF.Pow(s - cy - 0.5f, -3f);
 
                             ris[ixsxp, s, kkikks] = ris[ixsx, s, kkikks];
 
@@ -6244,7 +6187,7 @@ namespace ScaleSmooth
                             float ry21 = (sxxm - ss);
                             float ry12 = (ss - dsxxm);
 
-                            ris[ii, ss, kkikks] = MathF.Pow(Dist2Top(ii, ss, ixsxp + 0.5f, cy, dbls[4]), -3);
+                            ris[ii, ss, kkikks] = MathF.Pow(Dist2Top(ii, ss, ixsxp + 0.5f, cy, dbls[4]), -3f);
                             int s = dsxx;
                             for (int c = 0; c < ints[19]; c++)
                             {
@@ -6261,7 +6204,7 @@ namespace ScaleSmooth
 
                                 ri[ixsxpp, s, kkikks255 + c] = (short)(dbls[8] * (dbls[5] * sr[xsp, sx, c] - dbls[0] * sr[kki, sx, c]) + dbls[7] * (dbls[5] * q3 - dbls[0] * q4) + 0.5f);
                             }
-                            ris[ixsx, s, kkikks] = MathF.Pow(cy - s - 0.5f, -3);
+                            ris[ixsx, s, kkikks] = MathF.Pow(cy - s - 0.5f, -3f);
 
                             ris[ixsxp, s, kkikks] = ris[ixsx, s, kkikks];
 
@@ -6302,7 +6245,7 @@ namespace ScaleSmooth
                         float rx12, rx21;
                         rx21 = dixxm + dbls[0] - i;
                         rx12 = i - ixxm;
-                        ris[i, s, kkikks] = MathF.Pow(i - cxcyx + s, -3);
+                        ris[i, s, kkikks] = MathF.Pow(i - cxcyx + s, -3f);
                         for (int c = 0; c < ints[19]; c++)
                         {
                             float q2 = (ri[dixxm, sxxm, kkikks255 + c] + ri[iixx, sxxm, kkikks255 + c]) / 2;
@@ -6320,11 +6263,11 @@ namespace ScaleSmooth
                             ri[iixx, dsxxm, kkikks255 + c] = (short)(q4 * dbls[11] - q2 + 0.5f);
                         }
 
-                        ris[dixxm, isxx, kkikks] = MathF.Pow(dixxm - cxcyx + isxx, -3);
+                        ris[dixxm, isxx, kkikks] = MathF.Pow(dixxm - cxcyx + isxx, -3f);
 
-                        ris[iixx, isxx, kkikks] = MathF.Pow(iixx - cxcyx + isxx, -3);
+                        ris[iixx, isxx, kkikks] = MathF.Pow(iixx - cxcyx + isxx, -3f);
 
-                        ris[iixx, dsxxm, kkikks] = MathF.Pow(iixx - cxcyx + dsxxm, -3);
+                        ris[iixx, dsxxm, kkikks] = MathF.Pow(iixx - cxcyx + dsxxm, -3f);
                     }
                 }
             }
@@ -6359,7 +6302,7 @@ namespace ScaleSmooth
                         ry12 = s - dsxxm - dbls[0];
                         rx21 = ixxm - i;
                         rx12 = i - dixxm - dbls[0];
-                        ris[i, s, kkikks] = MathF.Pow(cxcyx - i - s, -3);
+                        ris[i, s, kkikks] = MathF.Pow(cxcyx - i - s, -3f);
                         for (int c = 0; c < ints[19]; c++)
                         {
                             float q2 = (ri[ixxm, dsxxm, kkikks255 + c] + ri[ixxm, isxx, kkikks255 + c]) / 2;
@@ -6375,11 +6318,11 @@ namespace ScaleSmooth
 
                             ri[iixx, dsxxm, kkikks255 + c] = (short)(dbls[10] * (sr[ix, sx, c] - q2) + dbls[9] * (q4 + dbls[0] * ri[ixxm, sxxm, kkikks255 + c]) + 0.5f);
                         }
-                        ris[dixxm, isxx, kkikks] = MathF.Pow(cxcyx - dixxm - isxx, -3);
+                        ris[dixxm, isxx, kkikks] = MathF.Pow(cxcyx - dixxm - isxx, -3f);
 
-                        ris[dixxm, dsxxm, kkikks] = MathF.Pow(cxcyx - dixxm - dsxxm, -3);
+                        ris[dixxm, dsxxm, kkikks] = MathF.Pow(cxcyx - dixxm - dsxxm, -3f);
 
-                        ris[iixx, dsxxm, kkikks] = MathF.Pow(cxcyx - iixx - dsxxm, -3);
+                        ris[iixx, dsxxm, kkikks] = MathF.Pow(cxcyx - iixx - dsxxm, -3f);
                     }
                 }
             }
@@ -6413,7 +6356,7 @@ namespace ScaleSmooth
                         int s = sxx + leftos;
                         float rx12, rx21, ry12, ry21;
 
-                        ris[i, s, kkikks] = MathF.Pow(cxcyx - i + s, -3);
+                        ris[i, s, kkikks] = MathF.Pow(cxcyx - i + s, -3f);
                         ry21 = sxx + dbls[0] - s;
                         rx12 = i - dixxm - dbls[0];
                         rx21 = dixx - i;
@@ -6434,11 +6377,11 @@ namespace ScaleSmooth
 
                             ri[iixx, isxx, kkikks255 + c] = (short)(dbls[9] * (q1 - rxri) + dbls[10] * (sr[ix, sx, c] - q3) + 0.5f);
                         }
-                        ris[dixxm, sxx, kkikks] = MathF.Pow(cxcyx - dixxm + sxx, -3);
+                        ris[dixxm, sxx, kkikks] = MathF.Pow(cxcyx - dixxm + sxx, -3f);
 
-                        ris[dixxm, isxx, kkikks] = MathF.Pow(cxcyx - dixxm + isxx, -3);
+                        ris[dixxm, isxx, kkikks] = MathF.Pow(cxcyx - dixxm + isxx, -3f);
 
-                        ris[iixx, isxx, kkikks] = MathF.Pow(cxcyx - iixx + isxx, -3);
+                        ris[iixx, isxx, kkikks] = MathF.Pow(cxcyx - iixx + isxx, -3f);
                     }
                 }
             }
@@ -6472,7 +6415,7 @@ namespace ScaleSmooth
                         int s = sxx + leftos;
                         float rx12, rx21, ry12, ry21;
 
-                        ris[i, s, kkikks] = MathF.Pow(i + cxcyx - s, -3);
+                        ris[i, s, kkikks] = MathF.Pow(i + cxcyx - s, -3f);
                         ry12 = s - sxx - dbls[0];
                         rx21 = ixx + dbls[0] - i;
                         rx12 = i - ixxm;
@@ -6492,11 +6435,11 @@ namespace ScaleSmooth
 
                             ri[ixx, isxx, kkikks255 + c] = (short)(dbls[11] * (sr[ix, sx, c] + q1) - dbls[9] * (q3 + dbls[0] * ri[ixxm, dsxx, kkikks255 + c]) + 0.5f);
                         }
-                        ris[iixx, sxx, kkikks] = MathF.Pow(iixx + cxcyx - sxx, -3);
+                        ris[iixx, sxx, kkikks] = MathF.Pow(iixx + cxcyx - sxx, -3f);
 
-                        ris[iixx, isxx, kkikks] = MathF.Pow(iixx + cxcyx - isxx, -3);
+                        ris[iixx, isxx, kkikks] = MathF.Pow(iixx + cxcyx - isxx, -3f);
 
-                        ris[ixx, isxx, kkikks] = MathF.Pow(ixx + cxcyx - isxx, -3);
+                        ris[ixx, isxx, kkikks] = MathF.Pow(ixx + cxcyx - isxx, -3f);
                     }
                 }
             }
@@ -6572,7 +6515,7 @@ namespace ScaleSmooth
             context.Dispose();
             return ri;
         }
-        
+
         private short[,,] Array255BASmoothGrayGPU(byte[,,] sr, int x, int ac, int oi, int os)
         {
             Context context = Context.Create(b => b.AllAccelerators().EnableAlgorithms().Optimize(OptimizationLevel.O2).PageLocking(PageLockingMode.Aggressive));
@@ -7371,46 +7314,43 @@ namespace ScaleSmooth
             if (kki < ints[2] && kks < ints[3] && Grid.GlobalIndex.X < ints[11])
             {
                 int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
-
-                float cxcyx = (kki + kks + 3) * ints[0] - 1;
+                float rx12, rx21;
+                float defi = kki * ints[0] + dbls[1];
+                float defs = kks * ints[0] + dbls[1];
                 for (int sx = kks + 2; sx < ints[3]; sx++)
                 {
+                    int dsxxm = sx * ints[0];
+                    int sxxm = dsxxm - 1;
+                    int dsxx = (sx + 1) * ints[0];
+                    int s = dsxxm + Grid.GlobalIndex.X / ints[0];
                     for (int ix = kki + 2; ix < ints[2]; ix++)
                     {
-                        int dsxxm = sx * ints[0];
-                        int sxxm = dsxxm - 1;
-                        int dsxx = (sx + 1) * ints[0];
                         int isxx = dsxx - 1;
                         int dixxm = ix * ints[0];
                         int ixxm = dixxm - 1;
                         int iixx = (ix + 1) * ints[0] - 1;
 
                         int i = dixxm + Grid.GlobalIndex.X % ints[0];
-                        int s = dsxxm + Grid.GlobalIndex.X / ints[0];
-                        float rx12, rx21;
+
                         float q2 = (ri[dixxm, sxxm, kkikks] + ri[iixx, sxxm, kkikks]) / 2;
                         float q4 = (ri[ixxm, dsxxm, kkikks] + ri[ixxm, isxx, kkikks]) / 2;
                         rx21 = dixxm + dbls[0] - i;
                         rx12 = i - ixxm;
                         ri[i, s, kkikks] = (short)(((dsxxm + dbls[0] - s) * (rx21 * ri[ixxm, sxxm, kkikks] + rx12 * q2) + (s - sxxm) * (rx21 * q4 + rx12 * sr[ix, sx])) / dbls[3] + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(DistParabola(i, s, kki * ints[0] + dbls[1], kks * ints[0] + dbls[1], dbls[4]), -4);//precalc
+                        ris[i, s, kkikks] = MathF.Pow(DistParabola(i, s, defi, defs, dbls[4]), -4);
 
-                        s = isxx;
-                        i = dixxm;
                         float dbls0q4 = dbls[0] * q4;
                         float dbls0riixxm = dbls[0] * ri[ixxm, sxxm, kkikks];
-                        ri[i, s, kkikks] = (short)(dbls[9] * (dbls0riixxm + q2) + dbls[10] * (dbls0q4 + sr[ix, sx]) + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(DistParabola(i, s, kki * ints[0] + dbls[1], kks * ints[0] + dbls[1], dbls[4]), -4);
+                        ri[dixxm, isxx, kkikks] = (short)(dbls[9] * (dbls0riixxm + q2) + dbls[10] * (dbls0q4 + sr[ix, sx]) + 0.5f);
+                        ris[dixxm, isxx, kkikks] = MathF.Pow(DistParabola(dixxm, isxx, defi, defs, dbls[4]), -4);
 
-                        i = iixx;
                         q2 = dbls[9] * (ints[0] * q2 - dbls0riixxm);
                         q4 = (ints[0] * sr[ix, sx] - dbls0q4);
-                        ri[i, s, kkikks] = (short)(q2 + dbls[10] * q4 + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(DistParabola(i, s, kki * ints[0] + dbls[1], kks * ints[0] + dbls[1], dbls[4]), -4);
+                        ri[iixx, isxx, kkikks] = (short)(q2 + dbls[10] * q4 + 0.5f);
+                        ris[iixx, isxx, kkikks] = MathF.Pow(DistParabola(iixx, isxx, defi, defs, dbls[4]), -4);
 
-                        s = dsxxm;
-                        ri[i, s, kkikks] = (short)(q4 * dbls[11] - q2 + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(DistParabola(i, s, kki * ints[0] + dbls[1], kks * ints[0] + dbls[1], dbls[4]), -4);
+                        ri[iixx, dsxxm, kkikks] = (short)(q4 * dbls[11] - q2 + 0.5f);
+                        ris[iixx, dsxxm, kkikks] = MathF.Pow(DistParabola(iixx, dsxxm, defi, defs, dbls[4]), -4);
                     }
                 }
             }
@@ -7424,50 +7364,46 @@ namespace ScaleSmooth
             int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
             if (kki < ints[4] && kks < ints[14] && Grid.GlobalIndex.X < ints[11] && kkikks < ints[5])
             {
-                float cxcyx = (kki + kks + 1) * ints[0] - 1;
+                float defi = kki * ints[0] + dbls[1];
+                float defs = kks * ints[0] + dbls[1];
+                float rx12, rx21, ry12, ry21;
                 for (int sx = kks - 1; sx > -1; sx--)
                 {
+                    int dsxxm = sx * ints[0];
+                    int sxxm = (sx + 1) * ints[0];
+                    int isxx = sxxm - 1;
+                    int s = dsxxm + Grid.GlobalIndex.X / ints[0];
+                    ry21 = sxxm - s;
+                    ry12 = s - dsxxm - dbls[0];
                     for (int ix = kki - 1; ix > -1; ix--)
                     {
-                        int dsxxm = sx * ints[0];
-                        int sxxm = (sx + 1) * ints[0];
-                        int isxx = sxxm - 1;
                         int dixxm = ix * ints[0];
                         int ixxm = (ix + 1) * ints[0];
                         int iixx = ixxm - 1;
 
                         int i = dixxm + Grid.GlobalIndex.X % ints[0];
-                        int s = dsxxm + Grid.GlobalIndex.X / ints[0];
-                        float rx12, rx21, ry12, ry21;
+
                         float q2 = (ri[ixxm, dsxxm, kkikks] + ri[ixxm, isxx, kkikks]) / 2;
                         float q4 = (ri[dixxm, sxxm, kkikks] + ri[iixx, sxxm, kkikks]) / 2;
-                        ry21 = sxxm - s;
-                        ry12 = s - dsxxm - dbls[0];
+
                         rx21 = ixxm - i;
                         rx12 = i - dixxm - dbls[0];
                         ri[i, s, kkikks] = (short)((ry21 * (rx21 * sr[ix, sx] + rx12 * q2) + ry12 * (rx21 * q4 + rx12 * ri[ixxm, sxxm, kkikks])) / dbls[3] + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(DistParabola(i, s, kki * ints[0] + dbls[1], kks * ints[0] + dbls[1], dbls[4]), -4);
+                        ris[i, s, kkikks] = MathF.Pow(DistParabola(i, s, defi, defs, dbls[4]), -4);
 
-                        i = dixxm;
-                        s = isxx;
-                        ry12 = dbls[0];
                         rx21 = ints[0];
                         rx12 = -ry12 * ri[ixxm, sxxm, kkikks];
                         q2 = -ry12 * q2;
                         float rx21srq2 = rx21 * sr[ix, sx] + q2;
                         float rx21q4rx12 = rx21 * q4 + rx12;
-                        ri[i, s, kkikks] = (short)((rx21srq2 + ry12 * rx21q4rx12) * dbls[11] + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(DistParabola(i, s, kki * ints[0] + dbls[1], kks * ints[0] + dbls[1], dbls[4]), -4);
+                        ri[dixxm, isxx, kkikks] = (short)((rx21srq2 + dbls[0] * rx21q4rx12) * dbls[11] + 0.5f);
+                        ris[dixxm, isxx, kkikks] = MathF.Pow(DistParabola(dixxm, isxx, defi, defs, dbls[4]), -4);
 
-                        s = dsxxm;
-                        ry21 = dbls[10];
-                        ry12 = dbls[9];
-                        ri[i, s, kkikks] = (short)(ry21 * rx21srq2 + ry12 * rx21q4rx12 + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(DistParabola(i, s, kki * ints[0] + dbls[1], kks * ints[0] + dbls[1], dbls[4]), -4);
+                        ri[dixxm, dsxxm, kkikks] = (short)(dbls[10] * rx21srq2 + dbls[9] * rx21q4rx12 + 0.5f);
+                        ris[dixxm, dsxxm, kkikks] = MathF.Pow(DistParabola(dixxm, dsxxm, defi, defs, dbls[4]), -4);
 
-                        i = iixx;
-                        ri[i, s, kkikks] = (short)(ry21 * (sr[ix, sx] - q2) + ry12 * (q4 - rx12) + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(DistParabola(i, s, kki * ints[0] + dbls[1], kks * ints[0] + dbls[1], dbls[4]), -4);
+                        ri[iixx, dsxxm, kkikks] = (short)(dbls[10] * (sr[ix, sx] - q2) + dbls[9] * (q4 - rx12) + 0.5f);
+                        ris[iixx, dsxxm, kkikks] = MathF.Pow(DistParabola(iixx, dsxxm, defi, defs, dbls[4]), -4);
                     }
                 }
             }
@@ -7481,51 +7417,46 @@ namespace ScaleSmooth
             if (kki < ints[2] && kks < ints[3] && Grid.GlobalIndex.X < ints[11])
             {
                 int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
-
-                float cxcyx = (kki - kks - 1) * ints[0];
+                float defi = kki * ints[0] + dbls[1];
+                float defs = kks * ints[0] + dbls[1];
+                float rx12, rx21, ry12, ry21;
                 for (int sx = kks + 2; sx < ints[3]; sx++)
                 {
+                    int sxx = sx * ints[0];
+                    int isxxm = sxx - 1;
+                    int isxx = (sx + 1) * ints[0] - 1;
+                    int s = sxx + Grid.GlobalIndex.X / ints[0];
+                    ry21 = sxx + dbls[0] - s;
+                    ry12 = s - isxxm;
                     for (int ix = kki - 1; ix > -1; ix--)
                     {
-                        int sxx = sx * ints[0];
-                        int isxxm = sxx - 1;
-                        int isxx = (sx + 1) * ints[0] - 1;
                         int dixxm = ix * ints[0];
                         int dixx = dixxm + ints[0];
                         int iixx = dixx - 1;
 
                         int i = dixxm + Grid.GlobalIndex.X % ints[0];
-                        int s = sxx + Grid.GlobalIndex.X / ints[0];
-                        float rx12, rx21, ry12, ry21;
+
                         float q1 = (ri[dixxm, isxxm, kkikks] + ri[iixx, isxxm, kkikks]) / 2;
                         float q3 = (ri[dixx, isxx, kkikks] + ri[dixx, sxx, kkikks]) / 2;
-                        ry21 = sxx + dbls[0] - s;
-                        ry12 = s - isxxm;
+
                         rx21 = dixx - i;
                         rx12 = i - dixxm - dbls[0];
                         ri[i, s, kkikks] = (short)((ry21 * (rx21 * q1 + rx12 * ri[dixx, isxxm, kkikks]) + ry12 * (rx21 * sr[ix, sx] + rx12 * q3)) / dbls[3] + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(DistParabola(i, s, kki * ints[0] + dbls[1], kks * ints[0] + dbls[1], dbls[4]), -4);
+                        ris[i, s, kkikks] = MathF.Pow(DistParabola(i, s, defi, defs, dbls[4]), -4);
 
-                        i = dixxm;
-                        s = sxx;
-                        ry21 = dbls[9];
-                        ry12 = dbls[11];
                         rx12 = -dbls[0];
                         q3 = rx12 * q3;
                         float rxri = rx12 * ri[dixx, isxxm, kkikks];
                         float q1rx = ints[0] * q1 + rxri;
                         float xsr = ints[0] * sr[ix, sx];
-                        ri[i, s, kkikks] = (short)(ry12 * (xsr + q3) - ry21 * q1rx + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(DistParabola(i, s, kki * ints[0] + dbls[1], kks * ints[0] + dbls[1], dbls[4]), -4);
+                        ri[dixxm, sxx, kkikks] = (short)(dbls[11] * (xsr + q3) - dbls[9] * q1rx + 0.5f);
+                        ris[dixxm, sxx, kkikks] = MathF.Pow(DistParabola(dixxm, sxx, defi, defs, dbls[4]), -4);
 
-                        s = isxx;
-                        ry12 = dbls[10];
-                        ri[i, s, kkikks] = (short)(ry21 * q1rx + ry12 * (xsr + q3) + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(DistParabola(i, s, kki * ints[0] + dbls[1], kks * ints[0] + dbls[1], dbls[4]), -4);
+                        ri[dixxm, isxx, kkikks] = (short)(dbls[9] * q1rx + dbls[10] * (xsr + q3) + 0.5f);
+                        ris[dixxm, isxx, kkikks] = MathF.Pow(DistParabola(dixxm, isxx, defi, defs, dbls[4]), -4);
 
-                        i = iixx;
-                        ri[i, s, kkikks] = (short)(ry21 * (q1 - rxri) + ry12 * (sr[ix, sx] - q3) + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(DistParabola(i, s, kki * ints[0] + dbls[1], kks * ints[0] + dbls[1], dbls[4]), -4);
+                        ri[iixx, isxx, kkikks] = (short)(dbls[9] * (q1 - rxri) + dbls[10] * (sr[ix, sx] - q3) + 0.5f);
+                        ris[iixx, isxx, kkikks] = MathF.Pow(DistParabola(iixx, isxx, defi, defs, dbls[4]), -4);
                     }
                 }
             }
@@ -7539,51 +7470,46 @@ namespace ScaleSmooth
             int kkikks = Grid.GlobalIndex.Z * ints[7] + Grid.GlobalIndex.Y + 1;
             if (kki < ints[4] && kks < ints[14] && Grid.GlobalIndex.X < ints[11] && kkikks < ints[5])
             {
-                float cxcyx = (kks - kki - 1) * ints[0];//del all?
-
+                float rx12, rx21, ry12, ry21;
+                float defi = kki * ints[0] + dbls[1];
+                float defs = kks * ints[0] + dbls[1];
                 for (int sx = kks - 1; sx > -1; sx--)
                 {
+                    int sxx = sx * ints[0];
+                    int dsxx = sxx + ints[0];
+                    int isxx = dsxx - 1;
+                    int s = sxx + Grid.GlobalIndex.X / ints[0];
+                    ry21 = dsxx - s;
+                    ry12 = s - sxx - dbls[0];
                     for (int ix = kki + 2; ix < ints[2]; ix++)
                     {
-                        int sxx = sx * ints[0];
-                        int dsxx = sxx + ints[0];
-                        int isxx = dsxx - 1;
                         int ixx = ix * ints[0];
                         int ixxm = ixx - 1;
                         int iixx = ixx + ints[1];
 
                         int i = ixx + Grid.GlobalIndex.X % ints[0];
-                        int s = sxx + Grid.GlobalIndex.X / ints[0];
-                        float rx12, rx21, ry12, ry21;
+
                         float q1 = (ri[ixxm, sxx, kkikks] + ri[ixxm, isxx, kkikks]) / 2;
                         float q3 = (ri[ixx, dsxx, kkikks] + ri[iixx, dsxx, kkikks]) / 2;
-                        ry21 = dsxx - s;
-                        ry12 = s - sxx - dbls[0];
+
                         rx21 = ixx + dbls[0] - i;
                         rx12 = i - ixxm;
                         ri[i, s, kkikks] = (short)((ry21 * (rx21 * q1 + rx12 * sr[ix, sx]) + ry12 * (rx21 * ri[ixxm, dsxx, kkikks] + rx12 * q3)) / dbls[3] + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(DistParabola(i, s, kki * ints[0] + dbls[1], kks * ints[0] + dbls[1], dbls[4]), -4);
+                        ris[i, s, kkikks] = MathF.Pow(DistParabola(i, s, defi, defs, dbls[4]), -4);
 
-                        i = iixx;
-                        s = sxx;
-                        ry21 = dbls[10];
-                        ry12 = dbls[9];
                         rx21 = dbls[0];
                         rx12 = ints[0];
                         q1 = rx21 * q1;
                         float rxsr = rx12 * sr[ix, sx] - q1;
-                        float ryrx = ry12 * (rx12 * q3 - rx21 * ri[ixxm, dsxx, kkikks]);
-                        ri[i, s, kkikks] = (short)(ry21 * rxsr + ryrx + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(DistParabola(i, s, kki * ints[0] + dbls[1], kks * ints[0] + dbls[1], dbls[4]), -4);
+                        float ryrx = dbls[9] * (rx12 * q3 - rx21 * ri[ixxm, dsxx, kkikks]);
+                        ri[iixx, sxx, kkikks] = (short)(dbls[10] * rxsr + ryrx + 0.5f);
+                        ris[iixx, sxx, kkikks] = MathF.Pow(DistParabola(iixx, sxx, defi, defs, dbls[4]), -4);
 
-                        s = isxx;
-                        ry21 = dbls[11];
-                        ri[i, s, kkikks] = (short)(ry21 * rxsr - ryrx + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(DistParabola(i, s, kki * ints[0] + dbls[1], kks * ints[0] + dbls[1], dbls[4]), -4);
+                        ri[iixx, isxx, kkikks] = (short)(dbls[11] * rxsr - ryrx + 0.5f);
+                        ris[iixx, isxx, kkikks] = MathF.Pow(DistParabola(iixx, isxx, defi, defs, dbls[4]), -4);
 
-                        i = ixx;
-                        ri[i, s, kkikks] = (short)(ry21 * (sr[ix, sx] + q1) - ry12 * (q3 + rx21 * ri[ixxm, dsxx, kkikks]) + 0.5f);
-                        ris[i, s, kkikks] = MathF.Pow(DistParabola(i, s, kki * ints[0] + dbls[1], kks * ints[0] + dbls[1], dbls[4]), -4);
+                        ri[ixx, isxx, kkikks] = (short)(dbls[11] * (sr[ix, sx] + q1) - dbls[9] * (q3 + rx21 * ri[ixxm, dsxx, kkikks]) + 0.5f);
+                        ris[ixx, isxx, kkikks] = MathF.Pow(DistParabola(ixx, isxx, defi, defs, dbls[4]), -4);
                     }
                 }
             }
@@ -7795,25 +7721,21 @@ namespace ScaleSmooth
                             ris[i, s, kkikks] = MathF.Pow(Dist2Right(i, s, cx, iysxp + 0.5f, dbls[4]), -4);
 
                             i = ixxm + ints[0];
-                            s = iysx;
                             q1 = dbls[8] * sr[ix, kks] + dbls[7] * q1;
                             q4 = dbls[8] * sr[ix, kks + 1] + dbls[7] * q4;
                             float r12q4 = dbls[0] * q4;
                             float r12q1 = dbls[0] * q1;
-                            ri[i, s, kkikks] = (short)(dbls[5] * q1 - r12q4 + 0.5f);
-                            ris[i, s, kkikks] = MathF.Pow(i - cx - 0.5f, -4);
+                            ri[i, iysx, kkikks] = (short)(dbls[5] * q1 - r12q4 + 0.5f);
+                            ris[i, iysx, kkikks] = MathF.Pow(i - cx - 0.5f, -4);
 
-                            s = iysxp;//-assign ALL?
-                            ri[i, s, kkikks] = (short)(dbls[6] * q1 + r12q4 + 0.5f);
-                            ris[i, s, kkikks] = ris[i, iysx, kkikks];
+                            ri[i, iysxp, kkikks] = (short)(dbls[6] * q1 + r12q4 + 0.5f);
+                            ris[i, iysxp, kkikks] = ris[i, iysx, kkikks];
 
-                            s = iysxpi;
-                            ri[i, s, kkikks] = (short)(dbls[6] * q4 + r12q1 + 0.5f);
-                            ris[i, s, kkikks] = ris[i, iysx, kkikks];
+                            ri[i, iysxpi, kkikks] = (short)(dbls[6] * q4 + r12q1 + 0.5f);
+                            ris[i, iysxpi, kkikks] = ris[i, iysx, kkikks];
 
-                            s = iysxpp;
-                            ri[i, s, kkikks] = (short)(dbls[5] * q4 - r12q1 + 0.5f);
-                            ris[i, s, kkikks] = ris[i, iysx, kkikks];
+                            ri[i, iysxpp, kkikks] = (short)(dbls[5] * q4 - r12q1 + 0.5f);
+                            ris[i, iysxpp, kkikks] = ris[i, iysx, kkikks];
                         }
                     }
                 });
@@ -7850,7 +7772,7 @@ namespace ScaleSmooth
                             ri[i, s, kkikks] = (short)(((ysx + ints[0] - s) * (r21 * sr[ix, kks] + r12 * q2) + (s - ysx) * (r21 * sr[ix, kks + 1] + r12 * q3)) / dbls[2] + 0.5f);
                             ris[i, s, kkikks] = MathF.Pow(Dist2Left(i, s, cx, iysxp + 0.5f, dbls[4]), -4);
 
-                            i = dixx;
+                            i = dixx;//-assign
                             s = iysx;
                             q2 = dbls[8] * sr[ix, kks] + dbls[7] * q2;
                             q3 = dbls[8] * sr[ix, kks + 1] + dbls[7] * q3;
@@ -8540,7 +8462,7 @@ namespace ScaleSmooth
             float[,] yr = new float[oi + 2, os + 2];
             byte[,] sr = GrayFromBMP(img, 1, 1, 1, 1, oi, os);
 
-            NaiveExtrapolation(sr, oi, os);
+            NaiveExtrapolationGray(sr, oi, os);
 
             return BMPfromGray(sr, oi + 2, os + 2);
             /*byte[,,] sr = RGBfromBMP(img, 1, 1, 1, 1, oi, os);
@@ -8717,7 +8639,7 @@ namespace ScaleSmooth
             return bmp;
         }
 
-        private static void NaiveExtrapolation(byte[,] sr, int oi, int os)
+        private static void NaiveExtrapolationGray(byte[,] sr, int oi, int os)
         {
             int oip, oim, osp, osm;
             float oi2, os2, oi2p, os2p;
@@ -8791,6 +8713,98 @@ namespace ScaleSmooth
                 }
             );
         }
+
+        private static void NaiveExtrapolationColor(byte[,,] sr, int oi, int os)
+        {
+            int oip, oim, osp, osm;
+            float oi2, os2, oi2p, os2p;
+            oip = oi + 1;
+            oim = oi - 1;
+            osp = os + 1;
+            osm = os - 1;
+            oi2 = (oi - 1) * 0.5f + 1;
+            os2 = (os - 1) * 0.5f + 1;
+            oi2p = oi2 + 1;
+            os2p = os2 + 1;
+
+            Parallel.Invoke(
+                () =>
+                {
+                    int r = (int)(oi2p / os2p + 0.5f);
+                    int r2 = r * 2;
+                    int rp = r + 1;
+                    for (byte t = 0; t < 3; t++)
+                    {
+                        sr[oip, 0, t] = (byte)Math.Clamp((sr[oip - r, 1, t] * 2 - sr[oip - r2, 2, t]) / 2.0 + (sr[oip - r, 1, t] * 2 + sr[oip - rp, 1, t] / 2.0 + sr[oip - r, 2, t] / 2.0) / 6.0 + 0.5f, 0, 255); //2f
+                        sr[oip, osp, t] = (byte)Math.Clamp((sr[oip - r, os, t] * 2 - sr[oip - r2, osm, t]) / 2.0 + (sr[oip - r, os, t] * 2 + sr[oip - r, osm, t] / 2.0 + sr[oip - rp, os, t] / 2.0) / 6.0 + 0.5f, 0, 255);
+                        sr[0, osp, t] = (byte)Math.Clamp((sr[r, os, t] * 2 - sr[r2, osm, t]) / 2.0 + (sr[r, osm, 0] / 2.0 + sr[rp, os, t] / 2.0 + sr[r, os, t] * 2) / 6.0 + 0.5f, 0, 255);
+                        sr[0, 0, t] = (byte)Math.Clamp((sr[r, 1, t] * 2 - sr[r2, 2, t]) / 2.0 + (sr[r, 1, t] * 2 + sr[rp, 1, t] / 2.0 + sr[r, 2, t] / 2.0) / 6.0 + 0.5f, 0, 255);
+                    }
+
+                    r = (int)(oi2 / os2p + 0.5f);
+                    r2 = r * 2;
+                    rp = r + 1;
+                    int r2p = r2 + 1;
+                    for (byte t = 0; t < 3; t++)
+                    {
+                        sr[oi, 0, t] = (byte)Math.Clamp((sr[oi - r, 1, t] * 2 - sr[oi - r2, 2, t]) / 2.0 + (sr[oi - r, 1, t] * 2 + sr[oi - r, 2, t] / 2.0 + sr[oi - rp, 1, t] / 2.0) / 6.0 + 0.5f, 0, 255);
+                        sr[oi, osp, t] = (byte)Math.Clamp((sr[oi - r, os, t] * 2 - sr[oi - r2, osm, t]) / 2.0 + (sr[oi - r, os, t] * 2 + sr[oi - rp, os, t] / 2.0 + sr[oi - r, osm, t] / 2.0) / 6.0 + 0.5f, 0, 255);
+                        sr[1, 0, t] = (byte)Math.Clamp((sr[rp, 1, t] * 2 - sr[r2p, 2, t]) / 2.0 + (sr[rp, 1, t] * 2 + sr[rp + 1, 1, t] / 2.0 + sr[rp, 2, t] / 2.0) / 6.0 + 0.5f, 0, 255);
+                        sr[1, osp, t] = (byte)Math.Clamp((sr[rp, os, t] * 2 - sr[r2p, osm, t]) / 2.0 + (sr[rp, os, t] * 2 + sr[rp + 1, os, t] / 2.0 + sr[rp, osm, t] / 2.0) / 6.0 + 0.5f, 0, 255);
+                    }
+
+                    r = (int)(os2 / oi2p + 0.5f);
+                    r2 = r * 2;
+                    rp = r + 1;
+                    r2p = r2 + 1;
+                    for (byte t = 0; t < 3; t++)
+                    {
+                        sr[oip, 1, t] = (byte)Math.Clamp((sr[oi, rp, t] * 2 - sr[oim, r2p, t]) / 2.0 + (sr[oi, rp, t] * 2 + sr[oi, rp + 1, t] / 2.0 + sr[oim, rp, t] / 2.0) / 6.0 + 0.5f, 0, 255);
+                        sr[oip, os, t] = (byte)Math.Clamp((sr[oi, os - r, t] * 2 - sr[oim, os - r2, t]) / 2.0 + (sr[oi, os - r, t] * 2 + sr[oi, osm - r, t] / 2.0 + sr[oim, os - r, t] / 2.0) / 6.0 + 0.5f, 0, 255);
+                        sr[0, 1, t] = (byte)Math.Clamp((sr[1, rp, t] * 2 - sr[2, r2p, t]) / 2.0 + (sr[1, rp, t] * 2 + sr[2, rp, t] / 2.0 + sr[1, rp + 1, t] / 2.0) / 6.0 + 0.5f, 0, 255);
+                        sr[0, os, t] = (byte)Math.Clamp((sr[1, os - r, t] * 2 - sr[2, os - r2, t]) / 2.0 + (sr[2, os - r, t] / 2.0 + sr[1, osm - r, t] / 2.0 + sr[1, os - r, t] * 2) / 6.0 + 0.5f, 0, 255);
+                    }
+                },
+                () =>
+                {
+                    Parallel.For(2, (int)os2p, s =>
+                    {
+                        int r = (int)((os2p - s) / oi2p + 0.5f);
+                        int r2 = r * 2;
+                        int rp = r + 1;
+                        int rm = r - 1;
+                        int osps = osp - s;
+
+                        for (byte t = 0; t < 3; t++)
+                        {
+                            sr[0, s, t] = (byte)Math.Clamp((sr[1, s + r, t] * 2 - sr[2, s + r2, t]) / 2.0 + (sr[1, s + rp, t] / 2.0 + sr[1, s + rm, t] / 2.0 + sr[1, s + r, t] * 2) / 6.0 + 0.5f, 0, 255);
+                            sr[oip, s, t] = (byte)Math.Clamp((sr[oi, s + r, t] * 2 - sr[oim, s + r2, t]) / 2.0 + (sr[oi, s + rm, t] / 2.0 + sr[oi, s + rp, t] / 2.0 + sr[oi, s + r, t] * 2) / 6.0 + 0.5f, 0, 255);
+                            sr[0, osps, t] = (byte)Math.Clamp((sr[1, osps - r, t] * 2 - sr[2, osps - r2, t]) / 2.0 + (sr[1, osps - rp, t] / 2.0 + sr[1, osps - rm, t] / 2.0 + sr[1, osps - r, t] * 2) / 6.0 + 0.5f, 0, 255);
+                            sr[oip, osps, t] = (byte)Math.Clamp((sr[oi, osps - r, t] * 2 - sr[oim, osps - r2, t]) / 2.0 + (sr[oi, osps - rm, t] / 2.0 + sr[oi, osps - rp, t] / 2.0 + sr[oi, osps - r, t] * 2) / 6.0 + 0.5f, 0, 255);
+                        }
+                    });
+                },
+                () =>
+                {
+                    Parallel.For(2, (int)oi2p, i =>
+                    {
+                        int r = (int)((oi2p - i) / os2p + 0.5f);
+                        int r2 = r * 2;
+                        int rp = r + 1;
+                        int rm = r - 1;
+                        int oipi = oip - i;
+                        for (byte t = 0; t < 3; t++)
+                        {
+                            sr[i, 0, t] = (byte)Math.Clamp((sr[i + r, 1, t] * 2 - sr[i + r2, 2, t]) / 2.0 + (sr[i + r, 1, t] * 2 + sr[i + rm, 1, t] / 2.0 + sr[i + rp, 1, t] / 2.0) / 6.0 + 0.5f, 0, 255);
+                            sr[i, osp, t] = (byte)Math.Clamp((sr[i + r, os, t] * 2 - sr[i + r2, osm, t]) / 2.0 + (sr[i + r, os, t] * 2 + sr[i + rp, os, t] / 2.0 + sr[i + rm, os, t] / 2.0) / 6.0 + 0.5f, 0, 255);
+                            sr[oip - i, 0, t] = (byte)Math.Clamp((sr[oip - i - r, 1, t] * 2 - sr[oip - i - r2, 2, t]) / 2.0 + (sr[oipi - r, 1, t] * 2 + sr[oipi - rm, 1, t] / 2.0 + sr[oipi - rp, 1, t] / 2.0) / 6.0 + 0.5f, 0, 255);
+                            sr[oipi, osp, t] = (byte)Math.Clamp((sr[oipi - r, os, t] * 2 - sr[oipi - r2, osm, t]) / 2.0 + (sr[oipi - r, os, t] * 2 + sr[oipi - rp, os, t] / 2.0 + sr[oipi - rm, os, t] / 2.0) / 6.0 + 0.5f, 0, 255);
+                        }
+                    });
+                }
+            );
+        }
+
 
         private Bitmap ScaleSmoothContinuousGray(Image img, int x, int ac)
         {
@@ -15818,7 +15832,7 @@ namespace ScaleSmooth
 
                     for (int i = 0; i < ni; i++)
                     {
-                        Parallel.For(0, ns, s => //Parallel.For here!, after new methods and optimizaton del this comment
+                        Parallel.For(0, ns, s =>
                         {
                             if (ri[i, s, t] == 123)
                             {
@@ -17904,7 +17918,7 @@ namespace ScaleSmooth
             return ri;
         }
 
-        
+
 
         private byte[,,] BilinearApproximationSmoothContrastColor(Image img, int x, int ac)
         {
@@ -20303,7 +20317,7 @@ namespace ScaleSmooth
             }
             return ri;
         }
-        
+
 
         private static short[,,] ArrayBilinearApproximationSmoothColor(byte[,,] sr, int x, int ac, int oi, int os)
         {
@@ -21382,8 +21396,667 @@ namespace ScaleSmooth
             return edges;
         }
 
-        // Метод для создания увеличенного изображения
-        public Bitmap GPTSolutionGray(Bitmap lowResImage, int scale, int iterations)
+        private Bitmap AntiBicubucColor(Bitmap lowResImage, int scale, int accuracy) //exactMean x2? x2 analyze?
+        {
+            int p1;
+            if (accuracy > 30)
+            {
+                p1 = 49;
+            }
+            else
+            {
+                p1 = 98;
+            }
+
+                int w = lowResImage.Width;
+            int h = lowResImage.Height;
+            // Установка желаемого разрешения
+            int upscaleWidth = w * scale;
+            int upscaleHeight = h * scale;
+            int upscaleWidthFields = upscaleWidth + scale * 4;
+            int upscaleHeightFields = upscaleHeight + scale * 4;
+
+            // Масштабирование изображения
+            Bitmap upscaledImage = new(upscaleWidthFields, upscaleHeightFields);
+            using (Graphics g = Graphics.FromImage(upscaledImage))
+            {
+                // Использование бикубической интерполяции
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+
+                // Рисование масштабированного изображения
+                byte[,,] lowResBytes = RGBfromBMP(lowResImage, 1, 1, 1, 1, w, h);
+                NaiveExtrapolationColor(lowResBytes, w, h);
+                lowResImage = BMPfromRGB(lowResBytes, w + 2, h + 2);
+                lowResBytes = RGBfromBMP(lowResImage, 1, 1, 1, 1, w + 2, h + 2);
+                NaiveExtrapolationColor(lowResBytes, w + 2, h + 2);
+                lowResImage = BMPfromRGB(lowResBytes, w + 4, h + 4);
+                g.DrawImage(lowResImage, new Rectangle(0, 0, upscaleWidthFields, upscaleHeightFields));
+            }
+
+            int scale2 = scale * scale;
+            int scale3 = scale2 * scale;
+            int scale4 = scale3 * scale;
+
+            //Размер фильтра повышения резкости
+            int matrixSize = (int)((0.0000000038995f * scale4 - 0.00000067635f * scale3 - 0.0000073665f * scale2 + 0.008557f * scale) * accuracy + 0.7f);
+            if (matrixSize < 3)
+                matrixSize = 3;
+            else if (matrixSize % 2 == 0)
+                matrixSize--;
+
+            int scale15 = scale * 3 / 2;
+
+            float[,] sharpenMatrix = new float[matrixSize, matrixSize];
+            for (int i = 0; i < matrixSize; i++)
+            {
+                for (int s = 0; s < matrixSize; s++)
+                {
+                    sharpenMatrix[i, s] = -1f / matrixSize;
+                }
+            }
+            int center = matrixSize / 2;// Центр фильтра
+            sharpenMatrix[center, center] = matrixSize + (1 - 1f / matrixSize);
+            Bitmap sharpenedImage = new(upscaleWidthFields, upscaleHeightFields);
+
+            // Получение данных изображения
+            Rectangle rect = new(0, 0, upscaleWidthFields, upscaleHeightFields);
+            BitmapData srcData = upscaledImage.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            BitmapData dstData = sharpenedImage.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+            ProgressText.Text = "1";
+            int progress = 0;
+            // Применение фильтра к каждому пикселю
+            Parallel.For(center, upscaleHeightFields - center, y =>
+            {
+                unsafe
+                {
+                    for (int x = center; x < upscaleWidthFields - center; x++)
+                    {
+                        float red = 0, green = 0, blue = 0;
+
+                        // Применение фильтра
+                        for (int fy = 0; fy < matrixSize; fy++)
+                        {
+                            for (int fx = 0; fx < matrixSize; fx++)
+                            {
+                                int imgX = x + fx - center;
+                                int imgY = y + fy - center;
+
+                                // Получение цвета текущего пикселя
+                                Color pixelColor = Color.FromArgb(
+                                    *(int*)((byte*)srcData.Scan0 + imgY * srcData.Stride + imgX * 4)
+                                );
+
+                                red += pixelColor.R * sharpenMatrix[fy, fx];
+                                green += pixelColor.G * sharpenMatrix[fy, fx];
+                                blue += pixelColor.B * sharpenMatrix[fy, fx];
+                            }
+                        }
+
+                        // Ограничение значений цвета в диапазоне от 0 до 255
+                        red = Math.Min(Math.Max(red, 0), 255);
+                        green = Math.Min(Math.Max(green, 0), 255);
+                        blue = Math.Min(Math.Max(blue, 0), 255);
+
+                        // Запись результата
+                        *(int*)((byte*)dstData.Scan0 + (y * dstData.Stride) + x * 4) = Color.FromArgb((int)red, (int)green, (int)blue).ToArgb();
+                    }
+                }
+                progress++;
+#if !DEBUG
+                if (y % Environment.ProcessorCount == 0) ProgressText.Text = (p1 * progress / (upscaleHeightFields - center * 2) + 1).ToString();
+#endif
+            });
+            upscaledImage.UnlockBits(srcData);
+            sharpenedImage.UnlockBits(dstData);
+
+            if (accuracy > 30)
+            {
+                int smooth = (int)((0.000000024035f * scale4 - 0.000005189278f * scale3 + 0.000369310699f * scale2 + 0.001954212857f * scale) * (accuracy - 30) + 0.63f);
+                float smoothpower = 13.96f * MathF.Exp(-0.025849f * scale);
+                int blur = (int)((-0.000000220737f * scale3 + 0.000042029369f * scale2 + 0.00352674724f * scale + 0.04135182f) * (accuracy - 30) * 1.35898f + 0.5641f);
+                int definition = (int)(-8.9616f * MathF.Log(scale) + 43.5f);
+                float halfMdef = 127.5f - definition;
+                int fullMdef = 255 - definition;
+                float radius = 0.000030545f * scale2 - 0.0062178f * scale + 0.43829f;
+
+                byte[,,] smoothBytes = RGBfromBMP(sharpenedImage, 0, 0, 0, 0, upscaleWidthFields, upscaleHeightFields);
+                byte[,,] smoothBytes2 = new byte[upscaleWidthFields, upscaleHeightFields, 3];
+
+                Parallel.For(0, 3, t =>
+                {
+                    Random rnd = new();
+                    int tmp;
+
+                    for (int b = 0; b < blur; b++)
+                    {
+                        if (t == 0) ProgressText.Text = (50 + b * 15 / blur).ToString();
+                        for (int i = 1; i < upscaleWidthFields - 1; i++)
+                        {
+                            for (int s = 1; s < upscaleHeightFields - 1; s++)
+                            {
+                                if (smoothBytes[i, s, t] > definition && smoothBytes[i, s, t] < fullMdef)
+                                {
+                                    tmp = rnd.Next(Math.Min(smoothBytes[i, s, t] - definition, fullMdef - smoothBytes[i, s, t]));
+                                    smoothBytes2[i, s, t] = (byte)(((smoothBytes[i, s, t] + smoothBytes[i, s + 1, t] + smoothBytes[i, s - 1, t] + smoothBytes[i - 1, s, t] + smoothBytes[i + 1, s, t]) / 5f * tmp + smoothBytes[i, s, t] * halfMdef) / (halfMdef + tmp) + 0.5f);//precalc
+                                }
+                                else
+                                {
+                                    smoothBytes2[i, s, t] = smoothBytes[i, s, t];
+                                }
+
+                            }
+                        }
+
+                        for (int i = 2; i < upscaleWidthFields - 2; i++)
+                        {
+                            for (int s = 2; s < upscaleHeightFields - 2; s++)
+                            {
+                                if (smoothBytes2[i, s, t] > definition && smoothBytes2[i, s, t] < fullMdef)
+                                {
+                                    tmp = rnd.Next(Math.Min(smoothBytes[i, s, t] - definition, fullMdef - smoothBytes[i, s, t]));//optimize
+                                    smoothBytes[i, s, t] = (byte)(((smoothBytes2[i, s, t] + smoothBytes2[i + 2, s + 1, t] + smoothBytes2[i + 2, s - 1, t] + smoothBytes2[i - 2, s - 1, t] + smoothBytes2[i - 2, s + 1, t] + smoothBytes2[i - 1, s + 2, t] + smoothBytes2[i - 1, s - 2, t] + smoothBytes2[i + 1, s - 2, t] + smoothBytes2[i + 1, s + 2, t]) / 9f * tmp + smoothBytes2[i, s, t] * halfMdef) / (halfMdef + tmp) + 0.5f);
+                                }
+
+                            }
+                        }
+                    }
+
+                    for (int c = 1; c <= smooth; c++)
+                    {
+                        if (t == 0) ProgressText.Text = (65 + c * 32 / smooth).ToString();
+                        float angle = c * 6.28f / smooth;
+                        float antiAngle = (smooth - c) * 6.28f / smooth;
+                        int threshold = (int)((smooth + center * 2f / scale - c) * smoothpower);
+                        int halfx = (int)MathF.Ceiling(scale * radius * c / smooth);
+                        int cosx = (int)(MathF.Cos(angle) * halfx);
+                        int sinx = (int)(MathF.Sin(angle) * halfx);
+                        int cosxm = (int)(MathF.Cos(antiAngle) * (halfx - 1));
+                        int sinxm = (int)(MathF.Sin(antiAngle) * (halfx - 1));
+
+                        Parallel.For(halfx, upscaleWidthFields - halfx, i =>
+                        {
+                            for (int s = halfx; s < upscaleHeightFields - halfx; s++)
+                            {
+                                byte min = 255;
+                                byte max = 0;
+                                for (int ii = -1; ii < 2; ii++)
+                                {
+                                    for (int ss = -1; ss < 2; ss++)
+                                    {
+                                        if (smoothBytes[i + ii * halfx, s + ss * halfx, t] < min) min = smoothBytes[i + ii * halfx, s + ss * halfx, t];
+                                        if (smoothBytes[i + ii * halfx, s + ss * halfx, t] > max) max = smoothBytes[i + ii * halfx, s + ss * halfx, t];
+                                    }
+                                }
+                                if (max - min < threshold)
+                                {
+                                    smoothBytes2[i, s, t] = (byte)(((smoothBytes[i, s, t] + smoothBytes[i, s + cosxm, t] + smoothBytes[i, s - cosxm, t] + smoothBytes[i - sinxm, s, t] + smoothBytes[i + sinxm, s, t] + smoothBytes[i - sinx, s + cosx, t] + smoothBytes[i + sinx, s - cosx, t] + smoothBytes[i - sinx, s - cosx, t] + smoothBytes[i + sinx, s + cosx, t]) / 9f * (threshold - max + min) + smoothBytes[i, s, t] * (max - min) + rnd.Next(threshold)) / threshold);
+                                }
+                                else
+                                    smoothBytes2[i, s, t] = smoothBytes[i, s, t];
+                            }
+                        });
+
+                        Parallel.For(halfx, upscaleWidthFields - halfx, i =>
+                        {
+                            for (int s = halfx; s < upscaleHeightFields - halfx; s++)
+                            {
+                                byte min = 255;
+                                byte max = 0;
+                                for (int ii = -1; ii < 2; ii++)
+                                {
+                                    for (int ss = -1; ss < 2; ss++)
+                                    {
+                                        if (smoothBytes2[i + ii * halfx, s + ss * halfx, t] < min) min = smoothBytes2[i + ii * halfx, s + ss * halfx, t];
+                                        if (smoothBytes2[i + ii * halfx, s + ss * halfx, t] > max) max = smoothBytes2[i + ii * halfx, s + ss * halfx, t];
+                                    }
+                                }
+                                if (max - min < threshold)
+                                {
+                                    smoothBytes[i, s, t] = (byte)(((smoothBytes2[i, s, t] + smoothBytes2[i, s + cosx, t] + smoothBytes2[i, s - cosx, t] + smoothBytes2[i - sinx, s, t] + smoothBytes2[i + sinx, s, t] + smoothBytes2[i - sinxm, s + cosxm, t] + smoothBytes2[i + sinxm, s - cosxm, t] + smoothBytes2[i - sinxm, s - cosxm, t] + smoothBytes2[i + sinxm, s + cosxm, t]) / 9f * (threshold - max + min) + smoothBytes[i, s, t] * (max - min) + rnd.Next(threshold)) / threshold);
+                                }
+                            }
+                        });
+                    }
+                });
+
+                if (accuracy > 60)
+                {
+                    int leave = (int)((4235.7f * MathF.Pow(scale, -1.4054f) + 0.0006f * scale3 - 0.1494 * scale2 + 13.292f * scale - 160f) / (accuracy - 60) + 0.5f);
+                    byte[,,] sharpBytes = RGBfromBMP(sharpenedImage, 0, 0, 0, 0, upscaleWidthFields, upscaleHeightFields);
+                    Parallel.For(scale15, scale15 + upscaleWidth, i =>
+                    {
+                        for (int s = scale15; s <= scale15 + upscaleHeight; s++)
+                        {
+                            if (Math.Abs(sharpBytes[i, s, 0] - smoothBytes[i, s, 0]) > leave || Math.Abs(sharpBytes[i, s, 1] - smoothBytes[i, s, 1]) > leave || Math.Abs(sharpBytes[i, s, 2] - smoothBytes[i, s, 2]) > leave)
+                            {
+                                sharpBytes[i, s, 0] = 12;
+                                sharpBytes[i, s, 1] = 34;
+                                sharpBytes[i, s, 2] = 56;
+                            }
+                        }
+                    });
+
+                    ProgressText.Text = "98";
+
+                    Parallel.For(scale15, scale15 + upscaleWidth, i =>
+                    {
+                        int ii, ss;
+                        float sc = 4.1702f * MathF.Pow(scale, 1.0237f);
+                        for (int s = scale15; s <= scale15 + upscaleHeight; s++)
+                        {
+                            if (sharpBytes[i, s, 0] == 12 && sharpBytes[i, s, 1] == 34 && sharpBytes[i, s, 2] == 56)
+                            {
+                                int[] x = new int[2];
+                                int[] y = new int[2];
+                                float[] d = new float[2];
+
+                                int r = 1;
+                                float a = 0;
+
+                                ii = i;
+                                ss = s + r;
+                                while (sharpBytes[ii, ss, 0] == 12 && sharpBytes[ii, ss, 1] == 34 && sharpBytes[ii, ss, 2] == 56)
+                                {
+                                    a += 1.57079632679f / r;
+                                    if (a > 6.2831853071f)
+                                    {
+                                        a = 0;
+                                        r++;
+                                        ii = i;
+                                        ss = s + r;
+                                    }
+                                    else
+                                    {
+                                        ii = (int)(i + Math.Sin(a) * r + 0.5f);
+                                        ss = (int)(s + Math.Cos(a) * r + 0.5f);
+                                    }
+                                }
+                                x[0] = ii;
+                                y[0] = ss;
+                                d[0] = MathF.Sqrt(MathF.Pow(ss - s, 2) + MathF.Pow(ii - i, 2));
+
+                                a -= MathF.PI;
+                                ii = (int)(i + Math.Sin(a) * r + 0.5f);
+                                ss = (int)(s + Math.Cos(a) * r + 0.5f);
+                                while (sharpBytes[ii, ss, 0] == 12 && sharpBytes[ii, ss, 1] == 34 && sharpBytes[ii, ss, 2] == 56)
+                                {
+                                    r++;
+                                    ii = (int)(i + Math.Sin(a) * r + 0.5f);
+                                    ss = (int)(s + Math.Cos(a) * r + 0.5f);
+                                }
+                                x[1] = ii;
+                                y[1] = ss;
+                                d[1] = MathF.Sqrt(MathF.Pow(ss - s, 2) + MathF.Pow(ii - i, 2));
+
+                                float sd = d[0] + d[1];
+                                float diff = MathF.Sqrt(MathF.Pow(smoothBytes[x[0], y[0], 0] - smoothBytes[x[1], y[1], 0], 2) + MathF.Pow(smoothBytes[x[0], y[0], 1] - smoothBytes[x[1], y[1], 1], 2) + MathF.Pow(smoothBytes[x[0], y[0], 2] - smoothBytes[x[1], y[1], 2], 2));
+                                float smoothCorrection = sd * sc;
+
+                                if (diff == 0 || diff >= smoothCorrection)
+                                {
+                                    smoothBytes[i, s, 0] = smoothBytes[x[0], y[0], 0];
+                                    smoothBytes[i, s, 1] = smoothBytes[x[0], y[0], 1];
+                                    smoothBytes[i, s, 2] = smoothBytes[x[0], y[0], 2];
+                                }
+                                else
+                                {
+                                    float d05 = MathF.Pow(d[0], 5);
+                                    float d15 = MathF.Pow(d[1], 5);
+
+                                    float rr = (smoothBytes[x[0], y[0], 0] * d[1] + smoothBytes[x[1], y[1], 0] * d[0]) / sd;
+                                    float gg = (smoothBytes[x[0], y[0], 1] * d[1] + smoothBytes[x[1], y[1], 1] * d[0]) / sd;
+                                    float bb = (smoothBytes[x[0], y[0], 2] * d[1] + smoothBytes[x[1], y[1], 2] * d[0]) / sd;
+
+                                    float sdd = d05 + d15;
+                                    float rrr = (smoothBytes[x[0], y[0], 0] * d15 + smoothBytes[x[1], y[1], 0] * d05) / sdd;
+                                    float ggg = (smoothBytes[x[0], y[0], 1] * d15 + smoothBytes[x[1], y[1], 1] * d05) / sdd;
+                                    float bbb = (smoothBytes[x[0], y[0], 2] * d15 + smoothBytes[x[1], y[1], 2] * d05) / sdd;
+
+                                    smoothBytes[i, s, 0] = (byte)((rrr * diff + rr * (smoothCorrection - diff)) / smoothCorrection + 0.5f);
+                                    smoothBytes[i, s, 1] = (byte)((ggg * diff + gg * (smoothCorrection - diff)) / smoothCorrection + 0.5f);
+                                    smoothBytes[i, s, 2] = (byte)((bbb * diff + bb * (smoothCorrection - diff)) / smoothCorrection + 0.5f);
+                                }
+                            }
+                        }
+                    });
+                }
+
+                ProgressText.Text = "99";
+                sharpenedImage = BMPfromRGB(smoothBytes, upscaleWidthFields, upscaleHeightFields);
+            }
+
+            Bitmap croppedImage = new(upscaleWidth, upscaleHeight);
+            using (Graphics c = Graphics.FromImage(croppedImage))
+            {
+                c.DrawImage(sharpenedImage, new Rectangle(0, 0, upscaleWidth, upscaleHeight), new Rectangle(scale15, scale15, upscaleWidth, upscaleHeight), GraphicsUnit.Pixel);
+            }
+
+            return croppedImage;
+        }
+
+        private Bitmap AntiBicubucGray(Bitmap lowResImage, int scale, int accuracy) //exactMean x2? x2 analyze?
+        {
+            int p1;
+            if (accuracy > 30)
+            {
+                p1 = 49;
+            }
+            else
+            {
+                p1 = 98;
+            }
+
+            int w = lowResImage.Width;
+            int h = lowResImage.Height;
+            // Установка желаемого разрешения
+            int upscaleWidth = w * scale;
+            int upscaleHeight = h * scale;
+            int upscaleWidthFields = upscaleWidth + scale * 4;
+            int upscaleHeightFields = upscaleHeight + scale * 4;
+
+            // Масштабирование изображения
+            Bitmap upscaledImage = new(upscaleWidthFields, upscaleHeightFields);
+            using (Graphics g = Graphics.FromImage(upscaledImage))
+            {
+                // Использование бикубической интерполяции
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+
+                // Рисование масштабированного изображения
+                byte[,] lowResBytes = GrayFromBMP(lowResImage, 1, 1, 1, 1, w, h); 
+                NaiveExtrapolationGray(lowResBytes, w, h);
+                lowResImage = BMPfromGray(lowResBytes, w + 2, h + 2);
+                lowResBytes = GrayFromBMP(lowResImage, 1, 1, 1, 1, w + 2, h + 2);
+                NaiveExtrapolationGray(lowResBytes, w + 2, h + 2);
+                lowResImage = BMPfromGray(lowResBytes, w + 4, h + 4);
+                g.DrawImage(lowResImage, new Rectangle(0, 0, upscaleWidthFields, upscaleHeightFields));
+            }
+
+            int scale2 = scale * scale;
+            int scale3 = scale2 * scale;
+            int scale4 = scale3 * scale;
+
+            //Размер фильтра повышения резкости
+            int matrixSize = (int)((0.0000000038995f * scale4 - 0.00000067635f * scale3 - 0.0000073665f * scale2 + 0.008557f * scale) * accuracy + 0.7f);
+            if (matrixSize < 3)
+                matrixSize = 3;
+            else if (matrixSize % 2 == 0)
+                matrixSize--;
+
+            int scale15 = scale * 3 / 2;
+
+            float[,] sharpenMatrix = new float[matrixSize, matrixSize];
+            for (int i = 0; i < matrixSize; i++)
+            {
+                for (int s = 0; s < matrixSize; s++)
+                {
+                    sharpenMatrix[i, s] = -1f / matrixSize;
+                }
+            }
+            int center = matrixSize / 2;// Центр фильтра
+            sharpenMatrix[center, center] = matrixSize + (1 - 1f / matrixSize);
+            Bitmap sharpenedImage = new(upscaleWidthFields, upscaleHeightFields);
+
+            // Получение данных изображения
+            Rectangle rect = new(0, 0, upscaleWidthFields, upscaleHeightFields);
+            BitmapData srcData = upscaledImage.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            BitmapData dstData = sharpenedImage.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+            ProgressText.Text = "1";
+            int progress = 0;
+            // Применение фильтра к каждому пикселю
+            Parallel.For(center, upscaleHeightFields - center, y =>
+            {
+                unsafe
+                {
+                    for (int x = center; x < upscaleWidthFields - center; x++)
+                    {
+                        float luma = 0;
+
+                        // Применение фильтра
+                        for (int fy = 0; fy < matrixSize; fy++)
+                        {
+                            for (int fx = 0; fx < matrixSize; fx++)
+                            {
+                                int imgX = x + fx - center;
+                                int imgY = y + fy - center;
+
+                                // Получение цвета текущего пикселя
+                                Color pixelColor = Color.FromArgb(
+                                    *(int*)((byte*)srcData.Scan0 + imgY * srcData.Stride + imgX * 4)
+                                );
+
+                                luma += pixelColor.R * sharpenMatrix[fy, fx];
+                            }
+                        }
+
+                        // Ограничение значений цвета в диапазоне от 0 до 255
+                        luma = Math.Min(Math.Max(luma, 0), 255);
+
+                        // Запись результата
+                        *(int*)((byte*)dstData.Scan0 + (y * dstData.Stride) + x * 4) = Color.FromArgb((int)luma, (int)luma, (int)luma).ToArgb();
+                    }
+                }
+                progress++;
+#if !DEBUG
+                if (y % Environment.ProcessorCount == 0) ProgressText.Text = (p1 * progress / (upscaleHeightFields - center * 2) + 1).ToString();
+#endif
+            });
+            upscaledImage.UnlockBits(srcData);
+            sharpenedImage.UnlockBits(dstData);
+
+            if (accuracy > 30)
+            {
+                int smooth = (int)((0.000000024035f * scale4 - 0.000005189278f * scale3 + 0.000369310699f * scale2 + 0.001954212857f * scale) * (accuracy - 30) + 0.63f);
+                float smoothpower = 13.96f * MathF.Exp(-0.025849f * scale);
+                int blur = (int)((-0.000000220737f * scale3 + 0.000042029369f * scale2 + 0.00352674724f * scale + 0.04135182f) * (accuracy - 30) * 1.35898f + 0.5641f);
+                int definition = (int)(-8.9616f * MathF.Log(scale) + 43.5f);
+                float halfMdef = 127.5f - definition;
+                int fullMdef = 255 - definition;
+                float radius = 0.000030545f * scale2 - 0.0062178f * scale + 0.43829f;
+
+                byte[,] smoothBytes = GrayFromBMP(sharpenedImage, 0, 0, 0, 0, upscaleWidthFields, upscaleHeightFields);
+                byte[,] smoothBytes2 = new byte[upscaleWidthFields, upscaleHeightFields];
+                
+                Random rnd = new();
+                int tmp;
+
+                for (int b = 0; b < blur; b++)
+                {
+                    ProgressText.Text = (50 + b * 15 / blur).ToString();
+                    for (int i = 1; i < upscaleWidthFields - 1; i++)
+                    {
+                        for (int s = 1; s < upscaleHeightFields - 1; s++)
+                        {
+                            if (smoothBytes[i, s] > definition && smoothBytes[i, s] < fullMdef)
+                            {
+                                tmp = rnd.Next(Math.Min(smoothBytes[i, s] - definition, fullMdef - smoothBytes[i, s]));
+                                smoothBytes2[i, s] = (byte)(((smoothBytes[i, s] + smoothBytes[i, s + 1] + smoothBytes[i, s - 1] + smoothBytes[i - 1, s] + smoothBytes[i + 1, s]) / 5f * tmp + smoothBytes[i, s] * halfMdef) / (halfMdef + tmp) + 0.5f);//precalc
+                            }
+                            else
+                            {
+                                smoothBytes2[i, s] = smoothBytes[i, s];
+                            }
+
+                        }
+                    }
+
+                    for (int i = 2; i < upscaleWidthFields - 2; i++)
+                    {
+                        for (int s = 2; s < upscaleHeightFields - 2; s++)
+                        {
+                            if (smoothBytes2[i, s] > definition && smoothBytes2[i, s] < fullMdef)
+                            {
+                                tmp = rnd.Next(Math.Min(smoothBytes[i, s] - definition, fullMdef - smoothBytes[i, s]));//optimize
+                                smoothBytes[i, s] = (byte)(((smoothBytes2[i, s] + smoothBytes2[i + 2, s + 1] + smoothBytes2[i + 2, s - 1] + smoothBytes2[i - 2, s - 1] + smoothBytes2[i - 2, s + 1] + smoothBytes2[i - 1, s + 2] + smoothBytes2[i - 1, s - 2] + smoothBytes2[i + 1, s - 2] + smoothBytes2[i + 1, s + 2]) / 9f * tmp + smoothBytes2[i, s] * halfMdef) / (halfMdef + tmp) + 0.5f);
+                            }
+
+                        }
+                    }
+                }
+
+                for (int c = 1; c <= smooth; c++)
+                {
+                    ProgressText.Text = (65 + c * 32 / smooth).ToString();
+                    float angle = c * 6.28f / smooth;
+                    float antiAngle = (smooth - c) * 6.28f / smooth;
+                    int threshold = (int)((smooth + center * 2f / scale - c) * smoothpower);
+                    int halfx = (int)MathF.Ceiling(scale * radius * c / smooth);
+                    int cosx = (int)(MathF.Cos(angle) * halfx);
+                    int sinx = (int)(MathF.Sin(angle) * halfx);
+                    int cosxm = (int)(MathF.Cos(antiAngle) * (halfx - 1));
+                    int sinxm = (int)(MathF.Sin(antiAngle) * (halfx - 1));
+
+                    Parallel.For(halfx, upscaleWidthFields - halfx, i =>
+                    {
+                        for (int s = halfx; s < upscaleHeightFields - halfx; s++)
+                        {
+                            byte min = 255;
+                            byte max = 0;
+                            for (int ii = -1; ii < 2; ii++)
+                            {
+                                for (int ss = -1; ss < 2; ss++)
+                                {
+                                    if (smoothBytes[i + ii * halfx, s + ss * halfx] < min) min = smoothBytes[i + ii * halfx, s + ss * halfx];
+                                    if (smoothBytes[i + ii * halfx, s + ss * halfx] > max) max = smoothBytes[i + ii * halfx, s + ss * halfx];
+                                }
+                            }
+                            if (max - min < threshold)
+                            {
+                                smoothBytes2[i, s] = (byte)(((smoothBytes[i, s] + smoothBytes[i, s + cosxm] + smoothBytes[i, s - cosxm] + smoothBytes[i - sinxm, s] + smoothBytes[i + sinxm, s] + smoothBytes[i - sinx, s + cosx] + smoothBytes[i + sinx, s - cosx] + smoothBytes[i - sinx, s - cosx] + smoothBytes[i + sinx, s + cosx]) / 9f * (threshold - max + min) + smoothBytes[i, s] * (max - min) + rnd.Next(threshold)) / threshold);
+                            }
+                            else
+                                smoothBytes2[i, s] = smoothBytes[i, s];
+                        }
+                    });
+
+                    Parallel.For(halfx, upscaleWidthFields - halfx, i =>
+                    {
+                        for (int s = halfx; s < upscaleHeightFields - halfx; s++)
+                        {
+                            byte min = 255;
+                            byte max = 0;
+                            for (int ii = -1; ii < 2; ii++)
+                            {
+                                for (int ss = -1; ss < 2; ss++)
+                                {
+                                    if (smoothBytes2[i + ii * halfx, s + ss * halfx] < min) min = smoothBytes2[i + ii * halfx, s + ss * halfx];
+                                    if (smoothBytes2[i + ii * halfx, s + ss * halfx] > max) max = smoothBytes2[i + ii * halfx, s + ss * halfx];
+                                }
+                            }
+                            if (max - min < threshold)
+                            {
+                                smoothBytes[i, s] = (byte)(((smoothBytes2[i, s] + smoothBytes2[i, s + cosx] + smoothBytes2[i, s - cosx] + smoothBytes2[i - sinx, s] + smoothBytes2[i + sinx, s] + smoothBytes2[i - sinxm, s + cosxm] + smoothBytes2[i + sinxm, s - cosxm] + smoothBytes2[i - sinxm, s - cosxm] + smoothBytes2[i + sinxm, s + cosxm]) / 9f * (threshold - max + min) + smoothBytes[i, s] * (max - min) + rnd.Next(threshold)) / threshold);
+                            }
+                        }
+                    });
+                }
+
+                if (accuracy > 60)
+                {
+                    int leave = (int)((4235.7f * MathF.Pow(scale, -1.4054f) + 0.0006f * scale3 - 0.1494 * scale2 + 13.292f * scale - 160f) / (accuracy - 60) + 0.5f);
+                    byte[,] sharpBytes = GrayFromBMP(sharpenedImage, 0, 0, 0, 0, upscaleWidthFields, upscaleHeightFields);
+                    Parallel.For(scale15, scale15 + upscaleWidth, i =>
+                    {
+                        for (int s = scale15; s <= scale15 + upscaleHeight; s++)
+                        {
+                            if (Math.Abs(sharpBytes[i, s] - smoothBytes[i, s]) > leave)
+                            {
+                                sharpBytes[i, s] = 12;
+                            }
+                        }
+                    });
+
+                    ProgressText.Text = "98";
+
+                    Parallel.For(scale15, scale15 + upscaleWidth, i =>
+                    {
+                        int ii, ss;
+                        float sc = 4.1702f * MathF.Pow(scale, 1.0237f);
+                        for (int s = scale15; s <= scale15 + upscaleHeight; s++)
+                        {
+                            if (sharpBytes[i, s] == 12)
+                            {
+                                int[] x = new int[2];
+                                int[] y = new int[2];
+                                float[] d = new float[2];
+
+                                int r = 1;
+                                float a = 0;
+
+                                ii = i;
+                                ss = s + r;
+                                while (sharpBytes[ii, ss] == 12)
+                                {
+                                    a += 1.57079632679f / r;
+                                    if (a > 6.2831853071f)
+                                    {
+                                        a = 0;
+                                        r++;
+                                        ii = i;
+                                        ss = s + r;
+                                    }
+                                    else
+                                    {
+                                        ii = (int)(i + Math.Sin(a) * r + 0.5f);
+                                        ss = (int)(s + Math.Cos(a) * r + 0.5f);
+                                    }
+                                }
+                                x[0] = ii;
+                                y[0] = ss;
+                                d[0] = MathF.Sqrt(MathF.Pow(ss - s, 2) + MathF.Pow(ii - i, 2));
+
+                                a -= MathF.PI;
+                                ii = (int)(i + Math.Sin(a) * r + 0.5f);
+                                ss = (int)(s + Math.Cos(a) * r + 0.5f);
+                                while (sharpBytes[ii, ss] == 12)
+                                {
+                                    r++;
+                                    ii = (int)(i + Math.Sin(a) * r + 0.5f);
+                                    ss = (int)(s + Math.Cos(a) * r + 0.5f);
+                                }
+                                x[1] = ii;
+                                y[1] = ss;
+                                d[1] = MathF.Sqrt(MathF.Pow(ss - s, 2) + MathF.Pow(ii - i, 2));
+
+                                float sd = d[0] + d[1];
+                                float diff = smoothBytes[x[0], y[0]] - smoothBytes[x[1], y[1]];
+                                float smoothCorrection = sd * sc;
+
+                                if (diff == 0 || diff >= smoothCorrection)
+                                {
+                                    smoothBytes[i, s] = smoothBytes[x[0], y[0]];
+                                }
+                                else
+                                {
+                                    float d05 = MathF.Pow(d[0], 5);
+                                    float d15 = MathF.Pow(d[1], 5);
+
+                                    float rr = (smoothBytes[x[0], y[0]] * d[1] + smoothBytes[x[1], y[1]] * d[0]) / sd;
+
+                                    float sdd = d05 + d15;
+                                    float rrr = (smoothBytes[x[0], y[0]] * d15 + smoothBytes[x[1], y[1]] * d05) / sdd;
+
+                                    smoothBytes[i, s] = (byte)((rrr * diff + rr * (smoothCorrection - diff)) / smoothCorrection + 0.5f);
+                                }
+                            }
+                        }
+                    });
+                }
+
+                ProgressText.Text = "99";
+                sharpenedImage = BMPfromGray(smoothBytes, upscaleWidthFields, upscaleHeightFields);
+            }
+
+            Bitmap croppedImage = new(upscaleWidth, upscaleHeight);
+            using (Graphics c = Graphics.FromImage(croppedImage))
+            {
+                c.DrawImage(sharpenedImage, new Rectangle(0, 0, upscaleWidth, upscaleHeight), new Rectangle(scale15, scale15, upscaleWidth, upscaleHeight), GraphicsUnit.Pixel);
+            }
+
+            return croppedImage;
+        }
+
+
+        public Bitmap SmoothCASgray(Bitmap lowResImage, int scale, int iterations)
         {
             iterations++;
             float alpha = 1.03f / (iterations + 3);
@@ -21523,7 +22196,7 @@ namespace ScaleSmooth
             return BMPfromGray(output, highWidth, highHeight);
         }
 
-        public Bitmap GPTSolutionColor(Bitmap lowResImage, int scale, int iterations)
+        public Bitmap SmoothCAScolor(Bitmap lowResImage, int scale, int iterations)
         {
             iterations++;
             float alpha = 1.03f / (iterations + 3);
@@ -21547,7 +22220,7 @@ namespace ScaleSmooth
             }
 
             float[,,] highResLuminance = new float[highWidth, highHeight, 3];
-            // Инициализируем высокое разрешение с низким разрешением
+            // Инициализируем высокое разрешение с низким разрешением (ближайший сосед)
             for (int y = 0; y < highHeight; y++)
             {
                 for (int x = 0; x < highWidth; x++)
@@ -21930,94 +22603,99 @@ namespace ScaleSmooth
             StopWatchLabel.Visible = false;
             switch (comboBox1.SelectedItem)
             {
-                case "scaleSmooth"://afterALL, replace demo
+                case "Smooth"://afterALL, replace demo
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSmooth);
                     label6.Text = Strings.ScaleSmooth;
                     checkBox1.Visible = false;
                     break;
-                case "scaleSmoothContrast"://after optimization - result -> reverse adjust -> Continuos???
+                case "SmoothContrast"://after optimization - result -> reverse adjust -> Continuos???
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSmoothContr);
                     label6.Text = Strings.ScaleSmoothContrast;
                     checkBox1.Visible = false;
                     break;
-                case "scaleSmoothContinuous":
+                case "SmoothContinuous":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSmoothContin);
                     label6.Text = Strings.scaleSmoothContinuous;
                     checkBox1.Visible = false;
                     break;
-                case "boldScale":
+                case "Bold":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortBold);
                     label6.Text = Strings.boldScale;
                     checkBox1.Visible = false;
                     break;
-                case "contrastBoldScale":
+                case "ContrastBold":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortContrast);
                     label6.Text = Strings.contrastBoldScale;
                     checkBox1.Visible = false;
                     break;
-                case "scaleFurry":
+                case "Furry":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortFurry);
                     label6.Text = Strings.scaleFurry;
                     checkBox1.Visible = false;
                     break;
-                case "scaleRough":
+                case "Rough":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortRough);
                     label6.Text = Strings.scaleRough;
                     checkBox1.Visible = false;
                     break;
-                case "scaleSeparate":
+                case "Separate":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSeparate);
                     label6.Text = Strings.scaleSeparate;
                     checkBox1.Visible = false;
                     break;
-                case "scaleBilinearApproximation":
+                case "BA":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortBilApprox);
                     label6.Text = Strings.scaleBilinearApproximation;
                     checkBox1.Visible = true;
                     break;
-                case "scaleBAContrast":
+                case "BAContrast":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortBAcontrast);
                     label6.Text = Strings.scaleBAContrast;
                     checkBox1.Visible = true;
                     break;
-                case "scaleBASmoothContrast":
+                case "BASmoothContrast":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortBASmoothContrast);
                     label6.Text = Strings.scaleBASmoothContrast;
                     checkBox1.Visible = true;
                     break;
-                case "scaleBAMonochrome"://after new methods, numbers of original method to Github
+                case "BAMonochrome"://after new methods, numbers of original method to Github
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortBAmonochrome);
                     label6.Text = Strings.scaleBAmonochrome;
                     checkBox1.Visible = true;
                     break;
-                case "scaleBAMonochrome2":
+                case "BAMonochrome2":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortBAmonochrome2);
                     label6.Text = Strings.scaleBAmonochrome2;
                     checkBox1.Visible = true;
                     break;
-                case "scaleBAExtremum":
+                case "BAExtremum":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortBAExtremum);
                     label6.Text = Strings.scaleBAExtremum;
                     checkBox1.Visible = true;
                     break;
-                case "scale255BA":
+                case "255BA":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.short255BA);
                     label6.Text = Strings.scale255BA;
                     checkBox1.Visible = true;
                     break;
-                case "scaleThin255BA":
+                case "Thin255BA":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortThin255BA);
                     label6.Text = Strings.scaleThin255BA;
                     checkBox1.Visible = true;
                     break;
-                case "scaleDerivativeBA":
+                case "DerivativeBA":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortDerivativeBA);
                     label6.Text = Strings.scaleDerivativeBA;
                     checkBox1.Visible = true;
                     break;
-                case "GPT-Solution":
-                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortGPT);
-                    label6.Text = Strings.GPTsolution;
+                case "SmoothCAS":
+                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSmoothCAS);
+                    label6.Text = Strings.SmoothCAS;
+                    checkBox1.Visible = false;
+                    break;
+                case "AntiBicubic":
+                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortAntiBicubic);
+                    label6.Text = Strings.AntiBicubic;
                     checkBox1.Visible = false;
                     break;
             }
