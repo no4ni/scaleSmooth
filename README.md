@@ -100,6 +100,14 @@ Very very slow and you can't process multiple images at once<br><br>
 Makes objects thinner and more colorful<br>
 Very slow and you can't process multiple images at once<br><br>
 
+- **scaleDerivativeBA**<br>
+Much Gibbs ringing afrtifacts in the grid structure, contrasty but sharp edges<br>
+Very fast - Very slow and you can't process multiple images at once<br><br>
+
+- **GPT-Solution**<br>
+Smooth, clear, a little contrasty and the grid structure is visible, but accurate even without reverse correction<br>
+Fast, and you can process multiple images at the same time without losing speed<br><br>
+
 You can increase speed instead of accuracy and vice versa<br><br>
 
 
@@ -193,5 +201,13 @@ You can increase speed instead of accuracy and vice versa<br><br>
 - **scaleThin255BA**<br>
 Утоньшает объекты и делает их красочнее<br>
 Очень медленно, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
+
+- **scaleDerivativeBA**<br>
+Большой звон в сеточной структуре, контрастно, но чёткие края<br>
+Очень быстро - Очень медленно, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
+
+- **GPT-Solution**<br>
+Гладко, чётко, немного контрастно и видна сеточная структура, но точно даже без обратной корректировки<br>
+Быстро, и Вы можете обрабатывать одновременно несколько изображений без потери скорости<br><br>
 
 Можно увеличить скорость за счёт точности и наоборот
