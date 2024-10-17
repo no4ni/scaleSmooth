@@ -557,8 +557,8 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (img.Height < 25 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
-                {
+                if ((img.Height < 448 && ac * 5 + 508 > img.Height && ac * 34.667f + 32 > img.Height) || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
+                {//check if
                     return ScaleBASmoothContrastGray(img, x, ac);
                 }
                 else
@@ -583,7 +583,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (ac < 22 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 11)
+                if ((ac < 27 && img.Width < 448 && ac * 9.1429f + 201.14f > img.Width) || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 11)
                 {
                     return ScaleBilinearApproximationColor(img, x, ac);
                 }
@@ -911,8 +911,8 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (img.Height < 25 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
-                {
+                if ((img.Height < 448 && ac * 5 + 508 > img.Height && ac * 34.667f + 32 > img.Height) || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
+                { 
                     return ScaleBilinearApproximationGray(img, x, ac);
                 }
                 else
@@ -21408,7 +21408,7 @@ namespace ScaleSmooth
                 p1 = 98;
             }
 
-                int w = lowResImage.Width;
+            int w = lowResImage.Width;
             int h = lowResImage.Height;
             // Установка желаемого разрешения
             int upscaleWidth = w * scale;
@@ -21734,7 +21734,7 @@ namespace ScaleSmooth
             return croppedImage;
         }
 
-        private Bitmap AntiBicubucGray(Bitmap lowResImage, int scale, int accuracy) //exactMean x2? x2 analyze?
+        private Bitmap AntiBicubucGray(Bitmap lowResImage, int scale, int accuracy) //ABaccuracy exactMean x2? x2 analyze? 16->x2: 2-128 -> 16-256?
         {
             int p1;
             if (accuracy > 30)
@@ -21762,7 +21762,7 @@ namespace ScaleSmooth
                 g.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
                 // Рисование масштабированного изображения
-                byte[,] lowResBytes = GrayFromBMP(lowResImage, 1, 1, 1, 1, w, h); 
+                byte[,] lowResBytes = GrayFromBMP(lowResImage, 1, 1, 1, 1, w, h);
                 NaiveExtrapolationGray(lowResBytes, w, h);
                 lowResImage = BMPfromGray(lowResBytes, w + 2, h + 2);
                 lowResBytes = GrayFromBMP(lowResImage, 1, 1, 1, 1, w + 2, h + 2);
@@ -21855,7 +21855,7 @@ namespace ScaleSmooth
 
                 byte[,] smoothBytes = GrayFromBMP(sharpenedImage, 0, 0, 0, 0, upscaleWidthFields, upscaleHeightFields);
                 byte[,] smoothBytes2 = new byte[upscaleWidthFields, upscaleHeightFields];
-                
+
                 Random rnd = new();
                 int tmp;
 
@@ -22688,15 +22688,15 @@ namespace ScaleSmooth
                     label6.Text = Strings.scaleDerivativeBA;
                     checkBox1.Visible = true;
                     break;
-                case "SmoothCAS":
+                case "SmoothCAS": //? help -> github
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSmoothCAS);
                     label6.Text = Strings.SmoothCAS;
                     checkBox1.Visible = false;
                     break;
                 case "AntiBicubic":
                     pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortAntiBicubic);
-                    label6.Text = Strings.AntiBicubic;
-                    checkBox1.Visible = false;
+                    label6.Text = Strings.AntiBicubic;//No need to reverse adjust? other meth?
+                    checkBox1.Visible = false; //GPU version!
                     break;
             }
         }
