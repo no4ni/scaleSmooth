@@ -912,7 +912,7 @@ namespace ScaleSmooth
                 accelerator.Dispose();
                 context.Dispose();
                 if ((img.Height < 448 && ac * 5 + 508 > img.Height && ac * 34.667f + 32 > img.Height) || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
-                { 
+                {
                     return ScaleBilinearApproximationGray(img, x, ac);
                 }
                 else
@@ -9041,7 +9041,7 @@ namespace ScaleSmooth
             nim = ni - 1;
             nsm = ns - 1;
 
-            ac = x * (ac * (oim - 1) / 100 + 1);
+            ac = x * (ac + 1) / 101;
             osm = os - 1;
 
             byte[,] d = new byte[ni, ns];
@@ -9743,7 +9743,7 @@ namespace ScaleSmooth
             nim = ni - 1;
             nsm = ns - 1;
 
-            ac = x * (ac * (oim - 1) / 100 + 1);
+            ac = x * (ac + 1) / 101;
             osm = os - 1;
 
             byte[,,] r = new byte[ni, ns, 3];
@@ -10224,7 +10224,7 @@ namespace ScaleSmooth
             nim = ni - 1;
             nsm = ns - 1;
 
-            ac = x * (ac * (oim - 1) / 100 + 1);
+            ac = x * (ac / 8 + 1);
             ac2 = ac / 2;
             osm = os - 1;
 
@@ -10730,7 +10730,7 @@ namespace ScaleSmooth
             nim = ni - 1;
             nsm = ns - 1;
 
-            ac = x * (ac * (oim - 1) / 100 + 1);
+            ac = x * (ac / 8 + 1);
             ac2 = ac / 2;
             osm = os - 1;
 
@@ -17318,10 +17318,51 @@ namespace ScaleSmooth
             int ks = (int)MathF.Ceiling(osm * ac * 0.01f);
             int oiki = oim / ki;
 
-            for (int kki = 0; kki < ki * oiki; kki += oiki)
+            if (ac < 100)
+            {
+                for (int kki = 0; kki < oim; kki += 2)
+                {
+                    ProgressText.Text = (kki * 100 / oim / (ki + 2)).ToString();
+                    for (int kks = 0; kks < osm; kks += 2)
+                    {
+                        float xsx = kki * x + x50p;
+                        float xsxp = xsx + x;
+                        float ysx = kks * x + x50p;
+                        float ysxp = ysx + x;
+                        int ys2x = (kks + 2) * x;
+
+                        int iysx = kks * x;
+                        int iysxp = iysx + xm;
+                        int iysxpi = iysxp + 1;
+                        int iysxpp = iysxpi + xm;
+
+                        int ixsx = kki * x;
+                        int ixsxp = ixsx + xm;
+                        int ixsxpi = ixsxp + 1;
+                        double cx = ixsxp + 0.5;
+                        double cy = iysxp + 0.5;
+                        int ixsxpp = ixsxpi + xm;
+                        int xsp = kki + 1, ysp = kks + 1;
+
+                        for (int i = ixsx; i < (kki + 2) * x; i++)
+                        {
+                            Parallel.For(iysx, ys2x, s =>
+                            {
+                                short[] b3 = Bilinear3(i, s, xsx, ysx, xsxp, ysxp, sr[kki, kks, 0], sr[xsp, kks, 0], sr[xsp, ysp, 0], sr[kki, ysp, 0], sr[kki, kks, 1], sr[xsp, kks, 1], sr[xsp, ysp, 1], sr[kki, ysp, 1], sr[kki, kks, 2], sr[xsp, kks, 2], sr[xsp, ysp, 2], sr[kki, ysp, 2]);
+                                ri[i, s, 0] = b3[0];
+                                ri[i, s, 1] = b3[1];
+                                ri[i, s, 2] = b3[2];
+                                ris[i, s] = MathF.Pow(2, MathF.Max(MathF.Abs(i - nxs) / ki, MathF.Abs(s - nys) / ks) - x);
+                            });
+                        }
+                    }
+                }
+            }
+
+            for (int kki = (int)(xs - ki / 2); kki < xs + ki / 2 - 0.5f; kki++)
             {
                 ProgressText.Text = (kki * 100 / oim).ToString();
-                for (int kks = 0; kks < ks * oiki; kks += oiki)
+                for (int kks = (int)(ys - ks / 2); kks < ys + ks / 2 - 0.5f; kks++)
                 {
                     float xsx = kki * x + x50p;
                     float xsxp = xsx + x;
@@ -18805,11 +18846,51 @@ namespace ScaleSmooth
             int ks = (int)MathF.Ceiling(osm * ac * 0.01f);
             int oiki = oim / ki;
 
+            if (ac < 100)
+            {
+                float nxs = (ni - 1) / 2f, nys = (ns - 1) / 2f;
+                for (int kki = 0; kki < oim; kki += 2)
+                {
+                    ProgressText.Text = (kki * 100 / oim / (ki + 2)).ToString();
+                    for (int kks = 0; kks < osm; kks += 2)
+                    {
+                        float xsx = kki * x + x50p;
+                        float xsxp = xsx + x;
+                        float ysx = kks * x + x50p;
+                        float ysxp = ysx + x;
+                        int ys2x = (kks + 2) * x;
+
+                        int iysx = kks * x;
+                        int iysxp = iysx + xm;
+                        int iysxpi = iysxp + 1;
+                        int iysxpp = iysxpi + xm;
+
+                        int ixsx = kki * x;
+                        int ixsxp = ixsx + xm;
+                        int ixsxpi = ixsxp + 1;
+                        float cx = ixsxp + 0.5f;
+                        float cy = iysxp + 0.5f;
+                        int ixsxpp = ixsxpi + xm;
+                        int xsp = kki + 1, ysp = kks + 1;
+
+                        for (int i = ixsx; i < (kki + 2) * x; i++)
+                        {
+                            Parallel.For(iysx, ys2x, s =>
+                            {
+                                ri[i, s] = Bilinear(i, s, xsx, ysx, xsxp, ysxp, sr[kki, kks], sr[xsp, kks], sr[xsp, ysp], sr[kki, ysp]);
+                                ris[i, s] = MathF.Pow(2, MathF.Max(Math.Abs(i - nxs) / ki, MathF.Abs(s - nys) / ks) - x);
+                            });
+                        }
+                    }
+                }
+            }
+
+            float xs = oim / 2f, ys = osm / 2f;
             const float k = -4f; //+8 - only Gibbs ringing, 0 - save derivative with Gibbs ringing; -8 - save mean value 
-            for (int kki = 0; kki < ki * oiki; kki += oiki)//after ALL, -4 sub +8/2??? as clear Gibbs ringing???
+            for (int kki = (int)(xs - ki / 2); kki < xs + ki / 2 - 0.5f; kki += oiki)//after ALL, -4 sub +8/2??? as clear Gibbs ringing???
             {
                 ProgressText.Text = (kki * 100 / oim).ToString();
-                for (int kks = 0; kks < ks * oiki; kks += oiki)
+                for (int kks = (int)(ys - ks / 2); kks < ys + ks / 2 - 0.5f; kks++)
                 {
                     int ixsx = kki * x;
                     int iysx = kks * x;
