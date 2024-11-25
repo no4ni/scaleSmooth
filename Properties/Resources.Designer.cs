@@ -233,6 +233,16 @@ namespace ScaleSmooth.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap shortFNN {
+            get {
+                object obj = ResourceManager.GetObject("shortFNN", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap shortFurry {
             get {
                 object obj = ResourceManager.GetObject("shortFurry", resourceCulture);
@@ -243,7 +253,7 @@ namespace ScaleSmooth.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap shortSmoothCAS {
+        internal static System.Drawing.Bitmap shortGPT {
             get {
                 object obj = ResourceManager.GetObject("shortGPT", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -276,6 +286,16 @@ namespace ScaleSmooth.Properties {
         internal static System.Drawing.Bitmap shortSmooth {
             get {
                 object obj = ResourceManager.GetObject("shortSmooth", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap shortSmoothCAS {
+            get {
+                object obj = ResourceManager.GetObject("shortSmoothCAS", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

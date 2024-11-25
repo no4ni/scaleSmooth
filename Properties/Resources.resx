@@ -193,4 +193,10 @@
   <data name="shortAntiBicubic" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\shortAntiBicubic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="shortFNN" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\shortFNN.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="shortSmoothCAS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\shortSmoothCAS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

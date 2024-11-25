@@ -488,6 +488,17 @@ namespace ScaleSmooth {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Grid only
+        ///
+        ///The fastest method, but you can&apos;t process multiple images at once without losing a lot of speed.
+        /// </summary>
+        internal static string scaleFNN {
+            get {
+                return ResourceManager.GetString("scaleFNN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Beautiful and detailed result, but only if bigger version must be monochrome image (only pure black and white, or for color - only pure red, black, green, yellow, fuchsia, blue, cyan and white)
         ///
         ///Very slow - Very very slow, but you can process multiple images at the same time without losing speed.
@@ -616,9 +627,9 @@ namespace ScaleSmooth {
         ///   Ищет локализованную строку, похожую на Try increase perfomance by using your videocard? 
         ///(It may interrupt other non-system GPU processes or actually decrease perfomance, results of CPU and GPU versions may differ slightly, GPU version may sometimes crashes)
         ///
-        ///Square - Auto decide
-        ///Check mark - Always
-        ///Empty - Never.
+        ///Square - Auto select to reduce latency and crashes
+        ///Checkmark - Use video card
+        ///Blank - Use processor.
         /// </summary>
         internal static string UseGPU {
             get {

@@ -221,7 +221,7 @@
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox1.Font = new Font("Segoe UI", 10F);
             comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "Smooth", "SmoothContinuous", "SmoothContrast", "Bold", "ContrastBold", "Furry", "Rough", "Separate", "BA", "BAContrast", "BASmoothContrast", "BAMonochrome", "BAMonochrome2", "BAExtremum", "255BA", "Thin255BA", "DerivativeBA", "SmoothCAS", "AntiBicubic" });
+            comboBox1.Items.AddRange(new object[] { "Smooth", "SmoothContinuous", "SmoothContrast", "Bold", "ContrastBold", "Furry", "Rough", "Separate", "BA", "BAContrast", "BASmoothContrast", "BAMonochrome", "BAMonochrome2", "BAExtremum", "255BA", "Thin255BA", "DerivativeBA", "SmoothCAS", "AntiBicubic", "FastNearestNeighbour" });
             comboBox1.Location = new Point(6, 64);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(183, 25);
@@ -325,9 +325,9 @@
             // toolTip1
             // 
             toolTip1.AutomaticDelay = 2000;
-            toolTip1.AutoPopDelay = 3000;
+            toolTip1.AutoPopDelay = 4000;
             toolTip1.InitialDelay = 2000;
-            toolTip1.ReshowDelay = 2000;
+            toolTip1.ReshowDelay = 400;
             toolTip1.UseAnimation = false;
             toolTip1.UseFading = false;
             // 
@@ -362,6 +362,9 @@
             ETA.Text = "ETA: 0:00:20:35";
             ETA.TextAlign = ContentAlignment.MiddleCenter;
             ETA.Visible = false;
+            label1.Text = Strings.Scale;
+            label2.Text = Strings.Fast + "                       " + Strings.Accurate;
+            label4.Text = Strings.Wait;
             // 
             // Form1
             // 
@@ -408,9 +411,6 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
-            label1.Text = Strings.Scale;
-            label2.Text = Strings.Fast + "                       " + Strings.Accurate;
-            label4.Text = Strings.Wait;
             ResumeLayout(false);
             PerformLayout();
         }

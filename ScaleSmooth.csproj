@@ -47,11 +47,13 @@
     <None Remove="Resources\shortBold.png" />
     <None Remove="Resources\shortContrast.png" />
     <None Remove="Resources\shortDerivativeBA.png" />
+    <None Remove="Resources\shortFNN.png" />
     <None Remove="Resources\shortFurry.png" />
     <None Remove="Resources\shortGPT.png" />
     <None Remove="Resources\shortRough.png" />
     <None Remove="Resources\shortSeparate.png" />
     <None Remove="Resources\shortSmooth.png" />
+    <None Remove="Resources\shortSmoothCAS.png" />
     <None Remove="Resources\shortSmoothCont.png" />
     <None Remove="Resources\shortSmoothContin.png" />
     <None Remove="Resources\shortSmoothContr.png" />
@@ -60,6 +62,10 @@
 
   <ItemGroup>
     <Content Include="shortcut.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\shortFNN.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -89,6 +95,7 @@
     <Resource Include="Resources\shortRough.png" />
     <Resource Include="Resources\shortSeparate.png" />
     <Resource Include="Resources\shortSmooth.png" />
+    <Resource Include="Resources\shortSmoothCAS.png" />
     <Resource Include="Resources\shortSmoothContin.png" />
     <Resource Include="Resources\shortSmoothContr.png" />
     <Resource Include="Resources\shortThin255BA.png" />

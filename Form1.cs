@@ -1,11 +1,14 @@
 ﻿using ILGPU;
 using ILGPU.Runtime;
 using ScaleSmooth.Properties;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics;
+using System.Runtime.Intrinsics.X86;
 
 namespace ScaleSmooth
 {
@@ -96,40 +99,40 @@ namespace ScaleSmooth
                     switch (comboBox1.SelectedItem)
                     {
                         case "Smooth":
-                            pictureBox1.Image = ScaleSmoothGray(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                            pictureBox1.Image = ScaleSmoothGray((Bitmap)pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
                         case "SmoothContinuous":
-                            pictureBox1.Image = ScaleSmoothContinuousGray(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                            pictureBox1.Image = ScaleSmoothContinuousGray((Bitmap)pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
                         case "SmoothContrast":
-                            pictureBox1.Image = ScaleSmoothContrastGray(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                            pictureBox1.Image = ScaleSmoothContrastGray((Bitmap)pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
                         case "Furry":
-                            pictureBox1.Image = ScaleFurryGray(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                            pictureBox1.Image = ScaleFurryGray((Bitmap)pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
                         case "Rough":
-                            pictureBox1.Image = ScaleRoughGray(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                            pictureBox1.Image = ScaleRoughGray((Bitmap)pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
                         case "ContrastBold":
-                            pictureBox1.Image = ContrastBoldScaleGray(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                            pictureBox1.Image = ContrastBoldScaleGray((Bitmap)pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
                         case "Bold":
-                            pictureBox1.Image = BoldScaleGray(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                            pictureBox1.Image = BoldScaleGray((Bitmap)pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
                         case "Separate":
-                            pictureBox1.Image = ScaleSeparateGray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                            pictureBox1.Image = ScaleSeparateGray((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                             break;
                         case "BA":
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
-                                    pictureBox1.Image = ScaleBilinearApproximationGrayGPU(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBilinearApproximationGrayGPU((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 case CheckState.Unchecked:
-                                    pictureBox1.Image = ScaleBilinearApproximationGray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBilinearApproximationGray((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 default:
-                                    pictureBox1.Image = ScaleBilinearApproximationGrayAuto(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBilinearApproximationGrayAuto((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                             }
                             break;
@@ -137,13 +140,13 @@ namespace ScaleSmooth
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
-                                    pictureBox1.Image = ScaleBAContrastGrayGPU(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAContrastGrayGPU((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 case CheckState.Unchecked:
-                                    pictureBox1.Image = ScaleBAContrastGray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAContrastGray((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 default:
-                                    pictureBox1.Image = ScaleBAContrastGrayAuto(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAContrastGrayAuto((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                             }
                             break;
@@ -151,13 +154,13 @@ namespace ScaleSmooth
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
-                                    pictureBox1.Image = ScaleBAMonochromeGrayGPU(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAMonochromeGrayGPU((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 case CheckState.Unchecked:
-                                    pictureBox1.Image = ScaleBAMonochromeGray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAMonochromeGray((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 default:
-                                    pictureBox1.Image = ScaleBAMonochromeGrayAuto(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAMonochromeGrayAuto((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                             }
                             break;
@@ -165,13 +168,13 @@ namespace ScaleSmooth
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
-                                    pictureBox1.Image = ScaleBAExtremumGrayGPU(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAExtremumGrayGPU((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 case CheckState.Unchecked:
-                                    pictureBox1.Image = ScaleBAExtremumGray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAExtremumGray((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 default:
-                                    pictureBox1.Image = ScaleBAExtremumGrayAuto(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAExtremumGrayAuto((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                             }
                             break;
@@ -179,13 +182,13 @@ namespace ScaleSmooth
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
-                                    pictureBox1.Image = ScaleBASmoothContrastGrayGPU(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBASmoothContrastGrayGPU((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 case CheckState.Unchecked:
-                                    pictureBox1.Image = ScaleBASmoothContrastGray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBASmoothContrastGray((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 default:
-                                    pictureBox1.Image = ScaleBASmoothContrastGrayAuto(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBASmoothContrastGrayAuto((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                             }
                             break;
@@ -193,13 +196,13 @@ namespace ScaleSmooth
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
-                                    pictureBox1.Image = ScaleBAMonochrome2GrayGPU(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAMonochrome2GrayGPU((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 case CheckState.Unchecked:
-                                    pictureBox1.Image = ScaleBAMonochrome2Gray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAMonochrome2Gray((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 default:
-                                    pictureBox1.Image = ScaleBAMonochrome2GrayAuto(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAMonochrome2GrayAuto((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                             }
                             break;
@@ -207,13 +210,13 @@ namespace ScaleSmooth
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
-                                    pictureBox1.Image = Scale255BAGrayGPU(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = Scale255BAGrayGPU((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 case CheckState.Unchecked:
-                                    pictureBox1.Image = Scale255BAGray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = Scale255BAGray((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 default:
-                                    pictureBox1.Image = Scale255BAGrayAuto(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = Scale255BAGrayAuto((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                             }
                             break;
@@ -221,13 +224,13 @@ namespace ScaleSmooth
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
-                                    pictureBox1.Image = ScaleThin255BAGrayGPU(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleThin255BAGrayGPU((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 case CheckState.Unchecked:
-                                    pictureBox1.Image = ScaleThin255BAGray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleThin255BAGray((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 default:
-                                    pictureBox1.Image = ScaleThin255BAGrayAuto(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleThin255BAGrayAuto((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                             }
                             break;
@@ -235,13 +238,13 @@ namespace ScaleSmooth
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
-                                    pictureBox1.Image = ScaleDerivativeBAGrayGPU(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleDerivativeBAGrayGPU((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 case CheckState.Unchecked:
-                                    pictureBox1.Image = ScaleDerivativeBAGray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleDerivativeBAGray((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 default:
-                                    pictureBox1.Image = ScaleDerivativeBAGrayAuto(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleDerivativeBAGrayAuto((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                             }
                             break;
@@ -253,7 +256,10 @@ namespace ScaleSmooth
                             break;
                         case "neighborSubpixel":
                             for (int i = 0; i < 100; i++)
-                                pictureBox1.Image = NeighborSubpixelGray(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                pictureBox1.Image = NeighborSubpixelGray((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                            break;
+                        case "FastNearestNeighbour":
+                            pictureBox1.Image = FastNearestNeighbourGray((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                             break;
                     }
                 }
@@ -262,40 +268,40 @@ namespace ScaleSmooth
                     switch (comboBox1.SelectedItem)
                     {
                         case "Smooth":
-                            pictureBox1.Image = ScaleSmoothColor(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                            pictureBox1.Image = ScaleSmoothColor((Bitmap)pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
                         case "SmoothContinuous":
-                            pictureBox1.Image = ScaleSmoothContinuousColor(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                            pictureBox1.Image = ScaleSmoothContinuousColor((Bitmap)pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
                         case "SmoothContrast"://after new methods, update shorts x16 ALL and time descr and accur descr
-                            pictureBox1.Image = ScaleSmoothContrastColor(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                            pictureBox1.Image = ScaleSmoothContrastColor((Bitmap)pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
                         case "Furry":
-                            pictureBox1.Image = ScaleFurryColor(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                            pictureBox1.Image = ScaleFurryColor((Bitmap)pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
                         case "Rough":
-                            pictureBox1.Image = ScaleRoughColor(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                            pictureBox1.Image = ScaleRoughColor((Bitmap)pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
                         case "ContrastBold":
-                            pictureBox1.Image = ContrastBoldScaleColor(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                            pictureBox1.Image = ContrastBoldScaleColor((Bitmap)pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
                         case "Bold":
-                            pictureBox1.Image = BoldScaleColor(pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
+                            pictureBox1.Image = BoldScaleColor((Bitmap)pictureBox1.Image, (int)(numericUpDown1.Value), trackBar1.Value);
                             break;
                         case "Separate":
-                            pictureBox1.Image = ScaleSeparateColor(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                            pictureBox1.Image = ScaleSeparateColor((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                             break;
                         case "BA":
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
-                                    pictureBox1.Image = ScaleBilinearApproximationColorGPU(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBilinearApproximationColorGPU((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 case CheckState.Unchecked:
-                                    pictureBox1.Image = ScaleBilinearApproximationColor(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBilinearApproximationColor((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 default:
-                                    pictureBox1.Image = ScaleBilinearApproximationColorAuto(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBilinearApproximationColorAuto((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                             }
                             break;
@@ -303,13 +309,13 @@ namespace ScaleSmooth
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
-                                    pictureBox1.Image = ScaleBAContrastColorGPU(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAContrastColorGPU((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 case CheckState.Unchecked:
-                                    pictureBox1.Image = ScaleBAContrastColor(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAContrastColor((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 default:
-                                    pictureBox1.Image = ScaleBAContrastColorAuto(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAContrastColorAuto((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                             }
                             break;
@@ -317,13 +323,13 @@ namespace ScaleSmooth
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
-                                    pictureBox1.Image = ScaleBAMonochromeColorGPU(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAMonochromeColorGPU((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 case CheckState.Unchecked:
-                                    pictureBox1.Image = ScaleBAMonochromeColor(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAMonochromeColor((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 default:
-                                    pictureBox1.Image = ScaleBAMonochromeColorAuto(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAMonochromeColorAuto((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                             }
                             break;
@@ -331,13 +337,13 @@ namespace ScaleSmooth
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
-                                    pictureBox1.Image = ScaleBAExtremumColorGPU(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAExtremumColorGPU((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 case CheckState.Unchecked:
-                                    pictureBox1.Image = ScaleBAExtremumColor(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAExtremumColor((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 default:
-                                    pictureBox1.Image = ScaleBAExtremumColorAuto(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAExtremumColorAuto((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                             }
                             break;
@@ -345,13 +351,13 @@ namespace ScaleSmooth
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
-                                    pictureBox1.Image = ScaleBASmoothContrastColorGPU(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBASmoothContrastColorGPU((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 case CheckState.Unchecked:
-                                    pictureBox1.Image = ScaleBASmoothContrastColor(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBASmoothContrastColor((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 default:
-                                    pictureBox1.Image = ScaleBASmoothContrastColorAuto(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBASmoothContrastColorAuto((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                             }
                             break;
@@ -359,13 +365,13 @@ namespace ScaleSmooth
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
-                                    pictureBox1.Image = ScaleBAMonochrome2ColorGPU(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAMonochrome2ColorGPU((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 case CheckState.Unchecked:
-                                    pictureBox1.Image = ScaleBAMonochrome2Color(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAMonochrome2Color((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 default:
-                                    pictureBox1.Image = ScaleBAMonochrome2ColorAuto(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleBAMonochrome2ColorAuto((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                             }
                             break;
@@ -373,13 +379,13 @@ namespace ScaleSmooth
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
-                                    pictureBox1.Image = Scale255BAColorGPU(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = Scale255BAColorGPU((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 case CheckState.Unchecked:
-                                    pictureBox1.Image = Scale255BAColor(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = Scale255BAColor((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 default:
-                                    pictureBox1.Image = Scale255BAColorAuto(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = Scale255BAColorAuto((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                             }
                             break;
@@ -387,13 +393,13 @@ namespace ScaleSmooth
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
-                                    pictureBox1.Image = ScaleThin255BAColorGPU(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleThin255BAColorGPU((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 case CheckState.Unchecked:
-                                    pictureBox1.Image = ScaleThin255BAColor(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleThin255BAColor((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 default:
-                                    pictureBox1.Image = ScaleThin255BAColorAuto(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleThin255BAColorAuto((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                             }
                             break;
@@ -401,13 +407,13 @@ namespace ScaleSmooth
                             switch (checkBox1.CheckState)//use GPU?
                             {
                                 case CheckState.Checked:
-                                    pictureBox1.Image = ScaleDerivativeBAColorGPU(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleDerivativeBAColorGPU((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 case CheckState.Unchecked:
-                                    pictureBox1.Image = ScaleDerivativeBAColor(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleDerivativeBAColor((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                                 default:
-                                    pictureBox1.Image = ScaleDerivativeBAColorAuto(pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                                    pictureBox1.Image = ScaleDerivativeBAColorAuto((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                                     break;
                             }
                             break;
@@ -416,6 +422,9 @@ namespace ScaleSmooth
                             break;
                         case "AntiBicubic":
                             pictureBox1.Image = AntiBicubucColor((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
+                            break;
+                        case "FastNearestNeighbour":
+                            pictureBox1.Image = FastNearestNeighbourColor((Bitmap)pictureBox1.Image, (int)numericUpDown1.Value, trackBar1.Value);
                             break;
                     }
                 }
@@ -458,7 +467,906 @@ namespace ScaleSmooth
             }
         }
 
-        private decimal PossibilityScale(int width, int height, int scale)
+        private static int FindLargestDivisorBelowThreshold(int n, int threshold)
+        {
+            if (threshold <= 1) // Если порог меньше или равен 1, возвращаем 1
+                return 1;
+
+            int largestDivisor = n;
+            if (n <= threshold) return n;
+
+            // Перебираем все делители от 2 до sqrt(n)
+            for (int i = 2; i <= MathF.Sqrt(n); i++)
+            {
+                if (n % i == 0)
+                {
+                    int correspondingDivisor = n / i;
+
+                    if (correspondingDivisor <= threshold)
+                        return correspondingDivisor;
+
+                    if (i <= threshold)
+                        largestDivisor = i;
+                }
+            }
+
+            return largestDivisor;
+        }
+
+        //Monochrome + Monochrome2+Thin+BASmoothContrast?
+
+        private static Bitmap FastNearestNeighbourGray(Bitmap img, int x, int ac)
+        {
+            int ni, ns, oi, os;
+            oi = img.Width;
+            os = img.Height;
+            ni = oi * x;
+            ns = os * x;
+
+            int xs = 1, ys = 1;
+            if (ac < 100)       
+            {
+                float m = MathF.Pow(1 - ac * 0.01f, 1.6625f * MathF.Log(oi) - 1f);
+                int oiacf = (int)(oi * m);
+                int osacf = (int)(os * m);
+
+                xs = FindLargestDivisorBelowThreshold(oi, oiacf);
+                ys = FindLargestDivisorBelowThreshold(os, osacf);
+
+            }
+            int ysx = ys * x;   // Высота блока в пикселях
+            int xsx = xs * x;   // Ширина блока в пикселях
+            int osys = os / ys; // Количество блоков по вертикали
+
+            if (Avx2.IsSupported)
+            {
+                unsafe
+                {
+                    int chunkSize = Math.Max(1, ysx * oi / xs * osys / Environment.ProcessorCount); 
+                    int xsx8 = xsx / 8;
+                    int nix = ni * x;
+                    int remaining = xsx % 8 - 1;
+                    BitmapData imgData = img.LockBits(new Rectangle(0, 0, img.Width, img.Height), ImageLockMode.ReadWrite, img.PixelFormat);
+                    int imgStride = Math.Abs(imgData.Stride);
+                    Bitmap bmp = new(ni, ns);
+                    BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, ni, ns), ImageLockMode.ReadWrite, bmp.PixelFormat);
+                    int* ptr = (int*)bmpData.Scan0;
+                    byte* imgPtr = (byte*)imgData.Scan0;
+
+                    Vector256<int>[] mask =
+                    [
+                        Vector256.Create(-1,0,0,0,0,0,0,0),
+                        Vector256.Create(-1,-1,0,0,0,0,0,0),
+                        Vector256.Create(-1,-1,-1,0,0,0,0,0),
+                        Vector256.Create(-1,-1,-1,-1,0,0,0,0),
+                        Vector256.Create(-1,-1,-1,-1,-1,0,0,0),
+                        Vector256.Create(-1,-1,-1,-1,-1,-1,0,0),
+                        Vector256.Create(-1,-1,-1,-1,-1,-1,-1,0)
+                    ];
+
+                    if (img.PixelFormat == PixelFormat.Format24bppRgb)
+                    {
+                        if (remaining > -1)
+                        {
+                            if (chunkSize < ysx)
+                            {
+                                for (int index = 0; index < oi / xs * osys; index++)
+                                {
+                                    int ii = index / osys;
+                                    int ss = (index % osys) * ys;
+                                    int iixs = ii * xs;
+                                    int iixsx = iixs * x;
+                                    int ssxni = ss * nix;
+
+                                    byte green = *(imgPtr + iixs * 3 + ss * imgStride + 1);
+                                    Vector256<int> filler = Vector256.Create(
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255
+                                                            ).AsInt32();
+
+                                    int* baseDst = ptr + iixsx + ssxni;
+
+                                    Parallel.ForEach(
+                                        Partitioner.Create(0, ysx, chunkSize), range =>
+                                        {
+                                            for (int s = range.Item1; s < range.Item2; s++)
+                                            {
+                                                int* dst = baseDst + s * ni;
+                                                for (int i = 0; i < xsx8; i++)
+                                                {
+                                                    Avx.Store(dst, filler);
+                                                    dst += 8;
+                                                }
+                                                Avx2.MaskStore(dst, mask[remaining], filler);
+                                            }
+                                        });
+                                }
+                            }
+                            else
+                            {
+                                Parallel.For(0, oi / xs * osys, index =>
+                                {
+                                    int ii = index / osys;
+                                    int ss = (index % osys) * ys;
+                                    int iixs = ii * xs;
+                                    int iixsx = iixs * x;
+                                    int ssxni = ss * nix;
+
+                                    byte green = *(imgPtr + iixs * 3 + ss * imgStride + 1);
+                                    Vector256<int> filler = Vector256.Create(
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255
+                                                            ).AsInt32();
+
+                                    int* baseDst = ptr + iixsx + ssxni;
+
+                                    for (int s = 0; s < ysx; s++)
+                                    {
+                                        int* dst = baseDst + s * ni;
+                                        for (int i = 0; i < xsx8; i++)
+                                        {
+                                            Avx.Store(dst, filler);
+                                            dst += 8;
+                                        }
+                                        Avx2.MaskStore(dst, mask[remaining], filler);
+                                    }
+                                });
+                            }
+                        }
+                        else
+                        {
+                            if (chunkSize < ysx)
+                            {
+                                for (int index = 0; index < oi / xs * osys; index++)
+                                {
+                                    int ii = index / osys;
+                                    int ss = (index % osys) * ys;
+                                    int iixs = ii * xs;
+                                    int iixsx = iixs * x;
+                                    int ssxni = ss * nix;
+
+                                    byte green = *(imgPtr + iixs * 3 + ss * imgStride + 1);
+                                    Vector256<int> filler = Vector256.Create(
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255
+                                                            ).AsInt32();
+
+                                    int* baseDst = ptr + iixsx + ssxni;
+
+                                    Parallel.ForEach(
+                                        Partitioner.Create(0, ysx, chunkSize), range =>
+                                        {
+                                            for (int s = range.Item1; s < range.Item2; s++)
+                                            {
+                                                int* dst = baseDst + s * ni;
+                                                for (int i = 0; i < xsx8; i++)
+                                                {
+                                                    Avx.Store(dst, filler);
+                                                    dst += 8;
+                                                }
+                                            }
+                                        });
+                                }
+                            }
+                            else
+                            {
+                                Parallel.For(0, oi / xs * osys, index =>
+                                {
+                                    int ii = index / osys;
+                                    int ss = (index % osys) * ys;
+                                    int iixs = ii * xs;
+                                    int iixsx = iixs * x;
+                                    int ssxni = ss * nix;
+
+                                    byte green = *(imgPtr + iixs * 3 + ss * imgStride + 1);
+                                    Vector256<int> filler = Vector256.Create(
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255
+                                                            ).AsInt32();
+
+                                    int* baseDst = ptr + iixsx + ssxni;
+
+                                    for (int s = 0; s < ysx; s++)
+                                    {
+                                        int* dst = baseDst + s * ni;
+                                        for (int i = 0; i < xsx8; i++)
+                                        {
+                                            Avx.Store(dst, filler);
+                                            dst += 8;
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (remaining > -1)
+                        {
+                            if (chunkSize < ysx)
+                            {
+                                for (int index = 0; index < oi / xs * osys; index++)
+                                {
+                                    int ii = index / osys;
+                                    int ss = (index % osys) * ys;
+                                    int iixs = ii * xs;
+                                    int iixsx = iixs * x;
+                                    int ssxni = ss * nix;
+
+                                    byte green = *(imgPtr + iixs * 4 + ss * imgStride + 1);
+                                    Vector256<int> filler = Vector256.Create(
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255
+                                                            ).AsInt32();
+
+                                    int* baseDst = ptr + iixsx + ssxni;
+
+                                    Parallel.ForEach(
+                                        Partitioner.Create(0, ysx, chunkSize), range =>
+                                        {
+                                            for (int s = range.Item1; s < range.Item2; s++)
+                                            {
+                                                int* dst = baseDst + s * ni;
+                                                for (int i = 0; i < xsx8; i++)
+                                                {
+                                                    Avx.Store(dst, filler);
+                                                    dst += 8;
+                                                }
+                                                Avx2.MaskStore(dst, mask[remaining], filler);
+                                            }
+                                        });
+                                }
+                            }
+                            else
+                            {
+                                Parallel.For(0, oi / xs * osys, index =>
+                                {
+                                    int ii = index / osys;
+                                    int ss = (index % osys) * ys;
+                                    int iixs = ii * xs;
+                                    int iixsx = iixs * x;
+                                    int ssxni = ss * nix;
+
+                                    byte green = *(imgPtr + iixs * 4 + ss * imgStride + 1);
+                                    Vector256<int> filler = Vector256.Create(
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255
+                                                            ).AsInt32();
+
+                                    int* baseDst = ptr + iixsx + ssxni;
+
+                                    for (int s = 0; s < ysx; s++)
+                                    {
+                                        int* dst = baseDst + s * ni;
+                                        for (int i = 0; i < xsx8; i++)
+                                        {
+                                            Avx.Store(dst, filler);
+                                            dst += 8;
+                                        }
+                                        Avx2.MaskStore(dst, mask[remaining], filler);
+                                    }
+                                });
+                            }
+                        }
+                        else
+                        {
+                            if (chunkSize < ysx)
+                            {
+                                for (int index=0; index < oi / xs * osys; index++)
+                                {
+                                    int ii = index / osys;
+                                    int ss = (index % osys) * ys;
+                                    int iixs = ii * xs;
+                                    int iixsx = iixs * x;
+                                    int ssxni = ss * nix;
+
+                                    byte green = *(imgPtr + iixs * 4 + ss * imgStride + 1);
+                                    Vector256<int> filler = Vector256.Create(
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255
+                                                            ).AsInt32();
+
+                                    int* baseDst = ptr + iixsx + ssxni;
+
+                                    Parallel.ForEach(
+                                        Partitioner.Create(0, ysx, chunkSize), range =>
+                                        {
+                                            for (int s = range.Item1; s < range.Item2; s++)
+                                            {
+                                                int* dst = baseDst + s * ni;
+                                                for (int i = 0; i < xsx8; i++)
+                                                {
+                                                    Avx.Store(dst, filler);
+                                                    dst += 8;
+                                                }
+                                            }
+                                        });
+                                }
+                            }
+                            else
+                            {
+                                Parallel.For(0, oi / xs * osys, index =>
+                                {
+                                    int ii = index / osys;
+                                    int ss = (index % osys) * ys;
+                                    int iixs = ii * xs;
+                                    int iixsx = iixs * x;
+                                    int ssxni = ss * nix;
+
+                                    byte green = *(imgPtr + iixs * 4 + ss * imgStride + 1);
+                                    Vector256<int> filler = Vector256.Create(
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255,
+                                                                green, green, green, 255
+                                                            ).AsInt32();
+
+                                    int* baseDst = ptr + iixsx + ssxni;
+
+                                    for (int s = 0; s < ysx; s++)
+                                    {
+                                        int* dst = baseDst + s * ni;
+                                        for (int i = 0; i < xsx8; i++)
+                                        {
+                                            Avx.Store(dst, filler);
+                                            dst += 8;
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                    bmp.UnlockBits(bmpData);
+                    return bmp;
+                }
+            }
+            else
+            {
+                int ni4 = ni * 4;
+                int ni4x = ni4 * x;
+                BitmapData imgData = img.LockBits(new Rectangle(0, 0, img.Width, img.Height), ImageLockMode.ReadWrite, img.PixelFormat);
+                int imgStride = Math.Abs(imgData.Stride);
+                Bitmap bmp = new(ni, ns);
+                BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, ni, ns), ImageLockMode.ReadWrite, bmp.PixelFormat);
+                unsafe
+                {
+                    byte* ptr = (byte*)bmpData.Scan0;
+                    byte* imgPtr = (byte*)imgData.Scan0;
+
+                    if (img.PixelFormat == PixelFormat.Format24bppRgb)
+                    {
+                        int ni4xsx4 = ni4 - xsx * 4;
+                        Parallel.For(0, oi / xs * osys, index =>
+                        {
+                            int ii = index / osys;
+                            int ss = (index % osys) * ys;
+                            int iixs = ii * xs;
+                            int iixsx = iixs * x;
+                            int ssxni4 = ss * ni4x;
+
+                            byte* pixelValue = imgPtr + iixs * 3 + ss * imgStride + 1; 
+                            byte* rowStart = ptr + iixsx * 4 + ssxni4;
+
+                            for (int s = 0; s < ysx; s++)
+                            {
+                                for (int i = 0; i < xsx; i++)
+                                {
+                                    rowStart[0] = *pixelValue;
+                                    rowStart[1] = *pixelValue;
+                                    rowStart[2] = *pixelValue;
+                                    rowStart[3] = 255;
+                                    rowStart += 4;
+                                }
+                                rowStart += ni4xsx4;
+                            }
+                        });
+                    }
+                    else
+                    {
+                        int ni4xsx4 = ni4 - xsx * 4;
+                        Parallel.For(0, oi / xs * osys, index =>
+                        {
+                            int ii = index / osys;
+                            int ss = (index % osys) * ys;
+
+                            int iixs = ii * xs;
+                            int iixsx = iixs * x;
+
+                            int ssxni4 = ss * ni4x;
+                            byte* pixelValue = imgPtr + iixs * 4 + ss * imgStride + 1;
+                            byte* rowStart = ptr + iixsx * 4 + ssxni4;
+
+                            for (int s = 0; s < ysx; s++)
+                            {
+                                for (int i = 0; i < xsx; i++)
+                                {
+                                    rowStart[0] = *pixelValue;
+                                    rowStart[1] = *pixelValue;
+                                    rowStart[2] = *pixelValue;
+                                    rowStart[3] = 255;
+                                    rowStart += 4;
+                                }
+                                rowStart += ni4xsx4;
+                            }
+                        });
+                    }
+                    bmp.UnlockBits(bmpData);
+                    return bmp;
+                }
+            }
+        }
+
+        private static Bitmap FastNearestNeighbourColor(Bitmap img, int x, int ac)
+        {
+            int ni, ns, oi, os;
+            oi = img.Width;
+            os = img.Height;
+            ni = oi * x;
+            ns = os * x;
+
+            int xs = 1, ys = 1;
+            if (ac < 100)
+            {
+                float m = MathF.Pow(1 - ac * 0.01f, 1.6625f * MathF.Log(oi) - 1f);
+                int oiacf = (int)(oi * m);
+                int osacf = (int)(os * m);
+
+                xs = FindLargestDivisorBelowThreshold(oi, oiacf);
+                ys = FindLargestDivisorBelowThreshold(os, osacf);
+
+            }
+            int ysx = ys * x;   // Высота блока в пикселях
+            int xsx = xs * x;   // Ширина блока в пикселях
+            int osys = os / ys; // Количество блоков по вертикали
+
+            if (Avx2.IsSupported)
+            {
+                unsafe
+                {
+                    int chunkSize = Math.Max(1, ysx * oi / xs * osys / Environment.ProcessorCount);
+                    int xsx8 = xsx / 8;
+                    int nix = ni * x;
+                    int remaining = xsx % 8 - 1;
+                    BitmapData imgData = img.LockBits(new Rectangle(0, 0, oi, os), ImageLockMode.ReadWrite, img.PixelFormat);
+                    int imgStride = Math.Abs(imgData.Stride);
+                    Bitmap bmp = new(ni, ns);
+                    BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, ni, ns), ImageLockMode.ReadWrite, bmp.PixelFormat);
+                    int* ptr = (int*)bmpData.Scan0;
+                    
+                    Vector256<int>[] mask =
+                    [
+                        Vector256.Create(-1,0,0,0,0,0,0,0),
+                        Vector256.Create(-1,-1,0,0,0,0,0,0),
+                        Vector256.Create(-1,-1,-1,0,0,0,0,0),
+                        Vector256.Create(-1,-1,-1,-1,0,0,0,0),
+                        Vector256.Create(-1,-1,-1,-1,-1,0,0,0),
+                        Vector256.Create(-1,-1,-1,-1,-1,-1,0,0),
+                        Vector256.Create(-1,-1,-1,-1,-1,-1,-1,0)
+                    ];
+
+                    if (img.PixelFormat == PixelFormat.Format24bppRgb)
+                    {
+                        byte* imgPtr = (byte*)imgData.Scan0;
+                        if (remaining > -1)
+                        {
+                            if (chunkSize < ysx)
+                            {
+                                for (int index = 0; index < oi / xs * osys; index++)
+                                {
+                                    int ii = index / osys;
+                                    int ss = (index % osys) * ys;
+                                    int iixs = ii * xs;
+                                    int iixsx = iixs * x;
+                                    int ssxni = ss * nix;
+
+                                    byte* pixelPos = imgPtr + iixs * 3 + ss * imgStride;
+                                    byte blue = *pixelPos;
+                                    byte green = *(pixelPos + 1);
+                                    byte red = *(pixelPos + 2);
+                                    Vector256<int> filler = Vector256.Create(
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255
+                                                            ).AsInt32();
+
+                                    int* baseDst = ptr + iixsx + ssxni;
+
+                                    Parallel.ForEach(
+                                        Partitioner.Create(0, ysx, chunkSize), range =>
+                                        {
+                                            for (int s = range.Item1; s < range.Item2; s++)
+                                            {
+                                                int* dst = baseDst + s * ni;
+                                                for (int i = 0; i < xsx8; i++)
+                                                {
+                                                    Avx.Store(dst, filler);
+                                                    dst += 8;
+                                                }
+                                                Avx2.MaskStore(dst, mask[remaining], filler);
+                                            }
+                                        });
+                                }
+                            }
+                            else
+                            {
+                                Parallel.For(0, oi / xs * osys, index =>
+                                {
+                                    int ii = index / osys;
+                                    int ss = (index % osys) * ys;
+                                    int iixs = ii * xs;
+                                    int iixsx = iixs * x;
+                                    int ssxni = ss * nix;
+
+                                    byte* pixelPos = imgPtr + iixs * 3 + ss * imgStride;
+                                    byte blue = *pixelPos;
+                                    byte green = *(pixelPos + 1);
+                                    byte red = *(pixelPos + 2);
+                                    Vector256<int> filler = Vector256.Create(
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255
+                                                            ).AsInt32();
+
+                                    int* baseDst = ptr + iixsx + ssxni;
+
+                                    for (int s = 0; s < ysx; s++)
+                                    {
+                                        int* dst = baseDst + s * ni;
+                                        for (int i = 0; i < xsx8; i++)
+                                        {
+                                            Avx.Store(dst, filler);
+                                            dst += 8;
+                                        }
+                                        Avx2.MaskStore(dst, mask[remaining], filler);
+                                    }
+                                });
+                            }
+                        }
+                        else
+                        {
+                            if (chunkSize < ysx)
+                            {
+                                for (int index = 0; index < oi / xs * osys; index++)
+                                {
+                                    int ii = index / osys;
+                                    int ss = (index % osys) * ys;
+                                    int iixs = ii * xs;
+                                    int iixsx = iixs * x;
+                                    int ssxni = ss * nix;
+
+                                    byte* pixelPos = imgPtr + iixs * 3 + ss * imgStride;
+                                    byte blue = *pixelPos;
+                                    byte green = *(pixelPos + 1);
+                                    byte red = *(pixelPos + 2);
+                                    Vector256<int> filler = Vector256.Create(
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255
+                                                            ).AsInt32();
+
+                                    int* baseDst = ptr + iixsx + ssxni;
+
+                                    Parallel.ForEach(
+                                        Partitioner.Create(0, ysx, chunkSize), range =>
+                                        {
+                                            for (int s = range.Item1; s < range.Item2; s++)
+                                            {
+                                                int* dst = baseDst + s * ni;
+                                                for (int i = 0; i < xsx8; i++)
+                                                {
+                                                    Avx.Store(dst, filler);
+                                                    dst += 8;
+                                                }
+                                            }
+                                        });
+                                }
+                            }
+                            else
+                            {
+                                Parallel.For(0, oi / xs * osys, index =>
+                                {
+                                    int ii = index / osys;
+                                    int ss = (index % osys) * ys;
+                                    int iixs = ii * xs;
+                                    int iixsx = iixs * x;
+                                    int ssxni = ss * nix;
+
+                                    byte* pixelPos = imgPtr + iixs * 3 + ss * imgStride;
+                                    byte blue = *pixelPos;
+                                    byte green = *(pixelPos + 1);
+                                    byte red = *(pixelPos + 2);
+                                    Vector256<int> filler = Vector256.Create(
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255,
+                                                                blue, green, red, 255
+                                                            ).AsInt32();
+
+                                    int* baseDst = ptr + iixsx + ssxni;
+
+                                    for (int s = 0; s < ysx; s++)
+                                    {
+                                        int* dst = baseDst + s * ni;
+                                        for (int i = 0; i < xsx8; i++)
+                                        {
+                                            Avx.Store(dst, filler);
+                                            dst += 8;
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                    else
+                    {
+                        int* imgPtr = (int*)imgData.Scan0;
+                        if (remaining > -1)
+                        {
+                            if (chunkSize < ysx)
+                            {
+                                for (int index = 0; index < oi / xs * osys; index++)
+                                {
+                                    int ii = index / osys;
+                                    int ss = (index % osys) * ys;
+                                    int iixs = ii * xs;
+                                    int iixsx = iixs * x;
+                                    int ssxni = ss * nix;
+
+                                    int color = *(imgPtr + iixs + ss * oi);
+                                    Vector256<int> filler = Vector256.Create(color).AsInt32();
+
+                                    int* baseDst = ptr + iixsx + ssxni;
+
+                                    Parallel.ForEach(
+                                        Partitioner.Create(0, ysx, chunkSize), range =>
+                                        {
+                                            for (int s = range.Item1; s < range.Item2; s++)
+                                            {
+                                                int* dst = baseDst + s * ni;
+                                                for (int i = 0; i < xsx8; i++)
+                                                {
+                                                    Avx.Store(dst, filler);
+                                                    dst += 8;
+                                                }
+                                                Avx2.MaskStore(dst, mask[remaining], filler);
+                                            }
+                                        });
+                                }
+                            }
+                            else
+                            {
+                                Parallel.For(0, oi / xs * osys, index =>
+                                {
+                                    int ii = index / osys;
+                                    int ss = (index % osys) * ys;
+                                    int iixs = ii * xs;
+                                    int iixsx = iixs * x;
+                                    int ssxni = ss * nix;
+
+                                    int color = *(imgPtr + iixs + ss * oi);
+                                    Vector256<int> filler = Vector256.Create(color).AsInt32();
+
+                                    int* baseDst = ptr + iixsx + ssxni;
+
+                                    for (int s = 0; s < ysx; s++)
+                                    {
+                                        int* dst = baseDst + s * ni;
+                                        for (int i = 0; i < xsx8; i++)
+                                        {
+                                            Avx.Store(dst, filler);
+                                            dst += 8;
+                                        }
+                                        Avx2.MaskStore(dst, mask[remaining], filler);
+                                    }
+                                });
+                            }
+                        }
+                        else
+                        {
+                            if (chunkSize < ysx)
+                            {
+                                for (int index = 0; index < oi / xs * osys; index++)
+                                {
+                                    int ii = index / osys;
+                                    int ss = (index % osys) * ys;
+                                    int iixs = ii * xs;
+                                    int iixsx = iixs * x;
+                                    int ssxni = ss * nix;
+
+                                    int color = *(imgPtr + iixs + ss * oi);
+                                    Vector256<int> filler = Vector256.Create(color).AsInt32();
+
+                                    int* baseDst = ptr + iixsx + ssxni;
+
+                                    Parallel.ForEach(
+                                        Partitioner.Create(0, ysx, chunkSize), range =>
+                                        {
+                                            for (int s = range.Item1; s < range.Item2; s++)
+                                            {
+                                                int* dst = baseDst + s * ni;
+                                                for (int i = 0; i < xsx8; i++)
+                                                {
+                                                    Avx.Store(dst, filler);
+                                                    dst += 8;
+                                                }
+                                            }
+                                        });
+                                }
+                            }
+                            else
+                            {
+                                Parallel.For(0, oi / xs * osys, index =>
+                                {
+                                    int ii = index / osys;
+                                    int ss = (index % osys) * ys;
+                                    int iixs = ii * xs;
+                                    int iixsx = iixs * x;
+                                    int ssxni = ss * nix;
+
+                                    int color = *(imgPtr + iixs + ss * oi);
+                                    Vector256<int> filler = Vector256.Create(color).AsInt32();
+
+                                    int* baseDst = ptr + iixsx + ssxni;
+
+                                    for (int s = 0; s < ysx; s++)
+                                    {
+                                        int* dst = baseDst + s * ni;
+                                        for (int i = 0; i < xsx8; i++)
+                                        {
+                                            Avx.Store(dst, filler);
+                                            dst += 8;
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                    bmp.UnlockBits(bmpData);
+                    return bmp;
+                }
+            }
+            else
+            {
+                int ni4 = ni * 4;
+                int ni4x = ni4 * x;
+                BitmapData imgData = img.LockBits(new Rectangle(0, 0, oi, os), ImageLockMode.ReadWrite, img.PixelFormat);
+                int imgStride = Math.Abs(imgData.Stride);
+                Bitmap bmp = new(ni, ns);
+                BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, ni, ns), ImageLockMode.ReadWrite, bmp.PixelFormat);
+                unsafe
+                {
+                    if (img.PixelFormat == PixelFormat.Format24bppRgb)
+                    {
+                        byte* ptr = (byte*)bmpData.Scan0;
+                        byte* imgPtr = (byte*)imgData.Scan0;
+                        int ni4xsx4 = ni4 - xsx * 4;
+                        Parallel.For(0, oi / xs * osys, index =>
+                        {
+                            int ii = index / osys;
+                            int ss = (index % osys) * ys;
+                            int iixs = ii * xs;
+                            int iixsx = iixs * x;
+                            int ssxni4 = ss * ni4x;
+
+                            byte* pixelValue = imgPtr + iixs * 3 + ss * imgStride;
+                            byte* rowStart = ptr + iixsx * 4 + ssxni4;
+
+                            for (int s = 0; s < ysx; s++)
+                            {
+                                for (int i = 0; i < xsx; i++)
+                                {
+                                    rowStart[0] = *pixelValue;
+                                    rowStart[1] = *(pixelValue+1);
+                                    rowStart[2] = *(pixelValue+2);
+                                    rowStart[3] = 255;
+                                    rowStart += 4;
+                                }
+                                rowStart += ni4xsx4;
+                            }
+                        });
+                    }
+                    else
+                    {
+                        int* ptr = (int*)bmpData.Scan0;
+                        int* imgPtr = (int*)imgData.Scan0;
+                        int nixsx = ni - xsx;
+                        int nix = ni * x;
+                        Parallel.For(0, oi / xs * osys, index =>
+                        {
+                            int ii = index / osys;
+                            int ss = (index % osys) * ys;
+
+                            int iixs = ii * xs;
+                            int iixsx = iixs * x;
+
+                            int ssnix = ss * nix;
+                            int* pixelValue = imgPtr + iixs + ss * oi;
+                            int* rowStart = ptr + iixsx + ssnix;
+
+                            for (int s = 0; s < ysx; s++)
+                            {
+                                for (int i = 0; i < xsx; i++)
+                                {
+                                    rowStart[0] = *pixelValue;
+                                    rowStart++;
+                                }
+                                rowStart += nixsx;
+                            }
+                        });
+                    }
+                    bmp.UnlockBits(bmpData);
+                    return bmp;
+                }
+            }
+        }
+
+
+        private static decimal PossibilityScale(int width, int height, int scale)
         {
             ulong pixelsIn = (ulong)width * (ulong)height;
             if (pixelsIn * (ulong)scale * (ulong)scale > 234567899)
@@ -468,7 +1376,7 @@ namespace ScaleSmooth
             return scale;
         }
 
-        private Bitmap ScaleBAContrastGrayAuto(Image img, int x, int ac)
+        private Bitmap ScaleBAContrastGrayAuto(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators());
             Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
@@ -493,7 +1401,7 @@ namespace ScaleSmooth
             }
         }
 
-        private Bitmap Scale255BAGrayAuto(Image img, int x, int ac)
+        private Bitmap Scale255BAGrayAuto(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators());
             Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
@@ -518,7 +1426,7 @@ namespace ScaleSmooth
             }
         }
 
-        private Bitmap ScaleBAExtremumGrayAuto(Image img, int x, int ac)
+        private Bitmap ScaleBAExtremumGrayAuto(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators());
             Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
@@ -543,7 +1451,7 @@ namespace ScaleSmooth
             }
         }
 
-        private Bitmap ScaleBASmoothContrastGrayAuto(Image img, int x, int ac)
+        private Bitmap ScaleBASmoothContrastGrayAuto(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators());
             Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
@@ -569,7 +1477,7 @@ namespace ScaleSmooth
         }
 
 
-        private Bitmap ScaleBilinearApproximationColorAuto(Image img, int x, int ac)
+        private Bitmap ScaleBilinearApproximationColorAuto(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators());
             Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
@@ -594,7 +1502,7 @@ namespace ScaleSmooth
             }
         }
 
-        private Bitmap ScaleDerivativeBAColorAuto(Image img, int x, int ac)
+        private Bitmap ScaleDerivativeBAColorAuto(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators());
             Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
@@ -620,7 +1528,7 @@ namespace ScaleSmooth
         }
 
 
-        private Bitmap ScaleBAContrastColorAuto(Image img, int x, int ac)
+        private Bitmap ScaleBAContrastColorAuto(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators());
             Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
@@ -645,7 +1553,7 @@ namespace ScaleSmooth
             }
         }
 
-        private Bitmap ScaleThin255BAColorAuto(Image img, int x, int ac)
+        private Bitmap ScaleThin255BAColorAuto(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators());
             Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
@@ -670,7 +1578,7 @@ namespace ScaleSmooth
             }
         }
 
-        private Bitmap Scale255BAColorAuto(Image img, int x, int ac)
+        private Bitmap Scale255BAColorAuto(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators());
             Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
@@ -695,7 +1603,7 @@ namespace ScaleSmooth
             }
         }
 
-        private Bitmap ScaleThin255BAGrayAuto(Image img, int x, int ac)
+        private Bitmap ScaleThin255BAGrayAuto(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators());
             Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
@@ -720,7 +1628,7 @@ namespace ScaleSmooth
             }
         }
 
-        private Bitmap ScaleDerivativeBAGrayAuto(Image img, int x, int ac)
+        private Bitmap ScaleDerivativeBAGrayAuto(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators());
             Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
@@ -746,7 +1654,7 @@ namespace ScaleSmooth
         }
 
 
-        private Bitmap ScaleBAMonochromeGrayAuto(Image img, int x, int ac)
+        private Bitmap ScaleBAMonochromeGrayAuto(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators());
             Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
@@ -771,7 +1679,7 @@ namespace ScaleSmooth
             }
         }
 
-        private Bitmap ScaleBAMonochrome2GrayAuto(Image img, int x, int ac)
+        private Bitmap ScaleBAMonochrome2GrayAuto(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators());
             Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
@@ -796,7 +1704,7 @@ namespace ScaleSmooth
             }
         }
 
-        private Bitmap ScaleBAMonochromeColorAuto(Image img, int x, int ac)
+        private Bitmap ScaleBAMonochromeColorAuto(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators());
             Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
@@ -821,7 +1729,7 @@ namespace ScaleSmooth
             }
         }
 
-        private Bitmap ScaleBAExtremumColorAuto(Image img, int x, int ac)
+        private Bitmap ScaleBAExtremumColorAuto(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators());
             Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
@@ -846,7 +1754,7 @@ namespace ScaleSmooth
             }
         }
 
-        private Bitmap ScaleBAMonochrome2ColorAuto(Image img, int x, int ac)
+        private Bitmap ScaleBAMonochrome2ColorAuto(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators());
             Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
@@ -871,7 +1779,7 @@ namespace ScaleSmooth
             }
         }
 
-        private Bitmap ScaleBASmoothContrastColorAuto(Image img, int x, int ac)
+        private Bitmap ScaleBASmoothContrastColorAuto(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators());
             Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
@@ -897,7 +1805,7 @@ namespace ScaleSmooth
             }
         }
 
-        private Bitmap ScaleBilinearApproximationGrayAuto(Image img, int x, int ac)
+        private Bitmap ScaleBilinearApproximationGrayAuto(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators());
             Accelerator accelerator = context.GetPreferredDevice(false).CreateAccelerator(context);
@@ -922,7 +1830,7 @@ namespace ScaleSmooth
             }
         }
 
-        private Bitmap ScaleBilinearApproximationGrayGPU(Image img, int x, int ac)
+        private Bitmap ScaleBilinearApproximationGrayGPU(Bitmap img, int x, int ac)
         {
             short[,,] ri = BilinearApproximationGrayGPU(img, x, ac);
             int ni = ri.GetUpperBound(0) + 1;
@@ -944,7 +1852,7 @@ namespace ScaleSmooth
             return BMPfromGray(rb, ni, ns);
         }
 
-        private Bitmap ScaleBAMonochromeGrayGPU(Image img, int x, int ac)
+        private Bitmap ScaleBAMonochromeGrayGPU(Bitmap img, int x, int ac)
         {
             short[,,] ri = BilinearApproximationGrayGPU(img, x, ac);
             int ni = ri.GetUpperBound(0) + 1;
@@ -1063,7 +1971,7 @@ namespace ScaleSmooth
             return BMPfromGray(rb, ni, ns);
         }
 
-        private Bitmap ScaleBAMonochrome2GrayGPU(Image img, int x, int ac)
+        private Bitmap ScaleBAMonochrome2GrayGPU(Bitmap img, int x, int ac)
         {
             byte[,] ri = BilinearApproximationSmoothContrastGrayGPU(img, x, ac);
             int ni = ri.GetUpperBound(0) + 1;
@@ -1189,7 +2097,7 @@ namespace ScaleSmooth
         }
 
 
-        private Bitmap ScaleBAExtremumGrayGPU(Image img, int x, int ac)
+        private Bitmap ScaleBAExtremumGrayGPU(Bitmap img, int x, int ac)
         {
             byte[,] rb = BilinearApproximationExtremumGrayGPU(img, x, ac);
             int ni = rb.GetUpperBound(0) + 1;
@@ -1197,7 +2105,7 @@ namespace ScaleSmooth
             return BMPfromGray(rb, ni, ns);
         }
 
-        private Bitmap ScaleBASmoothContrastGrayGPU(Image img, int x, int ac)
+        private Bitmap ScaleBASmoothContrastGrayGPU(Bitmap img, int x, int ac)
         {
             byte[,] rb = BilinearApproximationSmoothContrastGrayGPU(img, x, ac);
             int ni = rb.GetUpperBound(0) + 1;
@@ -1205,7 +2113,7 @@ namespace ScaleSmooth
             return BMPfromGray(rb, ni, ns);
         }
 
-        private Bitmap ScaleBAExtremumColorGPU(Image img, int x, int ac)
+        private Bitmap ScaleBAExtremumColorGPU(Bitmap img, int x, int ac)
         {
             byte[,,] rb = BilinearApproximationExtremumColorGPU(img, x, ac);
             int ni = rb.GetUpperBound(0) + 1;
@@ -1213,7 +2121,7 @@ namespace ScaleSmooth
             return BMPfromRGB(rb, ni, ns);
         }
 
-        private Bitmap ScaleBASmoothContrastColorGPU(Image img, int x, int ac)
+        private Bitmap ScaleBASmoothContrastColorGPU(Bitmap img, int x, int ac)
         {
             byte[,,] rb = BilinearApproximationSmoothContrastColorGPU(img, x, ac);
             int ni = rb.GetUpperBound(0) + 1;
@@ -1222,7 +2130,7 @@ namespace ScaleSmooth
         }
 
 
-        private Bitmap ScaleBAMonochromeColorGPU(Image img, int x, int ac)
+        private Bitmap ScaleBAMonochromeColorGPU(Bitmap img, int x, int ac)
         {
             short[,,] ri = BilinearApproximationColorGPU(img, x, ac);
             int ni = ri.GetUpperBound(0) + 1;
@@ -1353,7 +2261,7 @@ namespace ScaleSmooth
             return BMPfromRGB(rb, ni, ns);
         }
 
-        private Bitmap ScaleBAMonochrome2ColorGPU(Image img, int x, int ac)
+        private Bitmap ScaleBAMonochrome2ColorGPU(Bitmap img, int x, int ac)
         {
             byte[,,] ri = BilinearApproximationSmoothContrastColorGPU(img, x, ac);
             int ni = ri.GetUpperBound(0) + 1;
@@ -1495,7 +2403,7 @@ namespace ScaleSmooth
             return BMPfromRGB(rb, ni, ns);
         }
 
-        private short[,,] BilinearApproximationColorGPU(Image img, int x, int ac)
+        private short[,,] BilinearApproximationColorGPU(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators().EnableAlgorithms().Optimize(OptimizationLevel.O2).PageLocking(PageLockingMode.Aggressive));
 #if DEBUG
@@ -2297,7 +3205,7 @@ namespace ScaleSmooth
             return r;
         }
 
-        private short[,,] BilinearApproximationDerivativeColorGPU(Image img, int x, int ac)
+        private short[,,] BilinearApproximationDerivativeColorGPU(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators().EnableAlgorithms().Optimize(OptimizationLevel.O2).PageLocking(PageLockingMode.Aggressive));
 #if DEBUG
@@ -3063,7 +3971,7 @@ namespace ScaleSmooth
         }
 
 
-        private byte[,,] BilinearApproximationSmoothContrastColorGPU(Image img, int x, int ac)
+        private byte[,,] BilinearApproximationSmoothContrastColorGPU(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators().EnableAlgorithms().Optimize(OptimizationLevel.O2).PageLocking(PageLockingMode.Aggressive));
 #if DEBUG
@@ -3881,7 +4789,7 @@ namespace ScaleSmooth
             return rb;
         }
 
-        private byte[,,] BilinearApproximationExtremumColorGPU(Image img, int x, int ac)
+        private byte[,,] BilinearApproximationExtremumColorGPU(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators().EnableAlgorithms().Optimize(OptimizationLevel.O2).PageLocking(PageLockingMode.Aggressive));
 #if DEBUG
@@ -4747,7 +5655,7 @@ namespace ScaleSmooth
             return rb;
         }
 
-        private short[,,] BilinearApproximationGrayGPU(Image img, int x, int ac)
+        private short[,,] BilinearApproximationGrayGPU(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators().EnableAlgorithms().Optimize(OptimizationLevel.O2).PageLocking(PageLockingMode.Aggressive));
 #if DEBUG
@@ -5326,7 +6234,7 @@ namespace ScaleSmooth
         }
 
 
-        private short[,,] BilinearApproximationDerivativeGrayGPU(Image img, int x, int ac)
+        private short[,,] BilinearApproximationDerivativeGrayGPU(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators().EnableAlgorithms().Optimize(OptimizationLevel.O2).PageLocking(PageLockingMode.Aggressive));
 #if DEBUG
@@ -6988,7 +7896,7 @@ namespace ScaleSmooth
         }
 
 
-        private byte[,] BilinearApproximationSmoothContrastGrayGPU(Image img, int x, int ac)
+        private byte[,] BilinearApproximationSmoothContrastGrayGPU(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators().EnableAlgorithms().Optimize(OptimizationLevel.O2).PageLocking(PageLockingMode.Aggressive));
 #if DEBUG
@@ -7605,7 +8513,7 @@ namespace ScaleSmooth
         }
 
 
-        private byte[,] BilinearApproximationExtremumGrayGPU(Image img, int x, int ac)
+        private byte[,] BilinearApproximationExtremumGrayGPU(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators().EnableAlgorithms().Optimize(OptimizationLevel.O2).PageLocking(PageLockingMode.Aggressive));
 #if DEBUG
@@ -8254,7 +9162,7 @@ namespace ScaleSmooth
         }
 
 
-        private Bitmap ScaleBAContrastGrayGPU(Image img, int x, int ac) //After new methods, update demo
+        private Bitmap ScaleBAContrastGrayGPU(Bitmap img, int x, int ac) //After new methods, update demo
         {
             short[,,] ri = BilinearApproximationGrayGPU(img, x, ac);
             int ni = ri.GetUpperBound(0) + 1;
@@ -8287,7 +9195,7 @@ namespace ScaleSmooth
         }
 
 
-        private Bitmap ScaleBilinearApproximationColorGPU(Image img, int x, int ac)
+        private Bitmap ScaleBilinearApproximationColorGPU(Bitmap img, int x, int ac)
         {
             short[,,] ri = BilinearApproximationColorGPU(img, x, ac);
             int ni = ri.GetUpperBound(0) + 1;
@@ -8311,7 +9219,7 @@ namespace ScaleSmooth
             return BMPfromRGB(rb, ni, ns);
         }
 
-        private Bitmap ScaleBAContrastColorGPU(Image img, int x, int ac)//>1? exception:nugetPacket
+        private Bitmap ScaleBAContrastColorGPU(Bitmap img, int x, int ac)//>1? exception:nugetPacket
         {
             short[,,] ri = BilinearApproximationColorGPU(img, x, ac);
             int ni = ri.GetUpperBound(0) + 1;
@@ -8449,7 +9357,7 @@ namespace ScaleSmooth
             return grp;
         }
 
-        private Bitmap NeighborSubpixelGray(Image img, int x, int ac) //After stage3, color
+        private Bitmap NeighborSubpixelGray(Bitmap img, int x, int ac) //After stage3, color
         {
             int ni, ns, oi, os;
             oi = img.Width;
@@ -8495,18 +9403,17 @@ namespace ScaleSmooth
             return BMPfromRGB(sr, oi + 2, os + 2 - o);*/
         }
 
-        static byte[,] GrayFromBMP(Image img, int marginLeft, int marginRight, int marginTop, int marginBottom, int w, int h)
+        static byte[,] GrayFromBMP(Bitmap bmp, int marginLeft, int marginRight, int marginTop, int marginBottom, int w, int h)
         {
-            Bitmap bmp = (Bitmap)img;
             byte[,] sr = new byte[w + marginLeft + marginRight, h + marginTop + marginBottom];
-            System.Drawing.Imaging.BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, bmp.PixelFormat);
+            BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
             int stride = Math.Abs(bmpData.Stride);
             int bytes = stride * bmp.Height;
             IntPtr ptr = bmpData.Scan0;
             byte[] rgbValues = new byte[bytes];
             Marshal.Copy(ptr, rgbValues, 0, bytes);
 
-            if (bmp.PixelFormat == System.Drawing.Imaging.PixelFormat.Format24bppRgb)
+            if (bmp.PixelFormat == PixelFormat.Format24bppRgb)
             {
                 int w3 = w * 3;
                 int stridew3 = stride - w3;
@@ -8543,18 +9450,17 @@ namespace ScaleSmooth
             return sr;
         }
 
-        static byte[,,] RGBfromBMP(Image img, int marginLeft, int marginRight, int marginTop, int marginBottom, int w, int h)
+        static byte[,,] RGBfromBMP(Bitmap bmp, int marginLeft, int marginRight, int marginTop, int marginBottom, int w, int h)
         {
-            Bitmap bmp = (Bitmap)img;
             byte[,,] sr = new byte[w + marginLeft + marginRight, h + marginTop + marginBottom, 3];
-            System.Drawing.Imaging.BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, w, h), System.Drawing.Imaging.ImageLockMode.ReadWrite, bmp.PixelFormat);
+            BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, w, h), ImageLockMode.ReadWrite, bmp.PixelFormat);
             int stride = Math.Abs(bmpData.Stride);
             int bytes = stride * bmp.Height;
             IntPtr ptr = bmpData.Scan0;
             byte[] rgbValues = new byte[bytes];
             Marshal.Copy(ptr, rgbValues, 0, bytes);
 
-            if (bmp.PixelFormat == System.Drawing.Imaging.PixelFormat.Format24bppRgb)
+            if (bmp.PixelFormat == PixelFormat.Format24bppRgb)
             {
                 int w3 = w * 3;
                 int stridew3 = stride - w3;
@@ -8806,7 +9712,7 @@ namespace ScaleSmooth
         }
 
 
-        private Bitmap ScaleSmoothContinuousGray(Image img, int x, int ac)
+        private Bitmap ScaleSmoothContinuousGray(Bitmap img, int x, int ac)
         {
             int ni, ns, oi, os, oim, osm, xm, nim, nsm;
             xm = x - 1;
@@ -8818,7 +9724,8 @@ namespace ScaleSmooth
             nim = ni - 1;
             nsm = ns - 1;
 
-            ac = x * (ac * (oim - 1) / 100 + 1);
+            ac = x * (ac + 1) / 101;
+            if (ac < 1) ac = 1;
             osm = os - 1;
 
             byte[,] d = new byte[ni, ns];
@@ -9028,7 +9935,7 @@ namespace ScaleSmooth
             return BMPfromGray(d, ni, ns);
         }
 
-        private Bitmap ScaleSmoothGray(Image img, int x, int ac) //AFTER optimization, COMMENT EACH ALGORITHM
+        private Bitmap ScaleSmoothGray(Bitmap img, int x, int ac) //AFTER optimization, COMMENT EACH ALGORITHM
         {
             int ni, ns, oi, os, oim, osm, xm, nim, nsm;
             xm = x - 1;
@@ -9042,6 +9949,7 @@ namespace ScaleSmooth
             nsm = ns - 1;
 
             ac = x * (ac + 1) / 101;
+            if (ac < 1) ac = 1;
             osm = os - 1;
 
             byte[,] d = new byte[ni, ns];
@@ -9271,7 +10179,7 @@ namespace ScaleSmooth
             return BMPfromGray(d, ni, ns);
         }
 
-        private Bitmap ScaleSmoothContrastGray(Image img, int x, int ac)
+        private Bitmap ScaleSmoothContrastGray(Bitmap img, int x, int ac)
         {
             int ni, ns, oi, os, oim, osm, xm, nim, nsm;
             int xx = x * x;
@@ -9286,7 +10194,7 @@ namespace ScaleSmooth
             nim = ni - 1;
             nsm = ns - 1;
 
-            ac = (int)MathF.Ceiling(x * ac / 133f);
+            ac = (int)MathF.Ceiling(x * ac / 50f);
 
             float[,] d = new float[ni, ns];
             byte[,] sr = GrayFromBMP(img, 0, 0, 0, 0, oi, os);
@@ -9497,7 +10405,7 @@ namespace ScaleSmooth
             }
         }
 
-        private Bitmap ScaleSmoothContinuousColor(Image img, int x, int ac)
+        private Bitmap ScaleSmoothContinuousColor(Bitmap img, int x, int ac)
         {
             int ni, ns, oi, os, oim, osm, xm, nim, nsm;
             xm = x - 1;
@@ -9510,7 +10418,8 @@ namespace ScaleSmooth
             nim = ni - 1;
             nsm = ns - 1;
 
-            ac = x * (ac * (oim - 1) / 100 + 1);
+            ac = x * (ac + 1) / 101;
+            if (ac < 1) ac = 1;
             osm = os - 1;
 
             byte[,,] r = new byte[ni, ns, 3];
@@ -9730,7 +10639,7 @@ namespace ScaleSmooth
             return BMPfromRGB(r, ni, ns);
         }
 
-        private Bitmap ScaleSmoothColor(Image img, int x, int ac)
+        private Bitmap ScaleSmoothColor(Bitmap img, int x, int ac)
         {
             int ni, ns, oi, os, oim, osm, xm, nim, nsm;
             xm = x - 1;
@@ -9744,6 +10653,7 @@ namespace ScaleSmooth
             nsm = ns - 1;
 
             ac = x * (ac + 1) / 101;
+            if (ac < 1) ac = 1;
             osm = os - 1;
 
             byte[,,] r = new byte[ni, ns, 3];
@@ -9990,7 +10900,7 @@ namespace ScaleSmooth
             return BMPfromRGB(r, ni, ns);
         }
 
-        private Bitmap ScaleSmoothContrastColor(Image img, int x, int ac)
+        private Bitmap ScaleSmoothContrastColor(Bitmap img, int x, int ac)
         {
             int ni, ns, oi, os, oim, osm, xm, nim, nsm;
             xm = x - 1;
@@ -10004,7 +10914,7 @@ namespace ScaleSmooth
             nim = ni - 1;
             nsm = ns - 1;
 
-            ac = (int)MathF.Ceiling(x * ac / 133f);
+            ac = (int)MathF.Ceiling(x * ac / 50f);
 
             float[,,] r = new float[ni, ns, 3];
             byte[,,] sr = RGBfromBMP(img, 0, 0, 0, 0, oi, os);
@@ -10211,7 +11121,7 @@ namespace ScaleSmooth
             }
         }
 
-        private Bitmap ScaleRoughGray(Image img, int x, int ac)
+        private Bitmap ScaleRoughGray(Bitmap img, int x, int ac)
         {
             int ni, ns, oi, os, oim, osm, xm, nim, nsm, ac2;
             xm = x - 1;
@@ -10449,7 +11359,7 @@ namespace ScaleSmooth
             return BMPfromGray(d, ni, ns);
         }
 
-        private Bitmap ScaleFurryGray(Image img, int x, int ac) //after ALL, 256monoGray for Furrys and Roughs
+        private Bitmap ScaleFurryGray(Bitmap img, int x, int ac) //after ALL, 256monoGray for Furrys and Roughs
         {
             int ni, ns, oi, os, oim, osm, xm, nim, nsm, ac2;
             xm = x - 1;
@@ -10718,7 +11628,7 @@ namespace ScaleSmooth
         }
 
 
-        private Bitmap ScaleRoughColor(Image img, int x, int ac)
+        private Bitmap ScaleRoughColor(Bitmap img, int x, int ac)
         {
             int ni, ns, oi, os, oim, osm, xm, nim, nsm, ac2;
             xm = x - 1;
@@ -10960,7 +11870,7 @@ namespace ScaleSmooth
             return BMPfromRGB(dr, ni, ns);
         }
 
-        private Bitmap ScaleFurryColor(Image img, int x, int ac)
+        private Bitmap ScaleFurryColor(Bitmap img, int x, int ac)
         {
             int ni, ns, oi, os, oim, osm, xm, nim, nsm, ac2;
             xm = x - 1;
@@ -11248,7 +12158,7 @@ namespace ScaleSmooth
             return (float)(0.000000002833333 * MathF.Pow(v, 5) - 0.00000181137 * MathF.Pow(v, 4) + 0.0003605953 * MathF.Pow(v, 3) - 0.01970911609 * MathF.Pow(v, 2) + 0.63316688184 * v);
         }
 
-        private Bitmap ContrastBoldScaleGray(Image img, int x, int ac) //AFTER ALL, one more time contrast s255f
+        private Bitmap ContrastBoldScaleGray(Bitmap img, int x, int ac) //AFTER ALL, one more time contrast s255f
         {
             int ni, ns, oi, os, oim, osm, xm, nim, nsm, xoim, xoim2, xoimac;
             xm = x - 1;
@@ -11579,7 +12489,7 @@ namespace ScaleSmooth
             return BMPfromGray(d, ni, ns);
         }
 
-        private Bitmap ContrastBoldScaleColor(Image img, int x, int ac)
+        private Bitmap ContrastBoldScaleColor(Bitmap img, int x, int ac)
         {
             int ni, ns, oi, os, oim, osm, xm, nim, nsm, xoim, xoim2, xoimac;
             xm = x - 1;
@@ -12264,7 +13174,7 @@ namespace ScaleSmooth
         }
 
 
-        private Bitmap BoldScaleColor(Image img, int x, int ac)
+        private Bitmap BoldScaleColor(Bitmap img, int x, int ac)
         {
             int ni, ns, oi, os, oim, osm, xm, nim, nsm, xoim, xoim2, xoimac;
             xm = x - 1;
@@ -12922,9 +13832,7 @@ namespace ScaleSmooth
 
             return BMPfromRGB(r, ni, ns);
         }
-
-
-        private Bitmap BoldScaleGray(Image img, int x, int ac)
+        private Bitmap BoldScaleGray(Bitmap img, int x, int ac)
         {
             int ni, ns, oi, os, oim, osm, xm, nim, nsm, xoim, xoim2, xoimac;
             xm = x - 1;
@@ -13560,7 +14468,7 @@ namespace ScaleSmooth
             return BMPfromGray(d, ni, ns);
         }
 
-        private Bitmap ScaleSeparateGray(Image img, int x, int ac)
+        private Bitmap ScaleSeparateGray(Bitmap img, int x, int ac)
         {
             int ni, ns, oi, os, xm, oim, osm, sxx, sxxm, ixx, ixxm, halfx;
             float x50p, x150p, rex, rex2;
@@ -14257,7 +15165,7 @@ namespace ScaleSmooth
             return BMPfromGray(rb, ni, ns); //AFTER ALL, visualisation all methods work ac++ video 
         }
 
-        private Bitmap ScaleSeparateColor(Image img, int x, int ac)
+        private Bitmap ScaleSeparateColor(Bitmap img, int x, int ac)
         {
             int ni, ns, oi, os, xm, oim, osm, sxx, sxxm, ixx, ixxm, halfx;
             float x50p, x150p;
@@ -15290,7 +16198,7 @@ namespace ScaleSmooth
         }
 
 
-        private Bitmap ScaleBAMonochromeGray(Image img, int x, int ac)//after nupkg, application and project
+        private Bitmap ScaleBAMonochromeGray(Bitmap img, int x, int ac)//after nupkg, application and project
         {
             short[,] ri = BilinearApproximationGray(img, x, ac);
             int ni = ri.GetUpperBound(0) + 1;
@@ -15374,7 +16282,7 @@ namespace ScaleSmooth
                     if (rf[i, s] < min - 2.5f)
                         rb[i, s] = 0;
                     else if (rf[i, s] > min + 2.5f)
-                        rb[i, s] = 255;//k=-8;k=4?*2??????? unite at 127.5
+                        rb[i, s] = 255;
                     else
                         rb[i, s] = (byte)((rf[i, s] - min + 2.5f) * 50.6f + 1.5f);
                 }
@@ -15383,8 +16291,7 @@ namespace ScaleSmooth
             return BMPfromGray(rb, ni, ns);
         }
 
-
-        private Bitmap Scale255BAGray(Image img, int x, int ac)
+        private Bitmap Scale255BAGray(Bitmap img, int x, int ac)
         {
             byte ac1;
             if (ac < 1)
@@ -15564,7 +16471,7 @@ namespace ScaleSmooth
             return BMPfromGray(ttl, ni, ns);
         }
 
-        private Bitmap ScaleThin255BAGray(Image img, int x, int ac)
+        private Bitmap ScaleThin255BAGray(Bitmap img, int x, int ac)
         {
             int oi = img.Width;
             int os = img.Height;
@@ -15758,7 +16665,7 @@ namespace ScaleSmooth
             }
         }
 
-        private Bitmap Scale255BAColor(Image img, int x, int ac)
+        private Bitmap Scale255BAColor(Bitmap img, int x, int ac)
         {
             byte ac1;
             if (ac < 1)
@@ -15958,7 +16865,7 @@ namespace ScaleSmooth
             return BMPfromRGB(ttl, ni, ns);
         }
 
-        private Bitmap ScaleThin255BAColor(Image img, int x, int ac)
+        private Bitmap ScaleThin255BAColor(Bitmap img, int x, int ac)
         {
             int oi = img.Width;
             int os = img.Height;
@@ -15992,7 +16899,7 @@ namespace ScaleSmooth
                         }
                     }
                 }
-                short[,,] ri = ArrayBilinearApproximationSmoothColor(sp, x, ac, oi, os);//k=-8;k=4?*2??????? unite at 127.5
+                short[,,] ri = ArrayBilinearApproximationSmoothColor(sp, x, ac, oi, os);
 
                 for (byte t = 0; t < 3; t++)
                 {
@@ -16161,7 +17068,7 @@ namespace ScaleSmooth
             return BMPfromRGB(ttl2, ni, ns);
         }
 
-        private Bitmap Scale255BAGrayGPU(Image img, int x, int ac)
+        private Bitmap Scale255BAGrayGPU(Bitmap img, int x, int ac)
         {
             byte ac1;
             if (ac < 1)
@@ -16317,7 +17224,7 @@ namespace ScaleSmooth
             return BMPfromGray(ttl, ni, ns);
         }
 
-        private Bitmap ScaleThin255BAGrayGPU(Image img, int x, int ac)
+        private Bitmap ScaleThin255BAGrayGPU(Bitmap img, int x, int ac)
         {
             byte ac1;
             if (ac < 1)
@@ -16490,7 +17397,7 @@ namespace ScaleSmooth
             return BMPfromGray(ttl2, ni, ns);
         }
 
-        private Bitmap ScaleThin255BAColorGPU(Image img, int x, int ac)
+        private Bitmap ScaleThin255BAColorGPU(Bitmap img, int x, int ac)
         {
             byte ac1;
             if (ac < 1)
@@ -16683,7 +17590,7 @@ namespace ScaleSmooth
         }
 
 
-        private Bitmap Scale255BAColorGPU(Image img, int x, int ac)
+        private Bitmap Scale255BAColorGPU(Bitmap img, int x, int ac)
         {
             byte ac1;
             if (ac < 1)
@@ -16917,7 +17824,7 @@ namespace ScaleSmooth
         }
 
 
-        private Bitmap ScaleBAMonochrome2Gray(Image img, int x, int ac)//after nupkg, application and project
+        private Bitmap ScaleBAMonochrome2Gray(Bitmap img, int x, int ac)//after nupkg, application and project
         {
             byte[,] ri = BilinearApproximationSmoothContrastGray(img, x, ac);
             int ni = ri.GetUpperBound(0) + 1;
@@ -17017,8 +17924,8 @@ namespace ScaleSmooth
         }
 
 
-        private Bitmap ScaleBAMonochromeColor(Image img, int x, int ac)//after nupkg, application and project
-        {
+        private Bitmap ScaleBAMonochromeColor(Bitmap img, int x, int ac)//after nupkg, application and project
+        {//0 AAx2 raLanc1
             short[,,] ri = BilinearApproximationColor(img, x, ac);
             int ni = ri.GetUpperBound(0) + 1;
             int ns = ri.GetUpperBound(1) + 1;
@@ -17120,12 +18027,12 @@ namespace ScaleSmooth
             return BMPfromRGB(rb, ni, ns);
         }
 
-        private Bitmap ScaleBAMonochrome2Color(Image img, int x, int ac)//after nupkg, application and project
+        private Bitmap ScaleBAMonochrome2Color(Bitmap img, int x, int ac)//after nupkg, application and project
         {
             byte[,,] ri = BilinearApproximationSmoothContrastColor(img, x, ac);
             int ni = ri.GetUpperBound(0) + 1;
             int ns = ri.GetUpperBound(1) + 1;
-            byte[,,] rb = new byte[ni, ns, 3];//why?
+
 
             for (byte t = 0; t < 3; t++)
             {
@@ -17214,6 +18121,7 @@ namespace ScaleSmooth
             }
             float piX = MathF.PI * x;
 
+            byte[,,] rb = new byte[ni, ns, 3];
             Parallel.For(0, ni, i =>
             {
                 for (byte t = 0; t < 3; t++)
@@ -17223,7 +18131,7 @@ namespace ScaleSmooth
                         if (rf[i, s, t] < mindeviant[t])
                             rb[i, s, t] = 0;
                         else if (rf[i, s, t] > maxdeviant[t])
-                            rb[i, s, t] = 255;//k=-8;k=4?*2??????? unite at 127.5
+                            rb[i, s, t] = 255;
                         else
                         {
                             rb[i, s, t] = (byte)((rf[i, s, t] - mindeviant[t]) * piX + 1.5f);
@@ -17236,7 +18144,7 @@ namespace ScaleSmooth
         }
 
 
-        private Bitmap ScaleBilinearApproximationGray(Image img, int x, int ac)//after nupkg, application and project
+        private Bitmap ScaleBilinearApproximationGray(Bitmap img, int x, int ac)//after nupkg, application and project
         {
             short[,] ri = BilinearApproximationGray(img, x, ac);
             int ni = ri.GetUpperBound(0) + 1;
@@ -17249,8 +18157,8 @@ namespace ScaleSmooth
                 {
                     if (ri[i, s] < 1)
                         rb[i, s] = 0;
-                    else if (ri[i, s] > 254) //< 42 interp ? > 213 ??? 
-                        rb[i, s] = 255;//k=-8;k=4?*2??????? unite at 127.5
+                    else if (ri[i, s] > 254)
+                        rb[i, s] = 255;
                     else
                         rb[i, s] = (byte)(ri[i, s]);
                 }
@@ -17259,7 +18167,7 @@ namespace ScaleSmooth
             return BMPfromGray(rb, ni, ns);
         }
 
-        private Bitmap ScaleBAExtremumGray(Image img, int x, int ac)//after nupkg, application and project
+        private Bitmap ScaleBAExtremumGray(Bitmap img, int x, int ac)//after nupkg, application and project
         {
             byte[,] rb = BilinearApproximationExtremumGray(img, x, ac);
             int ni = rb.GetUpperBound(0) + 1;
@@ -17267,7 +18175,7 @@ namespace ScaleSmooth
             return BMPfromGray(rb, ni, ns);
         }
 
-        private Bitmap ScaleBASmoothContrastGray(Image img, int x, int ac)//after nupkg, application and project
+        private Bitmap ScaleBASmoothContrastGray(Bitmap img, int x, int ac)//after nupkg, application and project
         {
             byte[,] rb = BilinearApproximationSmoothContrastGray(img, x, ac);
             int ni = rb.GetUpperBound(0) + 1;
@@ -17275,24 +18183,24 @@ namespace ScaleSmooth
             return BMPfromGray(rb, ni, ns);
         }
 
-        private Bitmap ScaleBAExtremumColor(Image img, int x, int ac)
+        private Bitmap ScaleBAExtremumColor(Bitmap img, int x, int ac)
         {
-            byte[,,] rb = BilinearApproximationExtremumColor(img, x, ac);//k=-8;k=4?*2??????? unite at 127.5
+            byte[,,] rb = BilinearApproximationExtremumColor(img, x, ac);
             int ni = rb.GetUpperBound(0) + 1;
             int ns = rb.GetUpperBound(1) + 1;
             return BMPfromRGB(rb, ni, ns);
         }
 
-        private Bitmap ScaleBASmoothContrastColor(Image img, int x, int ac)
+        private Bitmap ScaleBASmoothContrastColor(Bitmap img, int x, int ac)
         {
-            byte[,,] rb = BilinearApproximationSmoothContrastColor(img, x, ac);//k=-8;k=4?*2??????? unite at 127.5
+            byte[,,] rb = BilinearApproximationSmoothContrastColor(img, x, ac);
             int ni = rb.GetUpperBound(0) + 1;
             int ns = rb.GetUpperBound(1) + 1;
             return BMPfromRGB(rb, ni, ns);
         }
 
 
-        private short[,,] BilinearApproximationColor(Image img, int x, int ac)
+        private short[,,] BilinearApproximationColor(Bitmap img, int x, int ac)
         {
             if (ac < 1) ac = 1;
             int ni, ns, oi, os, xm, oim, osm, sxx, sxxm, ixx, ixxm;
@@ -17656,7 +18564,7 @@ namespace ScaleSmooth
             return ri;
         }
 
-        private short[,,] BilinearApproximationDerivativeColor(Image img, int x, int ac)
+        private short[,,] BilinearApproximationDerivativeColor(Bitmap img, int x, int ac)
         {
             if (ac < 1) ac = 1;
             int ni, ns, oi, os, xm, oim, osm, sxx, sxxm, ixx, ixxm;
@@ -17961,7 +18869,7 @@ namespace ScaleSmooth
 
 
 
-        private byte[,,] BilinearApproximationSmoothContrastColor(Image img, int x, int ac)
+        private byte[,,] BilinearApproximationSmoothContrastColor(Bitmap img, int x, int ac)
         {
             if (ac < 1) ac = 1;
             int ni, ns, oi, os, xm, oim, osm, sxx, sxxm, ixx, ixxm;
@@ -18311,7 +19219,7 @@ namespace ScaleSmooth
         }
 
 
-        private byte[,,] BilinearApproximationExtremumColor(Image img, int x, int ac)
+        private byte[,,] BilinearApproximationExtremumColor(Bitmap img, int x, int ac) //antiExtremum?
         {
             if (ac < 1) ac = 1;
             int ni, ns, oi, os, xm, oim, osm, sxx, sxxm, ixx, ixxm;
@@ -18823,7 +19731,7 @@ namespace ScaleSmooth
             return rb;
         }
 
-        private short[,] BilinearApproximationGray(Image img, int x, int ac)
+        private short[,] BilinearApproximationGray(Bitmap img, int x, int ac)
         {
             if (ac < 1) ac = 1;
             int ni, ns, oi, os, xm, oim, osm, sxx, sxxm, ixx, ixxm;
@@ -18887,7 +19795,7 @@ namespace ScaleSmooth
 
             float xs = oim / 2f, ys = osm / 2f;
             const float k = -4f; //+8 - only Gibbs ringing, 0 - save derivative with Gibbs ringing; -8 - save mean value 
-            for (int kki = (int)(xs - ki / 2); kki < xs + ki / 2 - 0.5f; kki += oiki)//after ALL, -4 sub +8/2??? as clear Gibbs ringing???
+            for (int kki = (int)(xs - ki / 2); kki < xs + ki / 2 - 0.5f; kki += oiki)
             {
                 ProgressText.Text = (kki * 100 / oim).ToString();
                 for (int kks = (int)(ys - ks / 2); kks < ys + ks / 2 - 0.5f; kks++)
@@ -19120,7 +20028,7 @@ namespace ScaleSmooth
             return ri;
         }
 
-        private short[,] BilinearApproximationDerivativeGray(Image img, int x, int ac)
+        private short[,] BilinearApproximationDerivativeGray(Bitmap img, int x, int ac)
         {
             if (ac < 1) ac = 1;
             int ni, ns, oi, os, xm, oim, osm, sxx, sxxm, ixx, ixxm;
@@ -19389,7 +20297,7 @@ namespace ScaleSmooth
             int oiki = oim / ki;
 
             const float k = -3f; //+8 - only Gibbs ringing, 0 - save derivative with Gibbs ringing; -8 - save mean value 
-            for (int kki = 0; kki < ki * oiki; kki += oiki)//after ALL, -4 sub +8/2??? as clear Gibbs ringing???
+            for (int kki = 0; kki < ki * oiki; kki += oiki)
             {
                 for (int kks = 0; kks < ks * oiki; kks += oiki)
                 {
@@ -19653,7 +20561,7 @@ namespace ScaleSmooth
             int oiki = oim / ki;
 
             const float k = -3f; //+8 - only Gibbs ringing, 0 - save derivative with Gibbs ringing; -8 - save mean value 
-            for (int kki = 0; kki < ki * oiki; kki += oiki)//after ALL, -4 sub +8/2??? as clear Gibbs ringing???
+            for (int kki = 0; kki < ki * oiki; kki += oiki)
             {
                 for (int kks = 0; kks < ks * oiki; kks += oiki)
                 {
@@ -20584,7 +21492,7 @@ namespace ScaleSmooth
         }
 
 
-        private byte[,] BilinearApproximationSmoothContrastGray(Image img, int x, int ac)
+        private byte[,] BilinearApproximationSmoothContrastGray(Bitmap img, int x, int ac)
         {
             if (ac < 1) ac = 1;
             int ni, ns, oi, os, xm, oim, osm, sxx, sxxm, ixx, ixxm;
@@ -20608,7 +21516,7 @@ namespace ScaleSmooth
             int oiki = oim / ki;
 
             const float k = -4f; //+8 - only Gibbs ringing, 0 - save derivative with Gibbs ringing; -8 - save mean value 
-            for (int kki = 0; kki < ki * oiki; kki += oiki)//after ALL, -4 sub +8/2??? as clear Gibbs ringing???
+            for (int kki = 0; kki < ki * oiki; kki += oiki)
             {
                 ProgressText.Text = (kki * 100 / oim).ToString();
                 for (int kks = 0; kks < ks * oiki; kks += oiki)
@@ -20861,7 +21769,7 @@ namespace ScaleSmooth
             return (MathF.Pow(x - cx, 2) + MathF.Pow(y - cy, 2)) / 2 / halfx + halfx;
         }
 
-        private byte[,] BilinearApproximationExtremumGray(Image img, int x, int ac)
+        private byte[,] BilinearApproximationExtremumGray(Bitmap img, int x, int ac)
         {
             if (ac < 1) ac = 1;
             int ni, ns, oi, os, xm, oim, osm, sxx, sxxm, ixx, ixxm;
@@ -20893,7 +21801,7 @@ namespace ScaleSmooth
             int oiki = oim / ki;
 
             const float k = -4f; //+8 - only Gibbs ringing, 0 - save derivative with Gibbs ringing; -8 - save mean value 
-            for (int kki = 0; kki < ki * oiki; kki += oiki)//after ALL, -4 sub +8/2??? as clear Gibbs ringing???
+            for (int kki = 0; kki < ki * oiki; kki += oiki)
             {
                 ProgressText.Text = (kki * 100 / oim).ToString();
                 for (int kks = 0; kks < ks * oiki; kks += oiki)
@@ -21182,7 +22090,7 @@ namespace ScaleSmooth
             return rb;
         }
 
-        private Bitmap ScaleBAContrastGray(Image img, int x, int ac)//after nupkg, application and project
+        private Bitmap ScaleBAContrastGray(Bitmap img, int x, int ac)//after nupkg, application and project
         {
             short[,] ri = BilinearApproximationGray(img, x, ac);
             int ni = ri.GetUpperBound(0) + 1;
@@ -21216,9 +22124,9 @@ namespace ScaleSmooth
         }
 
 
-        private Bitmap ScaleBilinearApproximationColor(Image img, int x, int ac)
+        private Bitmap ScaleBilinearApproximationColor(Bitmap img, int x, int ac)
         {
-            short[,,] ri = BilinearApproximationColor(img, x, ac);//k=-8;k=4?*2??????? unite at 127.5
+            short[,,] ri = BilinearApproximationColor(img, x, ac);
             int ni = ri.GetUpperBound(0) + 1;
             int ns = ri.GetUpperBound(1) + 1;
 
@@ -21243,7 +22151,7 @@ namespace ScaleSmooth
             return BMPfromRGB(rb, ni, ns);
         }
 
-        private Bitmap ScaleDerivativeBAColor(Image img, int x, int ac)
+        private Bitmap ScaleDerivativeBAColor(Bitmap img, int x, int ac)
         {
             short[,,] ri = BilinearApproximationColor(img, x, ac);
             short[,,] riDer = BilinearApproximationDerivativeColor(img, x, ac);
@@ -21272,7 +22180,7 @@ namespace ScaleSmooth
             return BMPfromRGB(rb, ni, ns);
         }
 
-        private Bitmap ScaleDerivativeBAGray(Image img, int x, int ac)
+        private Bitmap ScaleDerivativeBAGray(Bitmap img, int x, int ac)
         {
             short[,] ri = BilinearApproximationGray(img, x, ac);
             short[,] riDer = BilinearApproximationDerivativeGray(img, x, ac);
@@ -21299,7 +22207,7 @@ namespace ScaleSmooth
         }
 
 
-        private Bitmap ScaleDerivativeBAColorGPU(Image img, int x, int ac)
+        private Bitmap ScaleDerivativeBAColorGPU(Bitmap img, int x, int ac)
         {
             short[,,] ri = BilinearApproximationColorGPU(img, x, ac);
             short[,,] riDer = BilinearApproximationDerivativeColorGPU(img, x, ac);
@@ -21328,7 +22236,7 @@ namespace ScaleSmooth
             return BMPfromRGB(rb, ni, ns);
         }
 
-        private Bitmap ScaleDerivativeBAGrayGPU(Image img, int x, int ac)
+        private Bitmap ScaleDerivativeBAGrayGPU(Bitmap img, int x, int ac)
         {
             short[,,] ri = BilinearApproximationGrayGPU(img, x, ac);
             short[,,] riDer = BilinearApproximationDerivativeGrayGPU(img, x, ac);
@@ -21479,6 +22387,7 @@ namespace ScaleSmooth
 
         private Bitmap AntiBicubucColor(Bitmap lowResImage, int scale, int accuracy) //exactMean x2? x2 analyze?
         {
+#if !DEBUG
             int p1;
             if (accuracy > 30)
             {
@@ -21488,7 +22397,7 @@ namespace ScaleSmooth
             {
                 p1 = 98;
             }
-
+#endif
             int w = lowResImage.Width;
             int h = lowResImage.Height;
             // Установка желаемого разрешения
@@ -21817,6 +22726,7 @@ namespace ScaleSmooth
 
         private Bitmap AntiBicubucGray(Bitmap lowResImage, int scale, int accuracy) //ABaccuracy exactMean x2? x2 analyze? 16->x2: 2-128 -> 16-256?
         {
+#if !DEBUG
             int p1;
             if (accuracy > 30)
             {
@@ -21826,6 +22736,7 @@ namespace ScaleSmooth
             {
                 p1 = 98;
             }
+#endif
 
             int w = lowResImage.Width;
             int h = lowResImage.Height;
@@ -22277,7 +23188,7 @@ namespace ScaleSmooth
             return BMPfromGray(output, highWidth, highHeight);
         }
 
-        public Bitmap SmoothCAScolor(Bitmap lowResImage, int scale, int iterations)
+        public Bitmap SmoothCAScolor(Bitmap lowResImage, int scale, int iterations) //текстовое описание алгоритма
         {
             iterations++;
             float alpha = 1.03f / (iterations + 3);
@@ -22542,7 +23453,7 @@ namespace ScaleSmooth
         }
 
 
-        private Bitmap ScaleBAContrastColor(Image img, int x, int ac)
+        private Bitmap ScaleBAContrastColor(Bitmap img, int x, int ac)
         {
             short[,,] ri = BilinearApproximationColor(img, x, ac);
             int ni = ri.GetUpperBound(0) + 1;
@@ -22685,99 +23596,104 @@ namespace ScaleSmooth
             switch (comboBox1.SelectedItem)
             {
                 case "Smooth"://afterALL, replace demo
-                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSmooth);
+                    pictureBox3.Image = new Bitmap(Resources.shortSmooth);
                     label6.Text = Strings.ScaleSmooth;
                     checkBox1.Visible = false;
                     break;
                 case "SmoothContrast"://after optimization - result -> reverse adjust -> Continuos???
-                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSmoothContr);
+                    pictureBox3.Image = new Bitmap(Resources.shortSmoothContr);
                     label6.Text = Strings.ScaleSmoothContrast;
                     checkBox1.Visible = false;
                     break;
                 case "SmoothContinuous":
-                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSmoothContin);
+                    pictureBox3.Image = new Bitmap(Resources.shortSmoothContin);
                     label6.Text = Strings.scaleSmoothContinuous;
                     checkBox1.Visible = false;
                     break;
                 case "Bold":
-                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortBold);
+                    pictureBox3.Image = new Bitmap(Resources.shortBold);
                     label6.Text = Strings.boldScale;
                     checkBox1.Visible = false;
                     break;
                 case "ContrastBold":
-                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortContrast);
+                    pictureBox3.Image = new Bitmap(Resources.shortContrast);
                     label6.Text = Strings.contrastBoldScale;
                     checkBox1.Visible = false;
                     break;
                 case "Furry":
-                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortFurry);
+                    pictureBox3.Image = new Bitmap(Resources.shortFurry);
                     label6.Text = Strings.scaleFurry;
                     checkBox1.Visible = false;
                     break;
                 case "Rough":
-                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortRough);
+                    pictureBox3.Image = new Bitmap(Resources.shortRough);
                     label6.Text = Strings.scaleRough;
                     checkBox1.Visible = false;
                     break;
                 case "Separate":
-                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSeparate);
+                    pictureBox3.Image = new Bitmap(Resources.shortSeparate);
                     label6.Text = Strings.scaleSeparate;
                     checkBox1.Visible = false;
                     break;
                 case "BA":
-                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortBilApprox);
+                    pictureBox3.Image = new Bitmap(Resources.shortBilApprox);
                     label6.Text = Strings.scaleBilinearApproximation;
                     checkBox1.Visible = true;
                     break;
                 case "BAContrast":
-                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortBAcontrast);
+                    pictureBox3.Image = new Bitmap(Resources.shortBAcontrast);
                     label6.Text = Strings.scaleBAContrast;
                     checkBox1.Visible = true;
                     break;
                 case "BASmoothContrast":
-                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortBASmoothContrast);
+                    pictureBox3.Image = new Bitmap(Resources.shortBASmoothContrast);
                     label6.Text = Strings.scaleBASmoothContrast;
                     checkBox1.Visible = true;
                     break;
                 case "BAMonochrome"://after new methods, numbers of original method to Github
-                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortBAmonochrome);
+                    pictureBox3.Image = new Bitmap(Resources.shortBAmonochrome);
                     label6.Text = Strings.scaleBAmonochrome;
                     checkBox1.Visible = true;
                     break;
                 case "BAMonochrome2":
-                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortBAmonochrome2);
+                    pictureBox3.Image = new Bitmap(Resources.shortBAmonochrome2);
                     label6.Text = Strings.scaleBAmonochrome2;
                     checkBox1.Visible = true;
                     break;
                 case "BAExtremum":
-                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortBAExtremum);
+                    pictureBox3.Image = new Bitmap(Resources.shortBAExtremum);
                     label6.Text = Strings.scaleBAExtremum;
                     checkBox1.Visible = true;
                     break;
                 case "255BA":
-                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.short255BA);
+                    pictureBox3.Image = new Bitmap(Resources.short255BA);
                     label6.Text = Strings.scale255BA;
                     checkBox1.Visible = true;
                     break;
                 case "Thin255BA":
-                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortThin255BA);
+                    pictureBox3.Image = new Bitmap(Resources.shortThin255BA);
                     label6.Text = Strings.scaleThin255BA;
                     checkBox1.Visible = true;
                     break;
                 case "DerivativeBA":
-                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortDerivativeBA);
+                    pictureBox3.Image = new Bitmap(Resources.shortDerivativeBA);
                     label6.Text = Strings.scaleDerivativeBA;
                     checkBox1.Visible = true;
                     break;
-                case "SmoothCAS": //? help -> github
-                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortSmoothCAS);
+                case "SmoothCAS": //[?] help -> github
+                    pictureBox3.Image = new Bitmap(Resources.shortSmoothCAS);
                     label6.Text = Strings.SmoothCAS;
                     checkBox1.Visible = false;
                     break;
                 case "AntiBicubic":
-                    pictureBox3.Image = new Bitmap(ScaleSmooth.Properties.Resources.shortAntiBicubic);
-                    label6.Text = Strings.AntiBicubic;//No need to reverse adjust? other meth?
+                    pictureBox3.Image = new Bitmap(Resources.shortAntiBicubic);
+                    label6.Text = Strings.AntiBicubic;
                     checkBox1.Visible = false; //GPU version!
+                    break;
+                case "FastNearestNeighbour":
+                    pictureBox3.Image = new Bitmap(Resources.shortFNN);
+                    label6.Text = Strings.scaleFNN;
+                    checkBox1.Visible = false; 
                     break;
             }
         }
@@ -22810,7 +23726,7 @@ namespace ScaleSmooth
         {
             if (lastfile == "")
             {
-                pictureBox1.Image = new Bitmap(ScaleSmooth.Properties.Resources.A8);
+                pictureBox1.Image = new Bitmap(Resources.A8);
             }
             else
             {

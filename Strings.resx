@@ -276,6 +276,11 @@ Very fast - Very slow and you can't process multiple images at once</value>
 
 Very slow - Very very slow, but you can process multiple images at the same time without losing speed</value>
   </data>
+  <data name="scaleFNN" xml:space="preserve">
+    <value>Grid only
+
+The fastest method, but you can't process multiple images at once without losing a lot of speed</value>
+  </data>
   <data name="scaleRough" xml:space="preserve">
     <value>Typographic raster stylization, but if bigger version must be monochrome image it gives acceptable upscaling
 
@@ -328,9 +333,9 @@ Be careful - the process can be very long and it will be impossible to cancel it
     <value>Try increase perfomance by using your videocard? 
 (It may interrupt other non-system GPU processes or actually decrease perfomance, results of CPU and GPU versions may differ slightly, GPU version may sometimes crashes)
 
-Square - Auto decide
-Check mark - Always
-Empty - Never</value>
+Square - Auto select to reduce latency and crashes
+Checkmark - Use video card
+Blank - Use processor</value>
   </data>
   <data name="Wait" xml:space="preserve">
     <value>Calculating...                         %</value>
