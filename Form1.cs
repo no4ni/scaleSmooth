@@ -6832,8 +6832,8 @@ namespace ScaleSmooth
                     return new short[1, 1, 1];
                 }
                 rki = ki;
-                ki = (int)MathF.Ceiling(oim * ac / 100);
-                ks = (int)MathF.Ceiling(osm * ac / 100);
+                ki = (int)MathF.Ceiling(oim * ac * 0.01f);
+                ks = (int)MathF.Ceiling(osm * ac * 0.01f);
                 rki = (int)(rki / (float)ki + 0.5f);
                 kiks = ki * ks + 1;
             }
@@ -7478,8 +7478,8 @@ namespace ScaleSmooth
                     return new short[1, 1, 1];
                 }
                 rki = ki;
-                ki = (int)MathF.Ceiling(oim * ac / 100);
-                ks = (int)MathF.Ceiling(osm * ac / 100);
+                ki = (int)MathF.Ceiling(oim * ac * 0.01f);
+                ks = (int)MathF.Ceiling(osm * ac * 0.01f);
                 rki = (int)(rki / (float)ki + 0.5f);
                 kiks = ki * ks + 1;
             }
