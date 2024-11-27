@@ -112,6 +112,10 @@ Fast, and you can process multiple images at the same time without losing speed<
 Sharp and there is no grid structure, but a bit noisy and a halo may be present<br>
 Slow and you can't process multiple images at once<br><br>
 
+- **FastNearestNeighbour**<br>
+Grid only<br>
+The fastest method, but you can't process multiple images at once without losing a lot of speed<br><br>
+
 You can increase speed instead of accuracy and vice versa<br><br>
 
 
@@ -217,5 +221,9 @@ You can increase speed instead of accuracy and vice versa<br><br>
 - **AntiBicubic**<br>
 Резко и отсутствует сеточная структура, но немного шумно и может присутствовать гало<br>
 Медленно, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
+
+- **FastNearestNeighbour**<br>
+Только сеточная структура<br>
+Самый быстрый метод, но Вы не можете обрабатывать несколько изображений одновременно без большой потери скорости<br><br>
 
 Можно увеличить скорость за счёт точности и наоборот
