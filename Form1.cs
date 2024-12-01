@@ -1390,7 +1390,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (img.Height < 25 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
+                if (img.Width < 144 || 147.37f-0.3289f*img.Width>ac || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
                 {
                     return ScaleBAContrastGray(img, x, ac);
                 }
@@ -1414,8 +1414,8 @@ namespace ScaleSmooth
             else
             {
                 accelerator.Dispose();
-                context.Dispose();//after new methods, review
-                if (img.Height < 25 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * (ulong)(4 + ac * 51 / 10))
+                context.Dispose();
+                if ((ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * (ulong)(4 + ac * 51 / 10))
                 {
                     return Scale255BAGray(img, x, ac);
                 }
@@ -1440,7 +1440,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (img.Height < 25 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
+                if (112.07f-0.078f*img.Width*x >ac || (ulong)accelerator.Device.MemorySize < ((ulong)img.Width * (ulong)img.Height + 2) * (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x / 10000)
                 {
                     return ScaleBAExtremumGray(img, x, ac);
                 }
@@ -1465,8 +1465,8 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if ((img.Height < 448 && ac * 5 + 508 > img.Height && ac * 34.667f + 32 > img.Height) || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
-                {//check if
+                if (img.Width < 144 || 147.37f - 0.3289f * img.Width > ac || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
+                {
                     return ScaleBASmoothContrastGray(img, x, ac);
                 }
                 else
@@ -1491,7 +1491,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if ((ac < 27 && img.Width < 448 && ac * 9.1429f + 201.14f > img.Width) || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 11)
+                if ((ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 11 || ac < 27 && img.Width < 448 && ac * 9.1429f + 201.14f < img.Width) //отполировать BA по сравнению с v3.1.3 by TimeMethods только Pareto
                 {
                     return ScaleBilinearApproximationColor(img, x, ac);
                 }
@@ -1516,7 +1516,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (ac < 22 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 11)
+                if (ac < 108.87f-0.074f*img.Width*x || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 11)
                 {
                     return ScaleDerivativeBAColor(img, x, ac);
                 }
@@ -1542,7 +1542,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (ac < 22 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 20)
+                if (img.Width < 24 || 120-0.8333f*img.Width>ac || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 20)
                 {
                     return ScaleBAContrastColor(img, x, ac);
                 }
@@ -1567,7 +1567,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (ac < 22 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * (ulong)(4 + ac * 153 / 10))
+                if (ac < 0.8393f*img.Width-20.857f || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * (ulong)(4 + ac * 153 / 10))
                 {
                     return ScaleThin255BAColor(img, x, ac);
                 }
@@ -1592,7 +1592,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();//after new methods, review
-                if (ac < 22 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * (ulong)(4 + ac * 153 / 10))
+                if ((ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * (ulong)(4 + ac * 153 / 10))
                 {
                     return Scale255BAColor(img, x, ac);
                 }
@@ -1616,8 +1616,8 @@ namespace ScaleSmooth
             else
             {
                 accelerator.Dispose();
-                context.Dispose();//after new methods, review
-                if (img.Height < 25 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * (ulong)(4 + ac * 51 / 10))
+                context.Dispose();
+                if (ac < 90.722f-0.0616*img.Width*x || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * (ulong)(4 + ac * 51 / 10))
                 {
                     return ScaleThin255BAGray(img, x, ac);
                 }
@@ -1642,7 +1642,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();//after new methods, review
-                if (img.Height < 25 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 11)
+                if (img.Width*x < 1472 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 11)
                 {
                     return ScaleDerivativeBAGray(img, x, ac);
                 }
@@ -1668,7 +1668,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (ac < 22 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
+                if (ac < 27 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
                 {
                     return ScaleBAMonochromeGray(img, x, ac);
                 }
@@ -1693,7 +1693,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (ac < 22 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
+                if (80.333f-img.Width*x*0.0495f > ac || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
                 {
                     return ScaleBAMonochrome2Gray(img, x, ac);
                 }
@@ -1718,7 +1718,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (ac < 22 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 20)
+                if (62-img.Width*x*0.1094f>ac || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 20)
                 {
                     return ScaleBAMonochromeColor(img, x, ac);
                 }
@@ -1743,7 +1743,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (ac < 22) //after new methods, review
+                if (157.26f-0.1068f*img.Width*x>ac || (ulong)accelerator.Device.MemorySize < ((ulong)img.Width * (ulong)img.Height+4) *(ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x/ 10000)
                 {
                     return ScaleBAExtremumColor(img, x, ac);
                 }
@@ -1768,7 +1768,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (ac < 22 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 20)
+                if (ac < 76.659f-0.0541f*img.Width*x || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 20)
                 {//after new methods, review
                     return ScaleBAMonochrome2Color(img, x, ac);
                 }
@@ -1794,7 +1794,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (ac < 22 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 20)
+                if (img.Width < 144 || 103.9f - 0.1623f * img.Width > ac || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 20)
                 { //after new methods, review
                     return ScaleBASmoothContrastColor(img, x, ac);
                 }
@@ -1819,7 +1819,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if ((img.Height < 448 && ac * 5 + 508 > img.Height && ac * 34.667f + 32 > img.Height) || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
+                if ((img.Height < 448 && ac * 5 + 508 > img.Height && ac * 34.667f + 32 < img.Height) || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
                 {
                     return ScaleBilinearApproximationGray(img, x, ac);
                 }
@@ -4792,7 +4792,7 @@ namespace ScaleSmooth
         private byte[,,] BilinearApproximationExtremumColorGPU(Bitmap img, int x, int ac)
         {
             Context context = Context.Create(b => b.AllAccelerators().EnableAlgorithms().Optimize(OptimizationLevel.O2).PageLocking(PageLockingMode.Aggressive));
-#if DEBUG
+#if !DEBUG
             Accelerator accelerator = context.GetPreferredDevice(true).CreateAccelerator(context);
             ulong mem = 4 * (ulong)MathF.Pow(2, 30);//4GB VRAM for debug
 #else
@@ -23223,7 +23223,7 @@ namespace ScaleSmooth
                 }
             }
 
-            float[,] edgeMap = DetectEdgesColor(lowResLuminance);
+            
 
             float[,,] gradient = new float[highWidth, highHeight, 3];
             int yMaxM = highHeight - 1;
@@ -23295,6 +23295,7 @@ namespace ScaleSmooth
                 EnforceAverageConstraintColor(highResLuminance, lowResLuminance, scale);
             }
 
+            float[,] edgeMap = DetectEdgesColor(lowResLuminance);
             float[,] edgeEnhancement = new float[highWidth, highHeight];
             byte[,,] output = new byte[highWidth, highHeight, 3];
             int scaleHalf = scale / 2;
