@@ -1592,7 +1592,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();//after new methods, review
-                if ((ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * (ulong)(4 + ac * 153 / 10) || (int)MathF.Sqrt(10000 * (ulong)accelerator.Device.MemorySize / ((ulong)(img.Width * img.Height) * (ulong)((img.Width - 1) * (img.Height - 1) + 1)* (ulong)ac * 46)) / x < 1)
+                if ((ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * (ulong)(4 + ac * 153 / 10) || (int)MathF.Sqrt(10000 * (ulong)accelerator.Device.MemorySize / ((ulong)(img.Width * img.Height) * (ulong)((img.Width - 1) * (img.Height - 1) + 1) * (ulong)ac * 46 + 1)) / x < 1)
                 {
                     return Scale255BAColor(img, x, ac);
                 }
