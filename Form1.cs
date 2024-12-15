@@ -504,7 +504,7 @@ namespace ScaleSmooth
             ns = os * x;
 
             int xs = 1, ys = 1;
-            if (ac < 100)       
+            if (ac < 100)
             {
                 float m = MathF.Pow(1 - ac * 0.01f, 1.6625f * MathF.Log(oi) - 1f);
                 int oiacf = (int)(oi * m);
@@ -522,7 +522,7 @@ namespace ScaleSmooth
             {
                 unsafe
                 {
-                    int chunkSize = Math.Max(1, ysx * oi / xs * osys / Environment.ProcessorCount); 
+                    int chunkSize = Math.Max(1, ysx * oi / xs * osys / Environment.ProcessorCount);
                     int xsx8 = xsx / 8;
                     int nix = ni * x;
                     int remaining = xsx % 8 - 1;
@@ -788,7 +788,7 @@ namespace ScaleSmooth
                         {
                             if (chunkSize < ysx)
                             {
-                                for (int index=0; index < oi / xs * osys; index++)
+                                for (int index = 0; index < oi / xs * osys; index++)
                                 {
                                     int ii = index / osys;
                                     int ss = (index % osys) * ys;
@@ -890,7 +890,7 @@ namespace ScaleSmooth
                             int iixsx = iixs * x;
                             int ssxni4 = ss * ni4x;
 
-                            byte* pixelValue = imgPtr + iixs * 3 + ss * imgStride + 1; 
+                            byte* pixelValue = imgPtr + iixs * 3 + ss * imgStride + 1;
                             byte* rowStart = ptr + iixsx * 4 + ssxni4;
 
                             for (int s = 0; s < ysx; s++)
@@ -978,7 +978,7 @@ namespace ScaleSmooth
                     Bitmap bmp = new(ni, ns);
                     BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, ni, ns), ImageLockMode.ReadWrite, bmp.PixelFormat);
                     int* ptr = (int*)bmpData.Scan0;
-                    
+
                     Vector256<int>[] mask =
                     [
                         Vector256.Create(-1,0,0,0,0,0,0,0),
@@ -1321,8 +1321,8 @@ namespace ScaleSmooth
                                 for (int i = 0; i < xsx; i++)
                                 {
                                     rowStart[0] = *pixelValue;
-                                    rowStart[1] = *(pixelValue+1);
-                                    rowStart[2] = *(pixelValue+2);
+                                    rowStart[1] = *(pixelValue + 1);
+                                    rowStart[2] = *(pixelValue + 2);
                                     rowStart[3] = 255;
                                     rowStart += 4;
                                 }
@@ -1390,7 +1390,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (img.Width < 144 || 147.37f-0.3289f*img.Width>ac || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
+                if (img.Width < 144 || 147.37f - 0.3289f * img.Width > ac || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
                 {
                     return ScaleBAContrastGray(img, x, ac);
                 }
@@ -1440,7 +1440,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (112.07f-0.078f*img.Width*x >ac || (ulong)accelerator.Device.MemorySize < ((ulong)img.Width * (ulong)img.Height + 2) * (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x / 10000)
+                if (112.07f - 0.078f * img.Width * x > ac || (ulong)accelerator.Device.MemorySize < ((ulong)img.Width * (ulong)img.Height + 2) * (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x / 10000)
                 {
                     return ScaleBAExtremumGray(img, x, ac);
                 }
@@ -1516,7 +1516,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (ac < 108.87f-0.074f*img.Width*x || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 11)
+                if (ac < 108.87f - 0.074f * img.Width * x || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 11)
                 {
                     return ScaleDerivativeBAColor(img, x, ac);
                 }
@@ -1542,7 +1542,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (img.Width < 24 || 120-0.8333f*img.Width>ac || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 20)
+                if (img.Width < 24 || 120 - 0.8333f * img.Width > ac || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 20)
                 {
                     return ScaleBAContrastColor(img, x, ac);
                 }
@@ -1567,7 +1567,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (ac < 0.8393f*img.Width-20.857f || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * (ulong)(4 + ac * 153 / 10))
+                if (ac < 0.8393f * img.Width - 20.857f || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * (ulong)(4 + ac * 153 / 10))
                 {
                     return ScaleThin255BAColor(img, x, ac);
                 }
@@ -1592,7 +1592,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();//after new methods, review
-                if ((ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * (ulong)(4 + ac * 153 / 10))
+                if ((ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * (ulong)(4 + ac * 153 / 10) || (int)MathF.Sqrt(10000 * (ulong)accelerator.Device.MemorySize / ((ulong)(img.Width * img.Height) * (ulong)((img.Width - 1) * (img.Height - 1) + 1)* (ulong)ac * 46)) / x < 1)
                 {
                     return Scale255BAColor(img, x, ac);
                 }
@@ -1617,7 +1617,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (ac < 90.722f-0.0616*img.Width*x || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * (ulong)(4 + ac * 51 / 10))
+                if (ac < 90.722f - 0.0616 * img.Width * x || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * (ulong)(4 + ac * 51 / 10))
                 {
                     return ScaleThin255BAGray(img, x, ac);
                 }
@@ -1642,7 +1642,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();//after new methods, review
-                if (img.Width*x < 1472 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 11)
+                if (img.Width * x < 1472 || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 11)
                 {
                     return ScaleDerivativeBAGray(img, x, ac);
                 }
@@ -1693,7 +1693,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (80.333f-img.Width*x*0.0495f > ac || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
+                if (80.333f - img.Width * x * 0.0495f > ac || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 12)
                 {
                     return ScaleBAMonochrome2Gray(img, x, ac);
                 }
@@ -1718,7 +1718,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (62-img.Width*x*0.1094f>ac || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 20)
+                if (62 - img.Width * x * 0.1094f > ac || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 20)
                 {
                     return ScaleBAMonochromeColor(img, x, ac);
                 }
@@ -1743,7 +1743,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (157.26f-0.1068f*img.Width*x>ac || (ulong)accelerator.Device.MemorySize < ((ulong)img.Width * (ulong)img.Height+4) *(ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x/ 10000)
+                if (157.26f - 0.1068f * img.Width * x > ac || (ulong)accelerator.Device.MemorySize < ((ulong)img.Width * (ulong)img.Height + 4) * (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x / 10000)
                 {
                     return ScaleBAExtremumColor(img, x, ac);
                 }
@@ -1768,7 +1768,7 @@ namespace ScaleSmooth
             {
                 accelerator.Dispose();
                 context.Dispose();
-                if (ac < 76.659f-0.0541f*img.Width*x || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 20)
+                if (ac < 76.659f - 0.0541f * img.Width * x || (ulong)accelerator.Device.MemorySize < (ulong)img.Width * (ulong)img.Height * (ulong)x * (ulong)x * 20)
                 {//after new methods, review
                     return ScaleBAMonochrome2Color(img, x, ac);
                 }
@@ -6819,12 +6819,12 @@ namespace ScaleSmooth
             int ki = (int)MathF.Ceiling(oim * ac * 0.01f);
             int ks = (int)MathF.Ceiling(osm * ac * 0.01f);
             int kiks = ki * ks + 1;
-            ulong nins = (ulong)ni * (ulong)ns * 1530 * (ulong)layers / 255;
+            ulong nins = (ulong)ni * (ulong)ns * 6 * (ulong)layers;
             int rki = 1;
 
             if (nins * (ulong)kiks > mem)
             {
-                ac = (int)MathF.Sqrt(10000 * mem / nins / (ulong)(oim * osm + 1));
+                ac = (int)MathF.Sqrt(10000 * mem / (nins * (ulong)(oim * osm + 1)));
                 if (ac > 66) ac = 100;
                 if (ac < 1)
                 {
@@ -23223,7 +23223,7 @@ namespace ScaleSmooth
                 }
             }
 
-            
+
 
             float[,,] gradient = new float[highWidth, highHeight, 3];
             int yMaxM = highHeight - 1;
@@ -23694,7 +23694,7 @@ namespace ScaleSmooth
                 case "FastNearestNeighbour":
                     pictureBox3.Image = new Bitmap(Resources.shortFNN);
                     label6.Text = Strings.scaleFNN;
-                    checkBox1.Visible = false; 
+                    checkBox1.Visible = false;
                     break;
             }
         }
