@@ -58,11 +58,11 @@ Very fast - Normal, but you can process multiple images at the same time without
 
 - **Furry**<br>
 Beautiful and detailed result, but only if bigger version must be monochrome image (only pure black and white, or for color - only pure red, black, green, yellow, fuchsia, blue, cyan and white)<br>
-Very slow - Very very slow, but you can process multiple images at the same time without losing speed<br><br>
+Very Fast - Extremely Slow, but you can process multiple images at the same time without losing speed<br><br>
 
 - **Rough**<br>
 Typographic raster stylization, but if bigger version must be monochrome image it gives acceptable upscaling<br>
-Very slow, but you can process multiple images at the same time without losing speed<br><br>
+Very Fast - Slow, but you can process multiple images at the same time without losing speed<br><br>
 
 - **Separate**<br>
 Gives beatiful, but almost monochrome result and there are Gibbs ringing artifacts (to avoid you can try several times x2-x4)<br>
@@ -169,11 +169,11 @@ You can increase speed instead of accuracy and vice versa<br><br>
 
 - **Furry**<br>
 Красивый и детализированный результат, но только если большая версия должна быть монохромным изображением (только чисто черно-белым, или для цветного - только чисто красным, черным, зеленым, желтым, фуксией, синим, голубым и белым)<br>
-Очень медленно - Очень очень медленно, но Вы можете обрабатывать несколько изображений одновременно без потери скорости<br><br>
+Очень быстро - экстремально медленно, но Вы можете обрабатывать несколько изображений одновременно без потери скорости<br><br>
 
 - **Rough**<br>
 Типографская растровая стилизация, но если большая версия должна быть монохромным изображением, то дает приемлемый результат для масштабирования<br>
-Очень медленно, но вы можете обрабатывать несколько изображений одновременно без потери скорость<br><br>
+Очень быстро - медленно, но вы можете обрабатывать несколько изображений одновременно без потери скорость<br><br>
 
 - **Separate**<br>
 Дает красивый, но почти монохромный результат и есть артефакты звона (чтобы избежать, можно попробовать несколько x2-x4)<br>
