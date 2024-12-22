@@ -38,83 +38,84 @@ Threshold, autoThreshold, Mean Curvatute Blur, Median Blur, adjustment by Lanczo
 # ℹ️ Description of methods
 - **Smooth**<br>
 Most accurate for scenes where objects are completely in the image, but little bit blurred (much less than any interpolation) and grid structure is still visible<br>
-Very fast - Slow, and you can process multiple images at the same time without losing speed (just run function in other thread or run .exe one more time)<br><br>
+Incredibely Fast - Fast, and you can process multiple images at the same time without losing speed (just run function in other thread or run .exe one more time)<br><br>
 
 - **SmoothContinuous**<br>
 Most accurate for scenes where objects extend beyond the boundaries of the image, but little bit blurred (much less than any interpolation) and grid structure is still visible<br>
-Very fast - Slow, and you can process multiple images at the same time without losing speed (just run function in other thread or run .exe one more time)<br><br>
+Incredibely Fast - Fast, and you can process multiple images at the same time without losing speed (just run function in other thread or run .exe one more time)<br><br>
 
 - **SmoothContrast**<br>
 Very smooth, after reverse adjustment - most accurate for any scenes, but very contrast and grid structure is still visible<br>
-Slow?, but you can process multiple images at the same time without losing speed (just run function in other thread or run .exe one more time)<br><br>
+Incredibely Fast - Normal, but you can process multiple images at the same time without losing speed (just run function in other thread or run .exe one more time)<br><br>
 
 - **Bold**<br>
 Grid structure, little bit noisy and contrasty (for accuracy, subsequent reverse correction is desirable) and too small details may lost<br>
-Very fast - Very very slow, but you can process multiple images at the same time without losing speed<br><br>
+Very fast - Normal, but you can process multiple images at the same time without losing speed<br><br>
 
 - **ContrastBold**<br>
 Perfect result, but too contrasty (for accuracy, subsequent reverse correction is required) and too small details are lost<br>
-Very fast - Very very slow, but you can process multiple images at the same time without losing speed<br><br>
+Very fast - Normal, but you can process multiple images at the same time without losing speed<br><br>
 
 - **Furry**<br>
 Beautiful and detailed result, but only if bigger version must be monochrome image (only pure black and white, or for color - only pure red, black, green, yellow, fuchsia, blue, cyan and white)<br>
-Very slow - Very very slow, but you can process multiple images at the same time without losing speed<br><br>
+Very Fast - Extremely Slow, but you can process multiple images at the same time without losing speed<br><br>
 
 - **Rough**<br>
 Typographic raster stylization, but if bigger version must be monochrome image it gives acceptable upscaling<br>
-Very slow, but you can process multiple images at the same time without losing speed<br><br>
+Very Fast - Slow, but you can process multiple images at the same time without losing speed<br><br>
 
 - **Separate**<br>
 Gives beatiful, but almost monochrome result and there are Gibbs ringing artifacts (to avoid you can try several times x2-x4)<br>
-Very very fast - fast, but you can't process multiple images at the same time without losing speed<br><br>
+Incredibely Fast - Fast, but you can't process multiple images at the same time without losing speed<br><br>
 
 - **BA**<br>
 A clearly defined grid structure and may be present Gibbs ringing artifacts, but it's better than nearest neighbour<br>
-Very very fast - Very slow, and you can't process multiple images at the same time without losing speed<br><br>
+Very fast - Normal, and you can't process multiple images at the same time without losing speed<br><br>
 
 - **BAContrast**<br>
 Defined grid structure, little contrasty and may be present Gibbs ringing artifacts<br>
-Very very fast - Very slow, and you can't process multiple images at the same time without losing speed<br><br>
+Very fast - Normal, and you can't process multiple images at the same time without losing speed<br><br>
 
 - **BASmoothContrast**<br>
 Сontrasty and may be present grid structure<br>
-Very very fast - Very slow, and you can't process multiple images at the same time without losing speed<br><br>
+Very fast - Normal, and you can't process multiple images at the same time without losing speed<br><br>
 
 - **BAmonochrome**<br>
 Smooth, curve and same time sharpness result, but monochrome (colors may be distorted)<br>
-Very slow, and you can't process multiple images at the same time without losing speed<br><br>
+Very fast - Normal, and you can't process multiple images at the same time without losing speed<br><br>
 
 - **BAmonochrome2**<br>
 Sharpness edges, but colors may be distorted<br>
-Very slow, and you can't process multiple images at the same time without losing speed<br><br>
+Very fast - Normal, and you can't process multiple images at the same time without losing speed<br><br>
 
 - **BAExtremum**<br>
 Sharpen edges, but contrasty (for accuracy required reverse adjustment) and many Gibbs ringing artifacts<br>
-Very very fast - Very slow, and you can't process multiple images at the same time without losing speed<br><br>
+Very Fast - Extremely Slow, and you can't process multiple images at the same time without losing speed<br><br>
 
 - **255BA**<br>
 Vaguely, but not blurry, may need back(reverse) adjustment<br>
-Very very slow and you can't process multiple images at once<br><br>
+Very Fast - Extremely Slow, and you can't process multiple images at once<br><br>
 
 - **Thin255BA**<br>
 Makes objects thinner and more colorful<br>
-Very slow and you can't process multiple images at once<br><br>
+Very Fast - Extremely Slow, and you can't process multiple images at once<br><br>
 
 - **DerivativeBA**<br>
 Much Gibbs ringing afrtifacts in the grid structure, contrasty but sharp edges<br>
-Very fast - Very slow and you can't process multiple images at once<br><br>
+Very Fast - Extremely Slow, and you can't process multiple images at once<br><br>
 
 - **SmoothCAS**<br>
 Smooth, clear, a little contrasty and the grid structure is visible, but accurate even without reverse correction<br>
-Fast, and you can process multiple images at the same time without losing speed<br><br>
+Very Fast - Normal, and you can process multiple images at the same time without losing speed<br><br>
 
 - **AntiBicubic**<br>
 Sharp and there is no grid structure, but a bit noisy and a halo may be present<br>
-Slow and you can't process multiple images at once<br><br>
+Incredibely Fast - Fast, but and you can't process multiple images at once<br><br>
 
 - **FastNearestNeighbour**<br>
-Grid only<br>
-The fastest method, but you can't process multiple images at once without losing a lot of speed<br><br>
+Grid only, but the fastest method in the world<br>
+Incredibely Fast - Very Fast, but you can't process multiple images at once without losing a lot of speed
+Grid only<br><br>
 
 You can increase speed instead of accuracy and vice versa<br><br>
 
@@ -148,82 +149,82 @@ You can increase speed instead of accuracy and vice versa<br><br>
 ℹ️ Описание методов<br>
 - **Smooth**<br>
 Наиболее точный метод для сцен, где объекты полностью находятся на изображении, но результат немного размыт (гораздо меньше, чем при любой интерполяции) и структура сетки все еще видна<br>
-Очень быстро - Медленно, и вы можете обрабатывать несколько изображений одновременно, не теряя скорости (просто запустите функцию в другом потоке или запустите .exe еще раз)<br><br>
+Невероятно быстро - быстро, и Вы можете обрабатывать несколько изображений одновременно, не теряя скорости (просто запустите функцию в другом потоке или запустите .exe еще раз)<br><br>
 
 - **SmoothContinuous**<br>
 Наиболее точный метод для сцен, где объекты выходят за границы изображения, но результат немного размыт (гораздо меньше, чем при любой интерполяции) и структура сетки все еще видна<br>
-Очень быстро - Медленно, и вы можете обрабатывать несколько изображений одновременно, не теряя скорости (просто запустите функцию в другом потоке или запустите .exe еще раз)<br><br>
+Невероятно быстро - быстро, и Вы можете обрабатывать несколько изображений одновременно, не теряя скорости (просто запустите функцию в другом потоке или запустите .exe еще раз)<br><br>
 
 - **SmoothContrast**<br>
 Очень плавно-гладко-размыто, но после обратной корректировки - наиболее точный для любых сцен, но очень контрастный и структура сетки кое-где все еще видна
-Медленно?, но вы можете обрабатывать несколько изображений одновременно, не теряя скорости (просто запустите функцию в другом потоке или запустите .exe еще раз)<br><br>
+Невероятно быстро - нормально, но Вы можете обрабатывать несколько изображений одновременно, не теряя скорости (просто запустите функцию в другом потоке или запустите .exe еще раз)<br><br>
 
 - **Bold**<br>
 Сетчатая структура, немного шумно и контрастно (для точности желательно последующее обратная корректировка), и слишком мелкие детали могут быть потеряны<br>
-Очень быстро - Очень очень медленно, но вы можете обрабатывать несколько изображений одновременно без потери скорости<br><br>
+Очень быстро - нормально, но вы можете обрабатывать несколько изображений одновременно без потери скорости<br><br>
 
 - **ContrastBold**<br>
 Идеальный результат, но слишком контрастный (для точности требуется последующее обратное исправление), и слишком мелкие детали теряются<br>
-Очень быстро - Очень очень медленно, но вы можете обрабатывать несколько изображений одновременно без потери скорости<br><br>
+Очень быстро - нормально, но вы можете обрабатывать несколько изображений одновременно без потери скорости<br><br>
 
 - **Furry**<br>
 Красивый и детализированный результат, но только если большая версия должна быть монохромным изображением (только чисто черно-белым, или для цветного - только чисто красным, черным, зеленым, желтым, фуксией, синим, голубым и белым)<br>
-Очень медленно - Очень очень медленно, но Вы можете обрабатывать несколько изображений одновременно без потери скорости<br><br>
+Очень быстро - экстремально медленно, но Вы можете обрабатывать несколько изображений одновременно без потери скорости<br><br>
 
 - **Rough**<br>
 Типографская растровая стилизация, но если большая версия должна быть монохромным изображением, то дает приемлемый результат для масштабирования<br>
-Очень медленно, но вы можете обрабатывать несколько изображений одновременно без потери скорость<br><br>
+Очень быстро - медленно, но вы можете обрабатывать несколько изображений одновременно без потери скорость<br><br>
 
 - **Separate**<br>
 Дает красивый, но почти монохромный результат и есть артефакты звона (чтобы избежать, можно попробовать несколько x2-x4)<br>
-Очень очень быстро - быстро, но Вы не можете обрабатывать несколько изображений одновременно без потери скорости<br><br>
+Невероятно быстро - быстро, но Вы не можете обрабатывать несколько изображений одновременно без потери скорости<br><br>
 
 - **BA**<br>
 Четко определенная структура сетки и могут присутствовать артефакты звона Гиббса, но это лучше, чем ближайшим соседом<br>
-Очень очень быстро - Очень медленно, и Вы не можете обрабатывать несколько изображений одновременно без потери скорости<br><br>
+Очень быстро - нормально, и Вы не можете обрабатывать несколько изображений одновременно без потери скорости<br><br>
 
 - **BAContrast**<br>
 Видна сеточная структура, немного контрастно и могут присутствовать артефакты звона<br>
-Очень очень быстро - Очень медленно, и Вы не можете обрабатывать несколько изображений одновременно без потери скорости<br><br>
+Очень быстро - нормально, и Вы не можете обрабатывать несколько изображений одновременно без потери скорости<br><br>
 
 - **BASmoothContrast**<br>
 Контрастно и может быть видна сеточная структура<br>
-Очень очень быстро - Очень медленно, и Вы не можете обрабатывать несколько изображений одновременно без потери скорости<br><br>
+Очень быстро - нормально, и Вы не можете обрабатывать несколько изображений одновременно, и Вы не можете обрабатывать несколько изображений одновременно без потери скорости<br><br>
 
 - **BAmonochrome**<br>
 Гладкий, криволинейный и в то же время чёткий результат, но монохромный (вследствие чего цвета могут искажаться)<br>
-Очень медленно, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
+Очень быстро - нормально, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
 
 - **BAmonochrome2**<br>
 Чёткие границы, но цвета могут искажаться<br>
-Очень медленно, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
+Очень быстро - нормально, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
 
 - **BAExtremum**<br>
 Чёткие края, но контрастно (для точности необходима обратная корректировка) и присутствует большой звон<br>
-Очень очень быстро - Очень медленно, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
+Очень быстро - Экстремально медленно, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
 
 - **255BA**<br>
 Расплывчато, но не размыто, возможно будет нужна обратная корректировка<br>
-Очень очень медленно, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
+Очень быстро - экстремально медленно, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
 
 - **Thin255BA**<br>
 Утоньшает объекты и делает их красочнее<br>
-Очень медленно, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
+Очень быстро - Экстремально медленно, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
 
 - **DerivativeBA**<br>
 Большой звон в сеточной структуре, контрастно, но чёткие края<br>
-Очень быстро - Очень медленно, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
+Очень быстро - экстремально медленно, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
 
 - **SmoothCAS**<br>
 Гладко, чётко, немного контрастно и видна сеточная структура, но точно даже без обратной корректировки<br>
-Быстро, и Вы можете обрабатывать одновременно несколько изображений без потери скорости<br><br>
+Очень быстро - нормально, и Вы можете обрабатывать одновременно несколько изображений без потери скорости<br><br>
 
 - **AntiBicubic**<br>
 Резко и отсутствует сеточная структура, но немного шумно и может присутствовать гало<br>
-Медленно, и Вы не можете обрабатывать несколько изображений одновременно<br><br>
+Невероятно быстро - быстро, но Вы не можете обрабатывать несколько изображений одновременно<br><br>
 
 - **FastNearestNeighbour**<br>
-Только сеточная структура<br>
-Самый быстрый метод, но Вы не можете обрабатывать несколько изображений одновременно без большой потери скорости<br><br>
+Только сеточная структура, но самый быстрый в мире метод<br>
+Невероятно быстро - очень быстро, но Вы не можете обрабатывать несколько изображений одновременно без большой потери скорости<br><br>
 
 Можно увеличить скорость за счёт точности и наоборот
