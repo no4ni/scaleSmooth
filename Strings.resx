@@ -126,7 +126,7 @@
   <data name="boldScale" xml:space="preserve">
     <value>Grid structure, little bit noisy and contrasty (for accuracy, subsequent reverse correction is desirable) and too small details may lost
 
-Very fast - Very very slow, but you can process multiple images at the same time without losing speed</value>
+Very fast - Normal, but you can process multiple images at the same time without losing speed</value>
   </data>
   <data name="Close" xml:space="preserve">
     <value>Close program and cancel processing
@@ -141,7 +141,7 @@ If this doesn't work, wait or kill process scaleSmooth from TaskManager (Ctrl+Sh
   <data name="contrastBoldScale" xml:space="preserve">
     <value>Perfect result, but too contrasty (for accuracy, subsequent reverse correction is required) and too small details are lost
 
-Very fast - Very very slow, but you can process multiple images at the same time without losing speed</value>
+Very fast - Normal, but you can process multiple images at the same time without losing speed</value>
   </data>
   <data name="CopyStopwatch" xml:space="preserve">
     <value>Click middle mouse button to copy stopwatch value</value>
@@ -226,47 +226,47 @@ Allows you to do several operations before saving total result</value>
   <data name="scaleBAContrast" xml:space="preserve">
     <value>Defined grid structure, little contrasty and may be present Gibbs ringing artifacts
 
-Very very fast - Very slow, and you can't process multiple images at the same time without losing speed</value>
+Very fast - Normal, and you can't process multiple images at the same time without losing speed</value>
   </data>
   <data name="scale255BA" xml:space="preserve">
     <value>Vaguely, but not blurry, may need back adjustment
 
-Very very slow and you can't process multiple images at once</value>
+Very Fast - Extremely Slow, and you can't process multiple images at once</value>
   </data>
   <data name="scaleThin255BA" xml:space="preserve">
     <value>Makes objects thinner and more colorful
 
-Very slow and you can't process multiple images at once</value>
+Very Fast - Extremely Slow, and you can't process multiple images at once</value>
   </data>
   <data name="scaleBASmoothContrast" xml:space="preserve">
     <value>Сontrasty and may be present grid structure
 
-Very very fast - Very slow, and you can't process multiple images at the same time without losing speed</value>
+Very fast - Normal, and you can't process multiple images at the same time without losing speed</value>
   </data>
   <data name="scaleBAExtremum" xml:space="preserve">
     <value>Sharpen edges, but contrasty (for accuracy required reverse adjustment) and many Gibbs ringing artifacts
 
-Very very fast - Very slow, and you can't process multiple images at the same time without losing speed</value>
+Very Fast - Extremely Slow, and you can't process multiple images at the same time without losing speed</value>
   </data>
   <data name="scaleBAmonochrome" xml:space="preserve">
     <value>Smooth, curve and same time sharpness result, but monochrome (colors may be distorted)
 
-Very slow, and you can't process multiple images at the same time without losing speed</value>
+Very fast - Normal, and you can't process multiple images at the same time without losing speed</value>
   </data>
   <data name="scaleBAmonochrome2" xml:space="preserve">
     <value>Sharpness edges, but colors may be distorted
 
-Very slow, and you can't process multiple images at the same time without losing speed</value>
+Very fast - Normal, and you can't process multiple images at the same time without losing speed</value>
   </data>
   <data name="scaleBilinearApproximation" xml:space="preserve">
     <value>A clearly defined grid structure and may be present Gibbs ringing artifacts, but it's better than nearest neighbour
 
-Very very fast - Very slow, and you can't process multiple images at the same time without losing speed</value>
+Very fast - Normal, and you can't process multiple images at the same time without losing speed</value>
   </data>
   <data name="scaleDerivativeBA" xml:space="preserve">
     <value>Much Gibbs ring afrtifacts in the grid structure, contrasty but sharp edges
 
-Very fast - Very slow and you can't process multiple images at once</value>
+Very Fast - Extremely Slow, and you can't process multiple images at once</value>
   </data>
   <data name="ScaleFactor" xml:space="preserve">
     <value>Write or select required scale factor by two axes (2x-128x)</value>
@@ -274,47 +274,47 @@ Very fast - Very slow and you can't process multiple images at once</value>
   <data name="scaleFurry" xml:space="preserve">
     <value>Beautiful and detailed result, but only if bigger version must be monochrome image (only pure black and white, or for color - only pure red, black, green, yellow, fuchsia, blue, cyan and white)
 
-Very slow - Very very slow, but you can process multiple images at the same time without losing speed</value>
+Very Fast - Extremely Slow, but you can process multiple images at the same time without losing speed</value>
   </data>
   <data name="scaleFNN" xml:space="preserve">
-    <value>Grid only
+    <value>Grid only, but the fastest method in the world
 
-The fastest method, but you can't process multiple images at once without losing a lot of speed</value>
+Incredibely Fast - Very Fast, but you can't process multiple images at once without losing a lot of speed</value>
   </data>
   <data name="scaleRough" xml:space="preserve">
     <value>Typographic raster stylization, but if bigger version must be monochrome image it gives acceptable upscaling
 
-Very slow, but you can process multiple images at the same time without losing speed</value>
+Very Fast - Slow, but you can process multiple images at the same time without losing speed</value>
   </data>
   <data name="scaleSeparate" xml:space="preserve">
     <value>Gives beatiful, but almost monochrome result and there are Gibbs ringing artifacts (to avoid you can try several times x2-x4)
 
-Very very fast - fast, but you can't process multiple images at the same time without losing speed</value>
+Incredibely Fast - Fast, but you can't process multiple images at the same time without losing speed</value>
   </data>
   <data name="ScaleSmooth" xml:space="preserve">
     <value>Most accurate for scenes where objects are completely in the image, but little bit blurred (much less than any interpolation) and grid structure is still visible
 
-Very fast - Slow, and you can process multiple images at the same time without losing speed</value>
+Incredibely Fast - Fast, and you can process multiple images at the same time without losing speed</value>
   </data>
   <data name="scaleSmoothContinuous" xml:space="preserve">
     <value>Most accurate for scenes where objects extend beyond the boundaries of the image, but little bit blurred (much less than any interpolation) and grid structure is still visible
 
-Very fast - Slow, and you can process multiple images at the same time without losing speed</value>
+Incredibely Fast - Fast, and you can process multiple images at the same time without losing speed</value>
   </data>
   <data name="ScaleSmoothContrast" xml:space="preserve">
     <value>Very smooth, after reverse adjustment - most accurate for any scenes, but very contrast and grid structure is still visible
 
-Slow, but you can process multiple images at the same time without losing speed</value>
+Incredibely Fast - Normal, but you can process multiple images at the same time without losing speed</value>
   </data>
   <data name="SmoothCAS" xml:space="preserve">
     <value>Smooth, clear, a little contrasty and the grid structure is visible, but accurate even without reverse correction
 
-Fast, and you can process multiple images at the same time without losing speed</value>
+Very Fast - Normal, and you can process multiple images at the same time without losing speed</value>
   </data>
   <data name="AntiBicubic" xml:space="preserve">
     <value>Sharp and there is no grid structure, but a bit noisy and a halo may be present
 
-Slow and you can't process multiple images at once</value>
+Incredibely Fast - Fast, but you can't process multiple images at once</value>
   </data>
   <data name="SecSpent" xml:space="preserve">
     <value>seconds spent</value>

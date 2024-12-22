@@ -72,7 +72,7 @@ namespace ScaleSmooth {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Sharp and there is no grid structure, but a bit noisy and a halo may be present
         ///
-        ///Slow and you can&apos;t process multiple images at once.
+        ///Incredibely Fast - Fast, but you can&apos;t process multiple images at once.
         /// </summary>
         internal static string AntiBicubic {
             get {
@@ -92,7 +92,7 @@ namespace ScaleSmooth {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Grid structure, little bit noisy and contrasty (for accuracy, subsequent reverse correction is desirable) and too small details may lost
         ///
-        ///Very fast - Very very slow, but you can process multiple images at the same time without losing speed.
+        ///Very fast - Normal, but you can process multiple images at the same time without losing speed.
         /// </summary>
         internal static string boldScale {
             get {
@@ -131,7 +131,7 @@ namespace ScaleSmooth {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Perfect result, but too contrasty (for accuracy, subsequent reverse correction is required) and too small details are lost
         ///
-        ///Very fast - Very very slow, but you can process multiple images at the same time without losing speed.
+        ///Very fast - Normal, but you can process multiple images at the same time without losing speed.
         /// </summary>
         internal static string contrastBoldScale {
             get {
@@ -393,7 +393,7 @@ namespace ScaleSmooth {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Vaguely, but not blurry, may need back adjustment
         ///
-        ///Very very slow and you can&apos;t process multiple images at once.
+        ///Very Fast - Extremely Slow, and you can&apos;t process multiple images at once.
         /// </summary>
         internal static string scale255BA {
             get {
@@ -404,7 +404,7 @@ namespace ScaleSmooth {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Defined grid structure, little contrasty and may be present Gibbs ringing artifacts
         ///
-        ///Very very fast - Very slow, and you can&apos;t process multiple images at the same time without losing speed.
+        ///Very fast - Normal, and you can&apos;t process multiple images at the same time without losing speed.
         /// </summary>
         internal static string scaleBAContrast {
             get {
@@ -415,7 +415,7 @@ namespace ScaleSmooth {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Sharpen edges, but contrasty (for accuracy required reverse adjustment) and many Gibbs ringing artifacts
         ///
-        ///Very very fast - Very slow, and you can&apos;t process multiple images at the same time without losing speed.
+        ///Very Fast - Extremely Slow, and you can&apos;t process multiple images at the same time without losing speed.
         /// </summary>
         internal static string scaleBAExtremum {
             get {
@@ -426,7 +426,7 @@ namespace ScaleSmooth {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Smooth, curve and same time sharpness result, but monochrome (colors may be distorted)
         ///
-        ///Very slow, and you can&apos;t process multiple images at the same time without losing speed.
+        ///Very fast - Normal, and you can&apos;t process multiple images at the same time without losing speed.
         /// </summary>
         internal static string scaleBAmonochrome {
             get {
@@ -437,7 +437,7 @@ namespace ScaleSmooth {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Sharpness edges, but colors may be distorted
         ///
-        ///Very slow, and you can&apos;t process multiple images at the same time without losing speed.
+        ///Very fast - Normal, and you can&apos;t process multiple images at the same time without losing speed.
         /// </summary>
         internal static string scaleBAmonochrome2 {
             get {
@@ -448,7 +448,7 @@ namespace ScaleSmooth {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Сontrasty and may be present grid structure
         ///
-        ///Very very fast - Very slow, and you can&apos;t process multiple images at the same time without losing speed.
+        ///Very fast - Normal, and you can&apos;t process multiple images at the same time without losing speed.
         /// </summary>
         internal static string scaleBASmoothContrast {
             get {
@@ -459,7 +459,7 @@ namespace ScaleSmooth {
         /// <summary>
         ///   Ищет локализованную строку, похожую на A clearly defined grid structure and may be present Gibbs ringing artifacts, but it&apos;s better than nearest neighbour
         ///
-        ///Very very fast - Very slow, and you can&apos;t process multiple images at the same time without losing speed.
+        ///Very fast - Normal, and you can&apos;t process multiple images at the same time without losing speed.
         /// </summary>
         internal static string scaleBilinearApproximation {
             get {
@@ -470,7 +470,7 @@ namespace ScaleSmooth {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Much Gibbs ring afrtifacts in the grid structure, contrasty but sharp edges
         ///
-        ///Very fast - Very slow and you can&apos;t process multiple images at once.
+        ///Very Fast - Extremely Slow, and you can&apos;t process multiple images at once.
         /// </summary>
         internal static string scaleDerivativeBA {
             get {
@@ -488,9 +488,9 @@ namespace ScaleSmooth {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Grid only
+        ///   Ищет локализованную строку, похожую на Grid only, but the fastest method in the world
         ///
-        ///The fastest method, but you can&apos;t process multiple images at once without losing a lot of speed.
+        ///Incredibely Fast - Very Fast, but you can&apos;t process multiple images at once without losing a lot of speed.
         /// </summary>
         internal static string scaleFNN {
             get {
@@ -501,7 +501,7 @@ namespace ScaleSmooth {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Beautiful and detailed result, but only if bigger version must be monochrome image (only pure black and white, or for color - only pure red, black, green, yellow, fuchsia, blue, cyan and white)
         ///
-        ///Very slow - Very very slow, but you can process multiple images at the same time without losing speed.
+        ///Very Fast - Extremely Slow, but you can process multiple images at the same time without losing speed.
         /// </summary>
         internal static string scaleFurry {
             get {
@@ -512,7 +512,7 @@ namespace ScaleSmooth {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Typographic raster stylization, but if bigger version must be monochrome image it gives acceptable upscaling
         ///
-        ///Very slow, but you can process multiple images at the same time without losing speed.
+        ///Very Fast - Slow, but you can process multiple images at the same time without losing speed.
         /// </summary>
         internal static string scaleRough {
             get {
@@ -523,7 +523,7 @@ namespace ScaleSmooth {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Gives beatiful, but almost monochrome result and there are Gibbs ringing artifacts (to avoid you can try several times x2-x4)
         ///
-        ///Very very fast - fast, but you can&apos;t process multiple images at the same time without losing speed.
+        ///Incredibely Fast - Fast, but you can&apos;t process multiple images at the same time without losing speed.
         /// </summary>
         internal static string scaleSeparate {
             get {
@@ -534,7 +534,7 @@ namespace ScaleSmooth {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Most accurate for scenes where objects are completely in the image, but little bit blurred (much less than any interpolation) and grid structure is still visible
         ///
-        ///Very fast - Slow, and you can process multiple images at the same time without losing speed.
+        ///Incredibely Fast - Fast, and you can process multiple images at the same time without losing speed.
         /// </summary>
         internal static string ScaleSmooth {
             get {
@@ -545,7 +545,7 @@ namespace ScaleSmooth {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Most accurate for scenes where objects extend beyond the boundaries of the image, but little bit blurred (much less than any interpolation) and grid structure is still visible
         ///
-        ///Very fast - Slow, and you can process multiple images at the same time without losing speed.
+        ///Incredibely Fast - Fast, and you can process multiple images at the same time without losing speed.
         /// </summary>
         internal static string scaleSmoothContinuous {
             get {
@@ -556,7 +556,7 @@ namespace ScaleSmooth {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Very smooth, after reverse adjustment - most accurate for any scenes, but very contrast and grid structure is still visible
         ///
-        ///Slow, but you can process multiple images at the same time without losing speed.
+        ///Incredibely Fast - Normal, but you can process multiple images at the same time without losing speed.
         /// </summary>
         internal static string ScaleSmoothContrast {
             get {
@@ -567,7 +567,7 @@ namespace ScaleSmooth {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Makes objects thinner and more colorful
         ///
-        ///Very slow and you can&apos;t process multiple images at once.
+        ///Very Fast - Extremely Slow, and you can&apos;t process multiple images at once.
         /// </summary>
         internal static string scaleThin255BA {
             get {
@@ -587,7 +587,7 @@ namespace ScaleSmooth {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Smooth, clear, a little contrasty and the grid structure is visible, but accurate even without reverse correction
         ///
-        ///Fast, and you can process multiple images at the same time without losing speed.
+        ///Very Fast - Normal, and you can process multiple images at the same time without losing speed.
         /// </summary>
         internal static string SmoothCAS {
             get {
